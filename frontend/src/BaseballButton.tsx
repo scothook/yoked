@@ -1,12 +1,10 @@
 import { useState } from "react";
 
 type Team = {
-    Season: number;
-    TeamID: number;
-    Key: string;
-    Name: string;
-    LeagueRank: number;
-  };
+  id: number;
+  abbreviation: string;
+  leaguerank: string;
+};
 
 const BaseballButton = () => {
   const [error, setError] = useState<string | null>(null);
@@ -26,10 +24,10 @@ const BaseballButton = () => {
 
       const data: Team[] = await response.json();
 
-      const team = data.find((team) => team.LeagueRank === 1);
+      const team = data.find((team) => team.leaguerank === '1');
 
       if (team) {
-        setTopTeam(team.Key);
+        setTopTeam(team.abbreviation);
       } else {
         setError("No top team found");
       }

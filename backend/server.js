@@ -1,11 +1,40 @@
 const express = require("express");
 const cors = require("cors");
+const { Pool } = require("pg");
 
 const app = express();
 const PORT = 5000;
 
 app.use(cors()); // Allow cross-origin requests
 app.use(express.json()); // Middleware to parse JSON
+
+// Database Connection Pool
+const pool = new Pool({
+  connectionString: 'postgresql://postgres:PXiODSlPjqEAZfATzAjMphVEsJUGvZTo@metro.proxy.rlwy.net:44272/railway',
+  ssl: { rejectUnauthorized: false }, // Required for Railway SSL
+});
+
+// 🔍 Test Route
+app.get("/api/test", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT NOW()");
+    res.json({ success: true, time: result.rows[0] });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// 📌 Example: Get All Users
+app.get("/api/standings", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM teams");
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database query failed" });
+  }
+});
 
 // Sample Baseball Standings Data
 const standings = [
@@ -36,7 +65,7 @@ const standings = [
 ];
 
 // API endpoint to get all standings
-app.get("/api/standings", (req, res) => {
+app.get("/api/standings-old", (req, res) => {
   res.json(standings);
 });
 
@@ -55,55 +84,3 @@ app.get("/api/standings/:teamKey", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
-/*
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const { Pool } = require("pg");
-
-
-const app = express();
-const PORT = process.env.PORT || 5000;
-
-// PostgreSQL Connection
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }, // Required for Railway
-});
-
-app.use(cors());
-app.use(express.json());
-
-// Fetch standings from database
-app.get("/api/standings", async (req, res) => {
-  try {
-    const result = await pool.query("SELECT * FROM teams");
-    res.json(result.rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Database error" });
-  }
-});
-
-// Fetch a single team by key
-app.get("/api/standings/:teamKey", async (req, res) => {
-  try {
-    const { teamKey } = req.params;
-    const result = await pool.query("SELECT * FROM standings WHERE Key = $1", [
-      teamKey.toUpperCase(),
-    ]);
-    if (result.rows.length > 0) {
-      res.json(result.rows[0]);
-    } else {
-      res.status(404).json({ error: "Team not found" });
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Database error" });
-  }
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-*/
