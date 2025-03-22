@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <div>
-        <h1>MLB Standings</h1>
+        <h1>Top MLB Team</h1>
         <BaseballButton />
       </div>
     </>
