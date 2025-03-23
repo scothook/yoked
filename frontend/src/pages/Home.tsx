@@ -8,11 +8,13 @@ const Home: React.FC = () => {
   const navigate = useNavigate();
 
   return (
+
     <div className="flex flex-col gap-4 items-center justify-center h-screen">
-    <BaseballButton />
+      <h1>yoked</h1>
+      <BaseballButton />
       <Button label="New Workout" onClick={() => navigate("/new-workout")} />
       <Button label="Previous Workouts" onClick={() => navigate("/previous-workouts")} />
-      <Button label="Progress Data" onClick={() => navigate("/progress-data")} />
+      <Button label="Progress" onClick={() => navigate("/progress")} />
     </div>
   );
 };
