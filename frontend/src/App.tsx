@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import NewWorkout from "./pages/NewWorkout";
 import PreviousWorkouts from "./pages/PreviousWorkouts";
-import Progress from "./pages/PreviousWorkouts copy";
+import Progress from "./pages/Progress";
 
 const App: React.FC = () => {
   return (

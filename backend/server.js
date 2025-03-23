@@ -25,10 +25,20 @@ app.get("/api/test", async (req, res) => {
   }
 });
 
-// 📌 Example: Get All Users
+// 📌 Example: Baseball Test
 app.get("/api/standings", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM teams");
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database query failed" });
+  }
+});
+
+app.get("/api/workouts", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM workouts");
     res.json(result.rows);
   } catch (err) {
     console.error(err);
