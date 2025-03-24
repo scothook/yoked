@@ -1,5 +1,6 @@
 // src/App.tsx
 import React from "react";
+import styles from "./App.module.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import NewWorkout from "./pages/NewWorkout";
@@ -8,6 +9,7 @@ import Progress from "./pages/Progress";
 
 const App: React.FC = () => {
   return (
+    <div className={styles.homeContainer}>
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -16,6 +18,7 @@ const App: React.FC = () => {
         <Route path="/progress" element={<Progress />} />
       </Routes>
     </Router>
+    </div>
   );
 };
 

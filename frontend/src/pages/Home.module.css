@@ -1,0 +1,52 @@
+/* Home.module.css */
+.homeContainer {
+    display: flex;
+    flex-direction: column;  /* Stack the items vertically by default */
+    align-items: center;     /* Center the items horizontally */
+    justify-content: center; /* Center the items vertically */
+    min-height: 100vh;       /* Ensure the container takes full height */
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .header {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #ffb300; /* Bright yellow for header */
+    margin-bottom: 20px;  /* Add some space between header and buttons */
+  }
+  
+  /* Button styling */
+  .button {
+    background-color: #ffb300; /* Bright yellow */
+    color: #fff;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 15px; /* Add space between buttons */
+  }
+  
+  /* Button hover effect */
+  .button:hover {
+    background-color: #ffa000; /* Slightly darker yellow on hover */
+    transform: translateY(-2px); /* Lift effect on hover */
+  }
+  
+  /* Media Query for larger screens (e.g., tablets and desktops) */
+  @media (min-width: 768px) {
+    .homeContainer {
+      flex-direction: row;  /* Arrange buttons in a row on larger screens */
+      justify-content: center; /* Keep the items centered */
+      align-items: center;
+      text-align: left;  /* Align text to the left when in row layout */
+    }
+  
+    .button {
+      margin-top: 0; /* Remove top margin between buttons */
+      margin-right: 20px; /* Add space between buttons horizontally */
+    }
+  }
+  
