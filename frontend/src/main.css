@@ -4,3 +4,18 @@ body {
     background: #fff3e0; /* Soft yellow */
     color: #6d4c41; /* Warm earth tone */
   }
+
+   /* Header styles */
+h1 {
+    font-size: 3rem;
+    font-weight: 600;
+    color: #ffb300; /* Bright yellow */
+    margin-bottom: 20px;
+  }
+  
+  /* Footer styles */
+  .footer {
+    margin-top: 50px;
+    font-size: 1rem;
+    color: #6d4c41;
+  }
