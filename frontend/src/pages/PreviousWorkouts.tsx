@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Workout } from "../types/workout"; // Import the interface
+import Button from "../components/button/Button";
+import Layout from "../components/layout/Layout";
 
 const PreviousWorkouts: React.FC = () => {
+  const navigate = useNavigate();
+
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -30,8 +35,9 @@ const PreviousWorkouts: React.FC = () => {
   }, []);
 
   return (
-    <div>
+    <Layout>
       <h1>Previous Workouts</h1>
+      <Button label="Back" onClick={() => navigate("/")}/>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
       <ul>
@@ -41,7 +47,7 @@ const PreviousWorkouts: React.FC = () => {
           </li>
         ))}
       </ul>
-    </div>
+    </Layout>
   );
 };
 
