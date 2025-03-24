@@ -2,20 +2,18 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/button/Button";
-import styles from "./Home.module.css";
+import Layout from "../components/layout/Layout";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className={styles.body}>
-    <div className={styles.container}>
-      <h1 className={styles.header}>yoked</h1>
-        <Button label="New Workout" onClick={() => navigate("/new-workout")} className={styles.button}/>
-        <Button label="Previous Workouts" onClick={() => navigate("/previous-workouts")} className={styles.button}/>
-        <Button label="Progress" onClick={() => navigate("/progress")} className={styles.button}/>
-    </div>
-    </div>
+    <Layout>
+        <h1>yoked</h1>
+        <Button label="New Workout" onClick={() => navigate("/new-workout")}/>
+        <Button label="Previous Workouts" onClick={() => navigate("/previous-workouts")}/>
+        <Button label="Progress" onClick={() => navigate("/progress")}/>
+    </Layout>
   );
 };
 
