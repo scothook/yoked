@@ -1,7 +1,7 @@
 // src/pages/Home.tsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "../components/Button";
+import Button from "../components/button/Button";
 import styles from "./Home.module.css";
 
 const Home: React.FC = () => {

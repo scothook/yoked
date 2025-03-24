@@ -1,0 +1,16 @@
+/* Button styles */
+.button {
+    background-color: #ffb300; /* Bright yellow button */
+    color: #fff;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .button:hover {
+    background-color: #ffa000; /* Slightly darker yellow */
+    transform: translateY(-2px); /* Subtle hover effect */
+  }
