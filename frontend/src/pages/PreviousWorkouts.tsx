@@ -47,6 +47,39 @@ const PreviousWorkouts: React.FC = () => {
           </li>
         ))}
       </ul>
+
+      <div>
+      <h1>Workouts</h1>
+      <ul>
+        {workouts.map(workout => (
+          <li key={workout.workout_id}>
+            <div>
+              <h2>{new Date(workout.date).toLocaleDateString()}</h2>
+              <p>Body Weight: {workout.body_weight} lbs</p>
+              <p>Workout Type: {workout.workout_type_name}</p>
+              <h3>Movements:</h3>
+              <ul>
+                {workout.movements.map(movement => (
+                  <li key={movement.movement_id}>
+                    <div>
+                      <h4>{movement.movement_type_name}</h4>
+                      <h5>Sets:</h5>
+                      <ul>
+                        {movement.sets.map(set => (
+                          <li key={set.set_id}>
+                            Set {set.set_id}: {set.reps} reps
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
     </Layout>
   );
 };

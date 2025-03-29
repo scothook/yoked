@@ -41,7 +41,29 @@ app.get("/api/standings", async (req, res) => {
 app.get("/api/workouts", async (req, res) => {
   try {
     //const result = await pool.query("SELECT * FROM workouts");
-    const result = await pool.query("SELECT w.workout_id, w.date, w.body_weight, wt.type_name FROM workouts w JOIN workout_types wt ON w.workout_type_id = wt.workout_type_id");
+    //const result = await pool.query("SELECT w.workout_id, w.date, w.body_weight, wt.type_name FROM workouts w JOIN workout_types wt ON w.workout_type_id = wt.workout_type_id");
+    const result = await pool.query(`
+      SELECT w.workout_id, w.date, w.body_weight, wt.workout_type_name, 
+        json_agg(json_build_object(
+          'movement_id', m.movement_id, 
+          'movement_type_id', m.movement_type_id, 
+          'movement_type_name', m.movement_type_name, 
+          'sets', m.sets
+        )) AS movements 
+      FROM workouts w
+      JOIN workout_types wt ON w.workout_type_id = wt.workout_type_id
+      JOIN (
+        SELECT 
+          m.workout_id, m.movement_id, m.movement_type_id, 
+          mt.movement_type_name, 
+          json_agg(json_build_object('set_id', s.set_id, 'reps', s.reps)) AS sets 
+        FROM movements m
+        LEFT JOIN movement_types mt ON m.movement_type_id = mt.movement_type_id
+        LEFT JOIN sets s ON s.movement_id = m.movement_id
+        GROUP BY m.workout_id, m.movement_id, m.movement_type_id, mt.movement_type_name
+      ) m ON m.workout_id = w.workout_id
+      GROUP BY w.workout_id, w.date, w.body_weight, wt.workout_type_name;
+      `);
     res.json(result.rows);
   } catch (err) {
     console.error(err);
@@ -95,6 +117,5 @@ app.get("/api/standings/:teamKey", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(process.env.YOKED_DATABASE_URL);
   console.log(`Server running on http://localhost:${PORT}`);
 });
