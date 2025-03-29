@@ -40,14 +40,6 @@ const PreviousWorkouts: React.FC = () => {
       <Button label="Back" onClick={() => navigate("/")}/>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
-      <ul>
-        {workouts.map((workout) => (
-          <li key={workout.workout_id}>
-            <strong>{workout.workout_id}</strong> - {new Date(workout.date).toLocaleDateString()} - {workout.body_weight} lbs - {workout.workout_type_name}
-          </li>
-        ))}
-      </ul>
-
       <div>
       <h1>Workouts</h1>
       <ul>
@@ -55,22 +47,19 @@ const PreviousWorkouts: React.FC = () => {
           <li key={workout.workout_id}>
             <div>
               <h2>{new Date(workout.date).toLocaleDateString()}</h2>
-              <p>Body Weight: {workout.body_weight} lbs</p>
-              <p>Workout Type: {workout.workout_type_name}</p>
-              <h3>Movements:</h3>
+              <h3>Body Weight: {workout.body_weight} lbs</h3>
+              <h3>{workout.workout_type_name}</h3>
               <ul>
                 {workout.movements.map(movement => (
                   <li key={movement.movement_id}>
                     <div>
-                      <h4>{movement.movement_type_name}</h4>
-                      <h5>Sets:</h5>
-                      <ul>
-                        {movement.sets.map(set => (
-                          <li key={set.set_id}>
-                            Set {set.set_id}: {set.reps} reps
-                          </li>
-                        ))}
-                      </ul>
+                      <p>
+                        {movement.movement_type_name} -
+                        {movement.sets
+                          .sort((a, b) => a.order - b.order)
+                          .map(set => set.reps)
+                          .join("/")}
+                      </p>
                     </div>
                   </li>
                 ))}
