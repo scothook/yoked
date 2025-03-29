@@ -38,7 +38,8 @@ app.get("/api/standings", async (req, res) => {
 
 app.get("/api/workouts", async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM workouts");
+    //const result = await pool.query("SELECT * FROM workouts");
+    const result = await pool.query("SELECT w.workout_id, w.date, w.body_weight, wt.type_name FROM workouts w JOIN workout_types wt ON w.workout_type_id = wt.workout_type_id");
     res.json(result.rows);
   } catch (err) {
     console.error(err);
