@@ -43,7 +43,7 @@ const PreviousWorkouts: React.FC = () => {
       <ul>
         {workouts.map((workout) => (
           <li key={workout.workout_id}>
-            <strong>{workout.workout_id}</strong> - {new Date(workout.date).toLocaleDateString()} - {workout.body_weight} lbs - {workout.type_name}
+            <strong>{workout.workout_id}</strong> - {new Date(workout.date).toLocaleDateString()} - {workout.body_weight} lbs - {workout.workout_type_name}
           </li>
         ))}
       </ul>
