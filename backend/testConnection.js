@@ -1,14 +1,11 @@
 const { Client } = require('pg');
+require('dotenv').config({ path: './.env' });
+
 
 // Connect using the DATABASE_URL environment variable
 const client = new Client({
-  //connectionString: process.env.MY_POSTGRES_URL,
-  connectionString: 'postgresql://postgres:PXiODSlPjqEAZfATzAjMphVEsJUGvZTo@metro.proxy.rlwy.net:44272/railway',  // Make sure this is set correctly
+  connectionString: process.env.YOKED_DATABASE_URL,
 });
-
-//console.log(process.env.MY_POSTGRES_URL);
-//console.log(MY_POSTGRES_URL);
-
   async function testQuery() {
     try {
       await client.connect();

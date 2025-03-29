@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const { Pool } = require("pg");
+require('dotenv').config({ path: './.env' });
+
 
 const app = express();
 const PORT = 5000;
@@ -10,7 +12,7 @@ app.use(express.json()); // Middleware to parse JSON
 
 // Database Connection Pool
 const pool = new Pool({
-  connectionString: 'postgresql://postgres:PXiODSlPjqEAZfATzAjMphVEsJUGvZTo@metro.proxy.rlwy.net:44272/railway',
+  connectionString: process.env.YOKED_DATABASE_URL,
   ssl: { rejectUnauthorized: false }, // Required for Railway SSL
 });
 
@@ -93,5 +95,6 @@ app.get("/api/standings/:teamKey", (req, res) => {
 });
 
 app.listen(PORT, () => {
+  console.log(process.env.YOKED_DATABASE_URL);
   console.log(`Server running on http://localhost:${PORT}`);
 });
