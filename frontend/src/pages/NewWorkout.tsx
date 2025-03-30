@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/button/Button";
 import Layout from "../components/layout/Layout";
+//import RepButton from "../components/repButton/RepButton";
 
 const NewWorkout: React.FC = () => {
   const navigate = useNavigate();
@@ -37,8 +38,6 @@ const NewWorkout: React.FC = () => {
         setBodyWeight("");
         setWorkoutType("");
         setNotes("");
-      } else {
-        alert("Failed to save workout.");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -76,7 +75,6 @@ const NewWorkout: React.FC = () => {
           />
         </div>
         <div>
-        
           <div>
             <label>Movement 1</label>
           </div>
