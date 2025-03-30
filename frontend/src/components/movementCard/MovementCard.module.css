@@ -1,0 +1,42 @@
+.movementCard {
+    background: #fff8e1; /* Light sunny yellow */
+    border: 2px solid #ffcc80; /* Soft orange border */
+    border-radius: 12px;
+    padding: 16px;
+    width: 280px;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .movementCard:hover {
+    transform: translateY(-3px);
+  }
+  
+  .movementHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .removeBtn {
+    background: #ff7043; /* Warm red-orange */
+    color: white;
+    border: none;
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  
+  .removeBtn:hover {
+    background: #d84315;
+  }
+  

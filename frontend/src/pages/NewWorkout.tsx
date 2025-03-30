@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/button/Button";
 import Layout from "../components/layout/Layout";
+import MovementCard from "../components/movementCard/MovementCard";
 //import RepButton from "../components/repButton/RepButton";
 
 const NewWorkout: React.FC = () => {
@@ -49,7 +50,7 @@ const NewWorkout: React.FC = () => {
     <Layout>
       <h1>new workout</h1>
       <Button label="Back" onClick={() => navigate("/")}/>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form className="space-y-4">
         <div>
           <input
             type="date"
@@ -75,6 +76,7 @@ const NewWorkout: React.FC = () => {
           />
         </div>
         <div>
+          <MovementCard name="Chest Press" weight={105} onRemove={() => true}></MovementCard>
           <div>
             <label>Movement 1</label>
           </div>
