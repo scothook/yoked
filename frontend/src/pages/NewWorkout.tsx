@@ -33,9 +33,8 @@ const NewWorkout: React.FC = () => {
     setMovements(movements.filter((movement) => movement.movement_id !== id));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
+    console.log("Submitting workout data...");
     const newWorkout = {
       body_weight: parseFloat(bodyWeight),
       workout_type_id: parseFloat(workoutType),
@@ -68,7 +67,7 @@ const NewWorkout: React.FC = () => {
     <Layout>
       <h1>new workout</h1>
       <Button label="Back" onClick={() => navigate("/")}/>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="space-y-4">
         <div>
           <input
             type="date"
@@ -108,15 +107,6 @@ const NewWorkout: React.FC = () => {
           <button onClick={addMovement}>Add Movement</button>
         </div>
         <div>
-          <MovementCard name="Chest Press" weight={105} onRemove={() => true}></MovementCard>
-          <div>
-            <label>Movement 1</label>
-          </div>
-          <div>
-            <label>Movement 2</label>
-          </div>
-        </div>
-        <div>
           <label>Notes:</label>
           <textarea
             value={notes}
@@ -124,8 +114,8 @@ const NewWorkout: React.FC = () => {
             className="border p-2"
           />
         </div>
-        <Button label="Save" onClick={() => handleSubmit}/>
-      </form>
+        <Button label="Save" onClick={handleSubmit}/>
+      </div>
     </Layout>
   );
 };
