@@ -61,26 +61,31 @@ app.get("/api/workouts", async (req, res) => {
           w.workout_id, 
           w.date, 
           w.body_weight, 
+          w.notes,
           wt.workout_type_name, 
-          json_agg(
-              json_build_object(
-                  'movement_id', m.movement_id,
-                  'movement_type_id', m.movement_type_id,
-                  'movement_type_name', m.movement_type_name,
-                  'sets', m.sets
-              )
-          ) AS movements
+          COALESCE(json_agg(
+              CASE 
+                  WHEN m.movement_id IS NOT NULL THEN 
+                      json_build_object(
+                          'movement_id', m.movement_id,
+                          'movement_type_id', m.movement_type_id,
+                          'movement_type_name', m.movement_type_name,
+                          'sets', m.sets
+                      )
+                  ELSE NULL
+              END
+          ) FILTER (WHERE m.movement_id IS NOT NULL), '[]') AS movements
       FROM workouts w
       JOIN workout_types wt ON w.workout_type_id = wt.workout_type_id
-      JOIN (
+      LEFT JOIN (
           SELECT 
               m.workout_id,
               m.movement_id,
               m.movement_type_id,
-              mt.movement_type_name,  -- Now selecting movement_type_name inside the subquery
-              json_agg(
+              mt.movement_type_name,
+              COALESCE(json_agg(
                   json_build_object('set_id', s.set_id, 'reps', s.reps, 'order', s.order)
-              ) AS sets
+              ) FILTER (WHERE s.set_id IS NOT NULL), '[]') AS sets
           FROM movements m
           LEFT JOIN movement_types mt ON m.movement_type_id = mt.movement_type_id
           LEFT JOIN sets s ON s.movement_id = m.movement_id
