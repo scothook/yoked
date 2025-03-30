@@ -13,7 +13,8 @@ COMMIT_MESSAGE=$2
 npm version $VERSION_TYPE --no-git-tag-version
 
 # Extract the new version from package.json
-NEW_VERSION=$(jq -r .version package.json)
+NEW_VERSION=$(node -p "require('./package.json').version")
+
 
 # Commit with the provided message and version
 git add package.json package-lock.json
