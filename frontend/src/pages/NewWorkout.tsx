@@ -104,7 +104,7 @@ const NewWorkout: React.FC = () => {
 
         </div>
         <div>
-          <button onClick={addMovement}>Add Movement</button>
+          <Button label="+" onClick={addMovement}/>
         </div>
         <div>
           <label>Notes:</label>
