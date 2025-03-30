@@ -36,12 +36,11 @@ const PreviousWorkouts: React.FC = () => {
 
   return (
     <Layout>
-      <h1>Previous Workouts</h1>
+      <h1>previous workouts</h1>
       <Button label="Back" onClick={() => navigate("/")}/>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
       <div>
-      <h1>Workouts</h1>
       <ul>
         {workouts
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())

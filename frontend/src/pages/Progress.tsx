@@ -8,7 +8,7 @@ const Progress: React.FC = () => {
     const navigate = useNavigate();
   return (
     <Layout>
-      <h1>Data</h1>
+      <h1>data</h1>
       <Button label="Back" onClick={() => navigate("/")}/>
   </Layout>
   )

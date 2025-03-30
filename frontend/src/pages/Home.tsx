@@ -10,9 +10,9 @@ const Home: React.FC = () => {
   return (
     <Layout>
         <h1 className="header">yoked</h1>
-        <Button label="New Workout" onClick={() => navigate("/new-workout")}/>
-        <Button label="Previous Workouts" onClick={() => navigate("/previous-workouts")}/>
-        <Button label="Data" onClick={() => navigate("/progress")}/>
+        <Button label="new workout" onClick={() => navigate("/new-workout")}/>
+        <Button label="previous workouts" onClick={() => navigate("/previous-workouts")}/>
+        <Button label="data" onClick={() => navigate("/progress")}/>
     </Layout>
   );
 };

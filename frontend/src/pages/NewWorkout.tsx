@@ -11,6 +11,7 @@ const NewWorkout: React.FC = () => {
   const [bodyWeight, setBodyWeight] = useState("");
   const [workoutType, setWorkoutType] = useState("");
   const [notes, setNotes] = useState("");
+  const [date, setDate] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,7 +20,7 @@ const NewWorkout: React.FC = () => {
       body_weight: parseFloat(bodyWeight),
       workout_type_id: parseFloat(workoutType),
       notes,
-      date: new Date().toISOString().split("T")[0], // Autopopulates today's date
+      date
     };
 
     try {
@@ -47,10 +48,16 @@ const NewWorkout: React.FC = () => {
 
   return (
     <Layout>
-      <h1>Start a New Workout</h1>
+      <h1>new workout</h1>
       <Button label="Back" onClick={() => navigate("/")}/>
         <form onSubmit={handleSubmit} className="space-y-4">
         <div>
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            className="border p-2"
+          />
           <label>Body Weight (lbs):</label>
           <input
             type="number"
@@ -69,6 +76,16 @@ const NewWorkout: React.FC = () => {
           />
         </div>
         <div>
+        
+          <div>
+            <label>Movement 1</label>
+          </div>
+          <div>
+            <label>Movement 2</label>
+          </div>
+
+        </div>
+        <div>
           <label>Notes:</label>
           <textarea
             value={notes}
@@ -76,11 +93,9 @@ const NewWorkout: React.FC = () => {
             className="border p-2"
           />
         </div>
-        <button type="submit" className="bg-blue-500 text-white p-2">Save Workout</button>
+        <Button label="Save" onClick={() => handleSubmit}/>
       </form>
     </Layout>
-
-    
   );
 };
 
