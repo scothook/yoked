@@ -18,7 +18,7 @@ NEW_VERSION=$(node -p "require('./package.json').version")
 
 # Commit with the provided message and version
 git add package.json package-lock.json
-git commit -m "Bump version to $NEW_VERSION: $COMMIT_MESSAGE"
+git commit -m "$NEW_VERSION: $COMMIT_MESSAGE"
 
 # Create a Git tag
 git tag "v$NEW_VERSION"
