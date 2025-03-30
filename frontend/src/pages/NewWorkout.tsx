@@ -4,19 +4,37 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/button/Button";
 import Layout from "../components/layout/Layout";
+import MovementCard from "../components/movementCard/MovementCard";
+import { Movement } from "../types/movement";
 //import RepButton from "../components/repButton/RepButton";
 
 const NewWorkout: React.FC = () => {
   const navigate = useNavigate();
 
+  const [movements, setMovements] = useState<Movement[]>([]);
   const [bodyWeight, setBodyWeight] = useState("");
   const [workoutType, setWorkoutType] = useState("");
   const [notes, setNotes] = useState("");
   const [date, setDate] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const addMovement = () => {
+    const newMovement: Movement = {
+      movement_id: Date.now(),
+      movement_type_id: 1,
+      movement_type_name: "Chest Press",
+      sets: []
+    };
+    console.log(newMovement);
+    setMovements([...movements, newMovement]);
+    console.log('hi');
+  };
 
+  const removeMovement = (id: number) => {
+    setMovements(movements.filter((movement) => movement.movement_id !== id));
+  };
+
+  const handleSubmit = async () => {
+    console.log("Submitting workout data...");
     const newWorkout = {
       body_weight: parseFloat(bodyWeight),
       workout_type_id: parseFloat(workoutType),
@@ -49,7 +67,7 @@ const NewWorkout: React.FC = () => {
     <Layout>
       <h1>new workout</h1>
       <Button label="Back" onClick={() => navigate("/")}/>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="space-y-4">
         <div>
           <input
             type="date"
@@ -74,14 +92,19 @@ const NewWorkout: React.FC = () => {
             className="border p-2"
           />
         </div>
-        <div>
-          <div>
-            <label>Movement 1</label>
-          </div>
-          <div>
-            <label>Movement 2</label>
-          </div>
+        <div className="movementList">
+          {movements.map((movement) => (
+            <MovementCard
+              key={movement.movement_id}
+              name={movement.movement_type_name}
+              weight={105}
+              onRemove={() => removeMovement(movement.movement_id)}
+            />
+          ))}
 
+        </div>
+        <div>
+          <button onClick={addMovement}>Add Movement</button>
         </div>
         <div>
           <label>Notes:</label>
@@ -91,8 +114,8 @@ const NewWorkout: React.FC = () => {
             className="border p-2"
           />
         </div>
-        <Button label="Save" onClick={() => handleSubmit}/>
-      </form>
+        <Button label="Save" onClick={handleSubmit}/>
+      </div>
     </Layout>
   );
 };
