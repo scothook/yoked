@@ -9,7 +9,7 @@
   }
   
   .movementCard:hover {
-    transform: translateY(-3px);
+    transform: translateY(0px);
   }
   
   .movementHeader {
