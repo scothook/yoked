@@ -1,0 +1,11 @@
+{
+    "name": "yoked",
+    "version": "0.0.1",
+    "scripts": {
+        "frontend:build" : "cd frontend && npm run build",
+        "frontend:deploy" : "cd frontend && netlify deploy --dir=dist --prod",
+        "frontend:bnd" : "cd frontend && npm run build && netlify deploy --dir=dist --prod",
+        "backend:bnd" : "cd backend && railway up -c",
+        "deploy:all": "npm run frontend:bnd && npm run backend:bnd"
+    }
+  }
