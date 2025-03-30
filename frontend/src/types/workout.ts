@@ -6,4 +6,5 @@ export interface Workout {
   body_weight: number;
   workout_type_name: string;
   movements: Movement[]; // Array of movements associated with this workout
+  notes: string;
 }

@@ -38,10 +38,24 @@ app.get("/api/standings", async (req, res) => {
   }
 });
 
+app.post("/api/workouts", async (req, res) => {
+  try {
+    const { body_weight, workout_type_id, notes, date } = req.body;
+
+    const result = await pool.query(
+      "INSERT INTO workouts (body_weight, workout_type_id, notes, date) VALUES ($1, $2, $3, $4) RETURNING *;",
+      [body_weight, workout_type_id, notes, date]
+    );
+
+    res.status(201).json(result.rows[0]); // Return the new workout
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database error" });
+  }
+});
+
 app.get("/api/workouts", async (req, res) => {
   try {
-    //const result = await pool.query("SELECT * FROM workouts");
-    //const result = await pool.query("SELECT w.workout_id, w.date, w.body_weight, wt.type_name FROM workouts w JOIN workout_types wt ON w.workout_type_id = wt.workout_type_id");
     const result = await pool.query(`   
       SELECT 
           w.workout_id, 
