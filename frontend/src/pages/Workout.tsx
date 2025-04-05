@@ -1,4 +1,4 @@
-// src/pages/NewWorkout.tsx
+// src/pages/Workout.tsx
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -8,7 +8,7 @@ import MovementCard from "../components/movementCard/MovementCard";
 import { Movement } from "../types/movement";
 //import RepButton from "../components/repButton/RepButton";
 
-const NewWorkout: React.FC = () => {
+const Workout: React.FC = () => {
   const navigate = useNavigate();
 
   const [movements, setMovements] = useState<Movement[]>([]);
@@ -35,7 +35,7 @@ const NewWorkout: React.FC = () => {
 
   const handleSubmit = async () => {
     console.log("Submitting workout data...");
-    const newWorkout = {
+    const Workout = {
       body_weight: parseFloat(bodyWeight),
       workout_type_id: parseFloat(workoutType),
       notes,
@@ -48,7 +48,7 @@ const NewWorkout: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newWorkout),
+        body: JSON.stringify(Workout),
       });
 
       if (response.ok) {
@@ -120,4 +120,4 @@ const NewWorkout: React.FC = () => {
   );
 };
 
-export default NewWorkout;
+export default Workout;
