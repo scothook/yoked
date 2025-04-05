@@ -1,5 +1,6 @@
 //import React from "react";
 import styles from "./MovementCard.module.css";
+import MovementHeader from "../movementHeader/movementHeader";
 
 interface MovementCardProps {
   name: string;
@@ -10,12 +11,12 @@ interface MovementCardProps {
 export default function MovementCard({ name, weight, onRemove }: MovementCardProps) {
   return (
     <div className={styles.movementCard}>
-      <div className={styles.movementHeader}>
-        <h3>{name}</h3>
+      <MovementHeader
+        name={name}
+        />
         <button className={styles.removeBtn} onClick={onRemove}>
           &minus;
         </button>
-      </div>
       <p>{weight} lbs</p>
     </div>
   );

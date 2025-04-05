@@ -12,14 +12,6 @@
     transform: translateY(0px);
   }
   
-  .movementHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 18px;
-    font-weight: bold;
-  }
-  
   .removeBtn {
     background: #ff7043; /* Warm red-orange */
     color: white;
