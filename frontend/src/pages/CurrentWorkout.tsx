@@ -6,11 +6,13 @@ import Button from "../components/button/Button";
 import Layout from "../components/layout/Layout";
 import MovementCard from "../components/movementCard/MovementCard";
 import { Movement } from "../types/movement";
+import { Workout } from "../types/workout";
 //import RepButton from "../components/repButton/RepButton";
 
-const Workout: React.FC = () => {
+const CurrentWorkout: React.FC = () => {
   const navigate = useNavigate();
 
+  const [workout, setWorkout] = useState<Workout[]>([]);
   const [workoutId, setWorkoutId] = useState<number | null>(null);
   const [movements, setMovements] = useState<Movement[]>([]);
   const [bodyWeight, setBodyWeight] = useState("");
@@ -38,6 +40,8 @@ const Workout: React.FC = () => {
     try {
       const response = await fetch("https://yoked-backend-production.up.railway.app/api/workouts");
       const data = await response.json();
+      setWorkout(data[0]);
+      console.log(workout);
       setWorkoutId(data[0].workout_id);
     } catch (error) {
       console.error("Error fetching workout data:", error);
@@ -46,7 +50,7 @@ const Workout: React.FC = () => {
 
   const handleSubmit = async () => {
     console.log("Submitting workout data...");
-    const Workout = {
+    const WorkoutSubmission = {
       body_weight: parseFloat(bodyWeight),
       workout_type_id: parseFloat(workoutType),
       notes,
@@ -59,7 +63,7 @@ const Workout: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(Workout),
+        body: JSON.stringify(WorkoutSubmission),
       });
 
       if (response.ok) {
@@ -133,4 +137,4 @@ const Workout: React.FC = () => {
   );
 };
 
-export default Workout;
+export default CurrentWorkout;
