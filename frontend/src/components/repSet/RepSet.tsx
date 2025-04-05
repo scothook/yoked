@@ -1,3 +1,15 @@
+import styles from "./RepSet.module.css";
+
+interface RepButtonProps {
+  initialReps: number;
+}
+
+export default function RepSet({ initialReps }: RepButtonProps) {
+  return (
+    <button className={styles.repButton}>{initialReps}</button>
+  )
+}
+
 /*import { useState, useRef } from "react";
 import styles from "./RepButton.module.css";
 

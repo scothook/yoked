@@ -1,6 +1,8 @@
 //import React from "react";
 import styles from "./MovementCard.module.css";
-import MovementHeader from "../movementHeader/movementHeader";
+import MovementHeader from "../movementHeader/MovementHeader.tsx";
+import WeightSet from "../weightSet/WeightSet";
+//import { Set } from "../types/set";
 
 interface MovementCardProps {
   name: string;
@@ -13,11 +15,14 @@ export default function MovementCard({ name, weight, onRemove }: MovementCardPro
     <div className={styles.movementCard}>
       <MovementHeader
         name={name}
+        onRemove={onRemove}
         />
-        <button className={styles.removeBtn} onClick={onRemove}>
-          &minus;
-        </button>
-      <p>{weight} lbs</p>
+      <div className={styles.weightSetList}>
+      <WeightSet
+        weight={weight}/>
+      </div>
+
+      <button className={styles.addMovementBtn}>+</button>
     </div>
   );
 }
