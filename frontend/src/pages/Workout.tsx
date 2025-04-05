@@ -11,6 +11,7 @@ import { Movement } from "../types/movement";
 const Workout: React.FC = () => {
   const navigate = useNavigate();
 
+  const [workoutId, setWorkoutId] = useState<number | null>(null);
   const [movements, setMovements] = useState<Movement[]>([]);
   const [bodyWeight, setBodyWeight] = useState("");
   const [workoutType, setWorkoutType] = useState("");
@@ -31,6 +32,16 @@ const Workout: React.FC = () => {
 
   const removeMovement = (id: number) => {
     setMovements(movements.filter((movement) => movement.movement_id !== id));
+  };
+
+  const getWorkoutData = async () => {
+    try {
+      const response = await fetch("https://yoked-backend-production.up.railway.app/api/workouts");
+      const data = await response.json();
+      setWorkoutId(data[0].workout_id);
+    } catch (error) {
+      console.error("Error fetching workout data:", error);
+    }
   };
 
   const handleSubmit = async () => {
@@ -66,6 +77,8 @@ const Workout: React.FC = () => {
   return (
     <Layout>
       <h1>new workout</h1>
+      <h2>Workout ID: {workoutId}</h2>
+      <Button label="Get Workout" onClick={getWorkoutData}/>
       <Button label="Back" onClick={() => navigate("/")}/>
         <div className="space-y-4">
         <div>
