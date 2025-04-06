@@ -67,7 +67,7 @@ app.get("/api/workouts", async (req, res) => {
               CASE 
                   WHEN m.id IS NOT NULL THEN 
                       json_build_object(
-                          'movement_id', m.id,
+                          'id', m.id,
                           'movement_type_id', m.movement_type_id,
                           'movement_type_name', m.movement_type_name,
                           'sets', m.sets
@@ -84,7 +84,7 @@ app.get("/api/workouts", async (req, res) => {
               m.movement_type_id,
               mt.movement_type_name,
               COALESCE(json_agg(
-                  json_build_object('set_id', s.id, 'reps', s.reps, 'order', s.order, 'weight', s.weight)
+                  json_build_object('id', s.id, 'reps', s.reps, 'order', s.order, 'weight', s.weight)
               ) FILTER (WHERE s.id IS NOT NULL), '[]') AS sets
           FROM movements m
           LEFT JOIN movement_types mt ON m.movement_type_id = mt.id
