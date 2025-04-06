@@ -58,7 +58,7 @@ app.get("/api/workouts", async (req, res) => {
   try {
     const result = await pool.query(`   
       SELECT 
-          w.workout_id, 
+          w.id, 
           w.date, 
           w.body_weight, 
           w.notes,
@@ -90,8 +90,8 @@ app.get("/api/workouts", async (req, res) => {
           LEFT JOIN movement_types mt ON m.movement_type_id = mt.movement_type_id
           LEFT JOIN sets s ON s.movement_id = m.movement_id
           GROUP BY m.workout_id, m.movement_id, m.movement_type_id, mt.movement_type_name
-      ) m ON m.workout_id = w.workout_id
-      GROUP BY w.workout_id, w.date, w.body_weight, wt.workout_type_name;`
+      ) m ON m.workout_id = w.id
+      GROUP BY w.id, w.date, w.body_weight, wt.workout_type_name;`
     );
     res.json(result.rows);
   } catch (err) {
