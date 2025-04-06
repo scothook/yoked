@@ -9,7 +9,7 @@ const Progress: React.FC = () => {
   return (
     <Layout>
       <h1>data</h1>
-      <Button label="Back" onClick={() => navigate("/")}/>
+      <Button label="← Back" onClick={() => navigate(-1)}/>
   </Layout>
   )
 };

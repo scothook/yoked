@@ -126,10 +126,8 @@ const CurrentWorkout: React.FC = () => {
 
   return (
     <Layout>
-      <h1>new workout</h1>
-      <h2>Workout ID: {workoutId}</h2>
-      <p>{workout ? workout.id : 'nothin'}</p>
-      <Button label="Back" onClick={() => navigate("/")}/>
+      <h2>{workout ? workout.id : 'new workout'}</h2>
+      <Button label="← Back" onClick={() => navigate(-1)}/>
         <div className="space-y-4">
         <div>
           <input

@@ -36,8 +36,8 @@ const PreviousWorkouts: React.FC = () => {
 
   return (
     <Layout>
-      <h1>previous workouts</h1>
-      <Button label="Back" onClick={() => navigate("/")}/>
+      <h2>previous workouts</h2>
+      <Button label="← Back" onClick={() => navigate(-1)}/>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
       <div>
