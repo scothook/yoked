@@ -13,7 +13,7 @@ const CurrentWorkout: React.FC = () => {
   const navigate = useNavigate();
 
   const location = useLocation();
-  const workoutId = location.state?.workoutId ?? '';
+  const [workoutId, setWorkoutId] = useState(location.state?.workoutId ?? "");
 
   const [workout, setWorkout] = useState<Workout | null>(null);
   //const [workoutId, setWorkoutId] = useState<number | null>(null);
@@ -80,6 +80,30 @@ const CurrentWorkout: React.FC = () => {
     };
 
     try {
+      const res = workoutId
+        ? await fetch(`https://yoked-backend-production.up.railway.app/api/workouts/${workoutId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(WorkoutSubmission),
+          })
+        : await fetch("https://yoked-backend-production.up.railway.app/api/workouts", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(WorkoutSubmission),
+          });
+  
+      const data = await res.json();
+      console.log("Workout saved:", data);
+  
+      // ✅ If just created a new workout, store the new ID
+      if (!workoutId && data.id) {
+        setWorkoutId(data.id);
+      }
+    } catch (err) {
+      console.error("Error saving workout", err);
+    }
+/*
+    try {
       const response = await fetch("https://yoked-backend-production.up.railway.app/api/workouts", {
         method: "POST",
         headers: {
@@ -97,7 +121,7 @@ const CurrentWorkout: React.FC = () => {
     } catch (error) {
       console.error("Error:", error);
       alert("Something went wrong.");
-    }
+    } */
   };
 
   return (

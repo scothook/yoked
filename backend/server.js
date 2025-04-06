@@ -54,6 +54,35 @@ app.post("/api/workouts", async (req, res) => {
   }
 });
 
+app.put("/api/workouts/:id", async (req, res) => {
+  const { id } = req.params;
+  const { body_weight, workout_type_id, notes, date } = req.body;
+
+  try {
+    const result = await pool.query(
+      `
+      UPDATE workouts
+      SET body_weight = $1,
+          workout_type_id = $2,
+          notes = $3,
+          date = $4
+      WHERE id = $5
+      RETURNING *;
+      `,
+      [body_weight, workout_type_id, notes, date, id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Workout not found" });
+    }
+
+    res.status(200).json(result.rows[0]); // Return the updated workout
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database error" });
+  }
+});
+
 app.get("/api/workouts/:id", async (req, res) => {
   const { id } = req.params;
   try {
