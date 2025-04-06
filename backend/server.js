@@ -65,31 +65,31 @@ app.get("/api/workouts", async (req, res) => {
           wt.workout_type_name, 
           COALESCE(json_agg(
               CASE 
-                  WHEN m.movement_id IS NOT NULL THEN 
+                  WHEN m.id IS NOT NULL THEN 
                       json_build_object(
-                          'movement_id', m.movement_id,
+                          'movement_id', m.id,
                           'movement_type_id', m.movement_type_id,
                           'movement_type_name', m.movement_type_name,
                           'sets', m.sets
                       )
                   ELSE NULL
               END
-          ) FILTER (WHERE m.movement_id IS NOT NULL), '[]') AS movements
+          ) FILTER (WHERE m.id IS NOT NULL), '[]') AS movements
       FROM workouts w
-      JOIN workout_types wt ON w.workout_type_id = wt.workout_type_id
+      JOIN workout_types wt ON w.workout_type_id = wt.id
       LEFT JOIN (
           SELECT 
               m.workout_id,
-              m.movement_id,
+              m.id,
               m.movement_type_id,
               mt.movement_type_name,
               COALESCE(json_agg(
-                  json_build_object('set_id', s.set_id, 'reps', s.reps, 'order', s.order)
-              ) FILTER (WHERE s.set_id IS NOT NULL), '[]') AS sets
+                  json_build_object('set_id', s.id, 'reps', s.reps, 'order', s.order, 'weight', s.weight)
+              ) FILTER (WHERE s.id IS NOT NULL), '[]') AS sets
           FROM movements m
-          LEFT JOIN movement_types mt ON m.movement_type_id = mt.movement_type_id
-          LEFT JOIN sets s ON s.movement_id = m.movement_id
-          GROUP BY m.workout_id, m.movement_id, m.movement_type_id, mt.movement_type_name
+          LEFT JOIN movement_types mt ON m.movement_type_id = mt.id
+          LEFT JOIN sets s ON s.movement_id = m.id
+          GROUP BY m.workout_id, m.id, m.movement_type_id, mt.movement_type_name
       ) m ON m.workout_id = w.id
       GROUP BY w.id, w.date, w.body_weight, wt.workout_type_name;`
     );
