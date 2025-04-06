@@ -1,5 +1,6 @@
 export interface Set {
-    set_id: number;
+    id: number;
     reps: number;
     order: number;
+    weight: number;
   }
