@@ -1,7 +1,7 @@
 // src/pages/Workout.tsx
 import React from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../components/button/Button";
 import Layout from "../components/layout/Layout";
 import MovementCard from "../components/movementCard/MovementCard";
@@ -12,17 +12,39 @@ import { Workout } from "../types/workout";
 const CurrentWorkout: React.FC = () => {
   const navigate = useNavigate();
 
-  const [workout, setWorkout] = useState<Workout[]>([]);
-  const [workoutId, setWorkoutId] = useState<number | null>(null);
+  const location = useLocation();
+  const workoutId = location.state?.workoutId ?? '';
+
+  const [workout, setWorkout] = useState<Workout | null>(null);
+  //const [workoutId, setWorkoutId] = useState<number | null>(null);
   const [movements, setMovements] = useState<Movement[]>([]);
   const [bodyWeight, setBodyWeight] = useState("");
   const [workoutType, setWorkoutType] = useState("");
   const [notes, setNotes] = useState("");
   const [date, setDate] = useState("");
 
+  useEffect(() => {
+    const fetchWorkout = async () => {
+      if (!workoutId) {
+        console.log("No workout ID provided");
+        return;
+      }
+
+      try {
+        const res = await fetch(`https://yoked-backend-production.up.railway.app/api/workouts/${workoutId}`);
+        const data = await res.json();
+        setWorkout(data[0]);
+      } catch (err) {
+        console.error("Error fetching workout:", err);
+      }
+    };
+
+    fetchWorkout();
+  }, [workoutId])
+
   const addMovement = () => {
     const newMovement: Movement = {
-      movement_id: Date.now(),
+      id: Date.now(),
       movement_type_id: 1,
       movement_type_name: "Chest Press",
       sets: []
@@ -33,20 +55,20 @@ const CurrentWorkout: React.FC = () => {
   };
 
   const removeMovement = (id: number) => {
-    setMovements(movements.filter((movement) => movement.movement_id !== id));
+    setMovements(movements.filter((movement) => movement.id !== id));
   };
-
+/*
   const getWorkoutData = async () => {
     try {
       const response = await fetch("https://yoked-backend-production.up.railway.app/api/workouts");
       const data = await response.json();
-      setWorkout(data[0]);
+      //setWorkout(data[0]);
       console.log(workout);
-      setWorkoutId(data[0].workout_id);
+      //setWorkoutId(data[0].workout_id);
     } catch (error) {
       console.error("Error fetching workout data:", error);
     }
-  };
+  }; */
 
   const handleSubmit = async () => {
     console.log("Submitting workout data...");
@@ -82,7 +104,7 @@ const CurrentWorkout: React.FC = () => {
     <Layout>
       <h1>new workout</h1>
       <h2>Workout ID: {workoutId}</h2>
-      <Button label="Get Workout" onClick={getWorkoutData}/>
+      <p>{workout ? workout.id : 'nothin'}</p>
       <Button label="Back" onClick={() => navigate("/")}/>
         <div className="space-y-4">
         <div>
@@ -112,10 +134,10 @@ const CurrentWorkout: React.FC = () => {
         <div className="movementList">
           {movements.map((movement) => (
             <MovementCard
-              key={movement.movement_id}
+              key={movement.id}
               name={movement.movement_type_name}
               weight={105}
-              onRemove={() => removeMovement(movement.movement_id)}
+              onRemove={() => removeMovement(movement.id)}
             />
           ))}
 

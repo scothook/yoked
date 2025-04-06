@@ -45,22 +45,19 @@ const PreviousWorkouts: React.FC = () => {
         {workouts
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
         .map(workout => (
-          <li key={workout.workout_id}>
+          <li key={workout.id}>
             <div>
+              <Button label="View" onClick={() => navigate(`/current-workout/`, { state: { workoutId: workout.id }})}/>
               <h2>{new Date(workout.date).toLocaleDateString()}</h2>
               <h3>Body Weight: {workout.body_weight} lbs</h3>
               <h3>{workout.workout_type_name}</h3>
               <p>{workout.notes}</p>
               <ul>
                 {workout.movements.map(movement => (
-                  <li key={movement.movement_id}>
+                  <li key={movement.id}>
                     <div>
                       <p>
-                        {movement.movement_type_name} -
-                        {movement.sets
-                          .sort((a, b) => a.order - b.order)
-                          .map(set => set.reps)
-                          .join("/")}
+                        {movement.movement_type_name}
                       </p>
                     </div>
                   </li>

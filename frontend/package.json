@@ -12,7 +12,7 @@
     "frontend:deploy" : "netlify deploy --dir=dist --prod",
     "frontend:bnd" : "npm run build && netlify deploy --dir=dist --prod",
     "backend:bnd" : "cd ../backend && railway up -c",
-    "deploy:all": "npm run frontend:bnd && npm run backend:bnd"
+    "bnd:all": "npm run frontend:bnd && npm run backend:bnd"
   },
   "dependencies": {
     "react": "^19.0.0",
