@@ -5,13 +5,20 @@ import styles from "./Button.module.css";
 interface ButtonProps {
   label: string;
   onClick: () => void;
+  variant?: 'default' | 'back';
 }
 
-const Button: React.FC<ButtonProps> = ({ label, onClick }) => {
+const Button: React.FC<ButtonProps> = ({ label, onClick, variant }) => {
+  let variantStyles;
+  if (variant === 'default' || !variant) {
+    variantStyles = styles.button;
+  } else if (variant === 'back') {
+    variantStyles = styles.back;
+  }
   return (
     <button 
       onClick={onClick} 
-      className={styles.button}>
+      className={variantStyles}>
       {label}
     </button>
   );

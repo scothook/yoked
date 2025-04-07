@@ -36,8 +36,19 @@ const PreviousWorkouts: React.FC = () => {
 
   return (
     <Layout>
-      <h2>previous workouts</h2>
-      <Button label="← Back" onClick={() => navigate(-1)}/>
+      <div className="header">
+        <div className="header-title" style={{ display: "flex", flexDirection: "horizontal" }}>
+          <Button label="<" onClick={() => navigate(-1)} variant="back"/>
+          <h2>previous workouts</h2>
+        </div>
+        <div className="header-controls">
+          <label className="toggle-label">
+              <input type="checkbox" className="view-toggle"/>
+              <span className="toggle-slider"></span>
+          </label>
+          <button className="filter-icon">Filter</button>
+        </div>
+      </div>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
       <div>
