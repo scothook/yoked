@@ -3,12 +3,13 @@ import React from "react";
 import styles from "./Button.module.css";
 
 interface ButtonProps {
-  label: string;
+  label?: string;
   onClick: () => void;
   variant?: 'default' | 'back';
+  children?: React.ReactNode;
 }
 
-const Button: React.FC<ButtonProps> = ({ label, onClick, variant }) => {
+const Button: React.FC<ButtonProps> = ({ label, onClick, variant, children }) => {
   let variantStyles;
   if (variant === 'default' || !variant) {
     variantStyles = styles.button;
@@ -20,7 +21,7 @@ const Button: React.FC<ButtonProps> = ({ label, onClick, variant }) => {
       onClick={onClick} 
       className={variantStyles}>
       {label}
-    </button>
+    {children}</button>
   );
 };
 

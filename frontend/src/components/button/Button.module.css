@@ -17,14 +17,15 @@
   }
 
   .back {
-    margin: 0;
+    margin-right: auto;
+    margin-bottom: -5px;
     font-family: 'Inter', sans-serif;
     background: #fff3e0; /* Soft yellow */
     color: #6d4c41; /* Warm earth tone */
     border: none;
     padding: 14px 28px;
     border-radius: 8px;
-    font-size: 1.2rem;
+    font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
     min-width: 20px;

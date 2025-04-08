@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Workout } from "../types/workout"; // Import the interface
 import Button from "../components/button/Button";
 import Layout from "../components/layout/Layout";
+import ArrowBackIcon from '@mui/icons-material/ArrowBackIos';
 
 const PreviousWorkouts: React.FC = () => {
   const navigate = useNavigate();
@@ -36,10 +37,10 @@ const PreviousWorkouts: React.FC = () => {
 
   return (
     <Layout>
-      <div className="header">
-        <div className="header-title" style={{ display: "flex", flexDirection: "horizontal" }}>
-          <Button label="<" onClick={() => navigate(-1)} variant="back"/>
-          <h2>previous workouts</h2>
+      <div className="header" style={{ marginRight: "auto"}}>
+        <div className="header-title" style={{ display: 'flex', alignItems: 'center' }}>
+          <Button onClick={() => navigate(-1)} variant="back"><ArrowBackIcon/></Button>
+          <h2 style={{   position: "absolute", left: "50%", transform: "translateX(-50%)", minWidth: "220px" }}>previous workouts</h2>
         </div>
         <div className="header-controls">
           <label className="toggle-label">
