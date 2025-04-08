@@ -1,0 +1,62 @@
+.controls {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.toggleLabel {
+    position: relative;
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.toggleLabel .view-toggle {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggleLabel .toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 25px;
+}
+
+.toggleLabel .toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+.viewToggle:checked + .toggle-slider {
+    background-color: #007bff;
+}
+
+.viewToggle:checked + .toggle-slider:before {
+    transform: translateX(20px);
+}
+
+.filterIcon {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #007bff;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.filterIcon:hover {
+    text-decoration: underline;
+}

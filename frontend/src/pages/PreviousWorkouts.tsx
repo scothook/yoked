@@ -4,6 +4,8 @@ import { Workout } from "../types/workout"; // Import the interface
 import Button from "../components/button/Button";
 import Layout from "../components/layout/Layout";
 import ArrowBackIcon from '@mui/icons-material/ArrowBackIos';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import styles from "./PreviousWorkouts.module.css"; // Import your CSS file
 
 const PreviousWorkouts: React.FC = () => {
   const navigate = useNavigate();
@@ -42,12 +44,12 @@ const PreviousWorkouts: React.FC = () => {
           <Button onClick={() => navigate(-1)} variant="back"><ArrowBackIcon/></Button>
           <h2 style={{   position: "absolute", left: "50%", transform: "translateX(-50%)", minWidth: "220px" }}>previous workouts</h2>
         </div>
-        <div className="header-controls">
-          <label className="toggle-label">
-              <input type="checkbox" className="view-toggle"/>
-              <span className="toggle-slider"></span>
+        <div className={styles.controls}>
+          <label className={styles.toggleLabel}>
+              <input type="checkbox" className={styles.viewToggle}/>
+              <span className={styles.toggleSlider}></span>
           </label>
-          <button className="filter-icon">Filter</button>
+          <button className={styles.filterIcon}><FilterAltIcon/></button>
         </div>
       </div>
       {loading && <p>Loading...</p>}
