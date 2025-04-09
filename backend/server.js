@@ -54,6 +54,84 @@ app.post("/api/workouts", async (req, res) => {
   }
 });
 
+app.put("/api/workouts/:id", async (req, res) => {
+  const { id } = req.params;
+  const { body_weight, workout_type_id, notes, date } = req.body;
+
+  try {
+    const result = await pool.query(
+      `
+      UPDATE workouts
+      SET body_weight = $1,
+          workout_type_id = $2,
+          notes = $3,
+          date = $4
+      WHERE id = $5
+      RETURNING *;
+      `,
+      [body_weight, workout_type_id, notes, date, id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Workout not found" });
+    }
+
+    res.status(200).json(result.rows[0]); // Return the updated workout
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database error" });
+  }
+});
+
+app.get("/api/workouts/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query(`   
+      SELECT 
+          w.id, 
+          w.date, 
+          w.body_weight, 
+          w.notes,
+          wt.workout_type_name, 
+          COALESCE(json_agg(
+              CASE 
+                  WHEN m.id IS NOT NULL THEN 
+                      json_build_object(
+                          'id', m.id,
+                          'movement_type_id', m.movement_type_id,
+                          'movement_type_name', m.movement_type_name,
+                          'sets', m.sets
+                      )
+                  ELSE NULL
+              END
+          ) FILTER (WHERE m.id IS NOT NULL), '[]') AS movements
+      FROM workouts w
+      JOIN workout_types wt ON w.workout_type_id = wt.id
+      LEFT JOIN (
+          SELECT 
+              m.workout_id,
+              m.id,
+              m.movement_type_id,
+              mt.movement_type_name,
+              COALESCE(json_agg(
+                  json_build_object('id', s.id, 'reps', s.reps, 'order', s.order, 'weight', s.weight)
+              ) FILTER (WHERE s.id IS NOT NULL), '[]') AS sets
+          FROM movements m
+          LEFT JOIN movement_types mt ON m.movement_type_id = mt.id
+          LEFT JOIN sets s ON s.movement_id = m.id
+          GROUP BY m.workout_id, m.id, m.movement_type_id, mt.movement_type_name
+      ) m ON m.workout_id = w.id
+       where w.id = $1
+      GROUP BY w.id, w.date, w.body_weight, wt.workout_type_name;`, [id]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database query failed" });
+  }
+});
+
+
 app.get("/api/workouts", async (req, res) => {
   try {
     const result = await pool.query(`   

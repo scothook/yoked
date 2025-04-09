@@ -1,0 +1,58 @@
+.card {
+    background-color: white;
+    color: #1f2937; /* gray-800 */
+    border-radius: 1rem; /* rounded-2xl */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
+    padding: 1rem;
+    max-width: 28rem; /* max-w-md */
+    width: 100%;
+  }
+  
+  .dark .card {
+    background-color: #1f2937; /* dark:bg-zinc-800 */
+    color: #f9fafb; /* dark:text-gray-100 */
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem; /* text-sm */
+    color: #6b7280; /* text-gray-500 */
+  }
+  
+  .dark .header {
+    color: #9ca3af; /* dark:text-gray-400 */
+  }
+  
+  .workoutType {
+    font-size: 1.125rem; /* text-lg */
+    font-weight: 600;
+    margin-top: 0.5rem;
+    color: #1f2937;
+  }
+  
+  .dark .workoutType {
+    color: #f9fafb;
+  }
+  
+  .movements {
+    margin-top: 0.5rem;
+    font-size: 0.875rem; /* text-sm */
+    color: #374151; /* text-gray-700 */
+  }
+  
+  .dark .movements {
+    color: #d1d5db; /* dark:text-gray-300 */
+  }
+  
+  .notes {
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    font-style: italic;
+    color: #4b5563; /* text-gray-600 */
+  }
+  
+  .dark .notes {
+    color: #9ca3af; /* dark:text-gray-400 */
+  }
+  

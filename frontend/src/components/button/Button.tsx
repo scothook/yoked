@@ -3,17 +3,25 @@ import React from "react";
 import styles from "./Button.module.css";
 
 interface ButtonProps {
-  label: string;
+  label?: string;
   onClick: () => void;
+  variant?: 'default' | 'back';
+  children?: React.ReactNode;
 }
 
-const Button: React.FC<ButtonProps> = ({ label, onClick }) => {
+const Button: React.FC<ButtonProps> = ({ label, onClick, variant, children }) => {
+  let variantStyles;
+  if (variant === 'default' || !variant) {
+    variantStyles = styles.button;
+  } else if (variant === 'back') {
+    variantStyles = styles.back;
+  }
   return (
     <button 
       onClick={onClick} 
-      className={styles.button}>
+      className={variantStyles}>
       {label}
-    </button>
+    {children}</button>
   );
 };
 

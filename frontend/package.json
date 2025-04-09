@@ -8,13 +8,17 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "frontend:build" : "npm run build",
-    "frontend:deploy" : "netlify deploy --dir=dist --prod",
-    "frontend:bnd" : "npm run build && netlify deploy --dir=dist --prod",
-    "backend:bnd" : "cd ../backend && railway up -c",
-    "deploy:all": "npm run frontend:bnd && npm run backend:bnd"
+    "frontend:build": "npm run build",
+    "frontend:deploy": "netlify deploy --dir=dist --prod",
+    "frontend:bnd": "npm run build && netlify deploy --dir=dist --prod",
+    "backend:bnd": "cd ../backend && railway up -c",
+    "bnd:all": "npm run frontend:bnd && npm run backend:bnd"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^7.0.1",
+    "@mui/material": "^7.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.4.0"
