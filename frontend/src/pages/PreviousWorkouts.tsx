@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Workout } from "../types/workout"; // Import the interface
 import Button from "../components/button/Button";
 import Layout from "../components/layout/Layout";
+import WorkoutCard from "../components/workoutCard/WorkoutCard";
 import ArrowBackIcon from '@mui/icons-material/ArrowBackIos';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import styles from "./PreviousWorkouts.module.css"; // Import your CSS file
@@ -55,29 +56,19 @@ const PreviousWorkouts: React.FC = () => {
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
       <div>
-      <ul>
+      <ul style={{ textAlign: "center", padding: "0", display: "inline-block", justifyContent: "center" }}>
         {workouts
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
         .map(workout => (
-          <li key={workout.id}>
-            <div>
-              <Button label="View" onClick={() => navigate(`/current-workout/`, { state: { workoutId: workout.id }})}/>
-              <h2>{new Date(workout.date).toLocaleDateString()}</h2>
-              <h3>Body Weight: {workout.body_weight} lbs</h3>
-              <h3>{workout.workout_type_name}</h3>
-              <p>{workout.notes}</p>
-              <ul>
-                {workout.movements.map(movement => (
-                  <li key={movement.id}>
-                    <div>
-                      <p>
-                        {movement.movement_type_name}
-                      </p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <li key={workout.id} style={{listStyleType: "none", display: "inlineBlock", margin: "10px"}}>
+            <WorkoutCard
+              date={workout.date} // Placeholder date
+              bodyWeight={workout.body_weight} // Placeholder body weight
+              workoutType={workout.workout_type_name} // Placeholder workout type
+              movements={workout.movements} // Placeholder movements
+              notes={workout.notes} // Placeholder notes
+              onClick={() => navigate(`/current-workout/`, { state: { workoutId: workout.id }})}
+              />
           </li>
         ))}
       </ul>
