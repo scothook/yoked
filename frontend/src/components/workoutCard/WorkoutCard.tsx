@@ -14,7 +14,7 @@ export default function WorkoutCard({ date, bodyWeight, workoutType, movements, 
     return (
         <div className={styles.card} onClick={onClick}>
           <div className={styles.header}>
-            <span>{new Date(date).toLocaleDateString()}</span>
+          <span>{new Date(date).toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' })}</span>
             {bodyWeight && <span>{bodyWeight} lbs</span>}
           </div>
           <hr/>
