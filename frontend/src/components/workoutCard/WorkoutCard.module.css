@@ -7,6 +7,7 @@
     padding: 1rem;
     max-width: 28rem; /* max-w-md */
     width: 100%;
+    text-align: left;
   }
   
   .dark .card {
@@ -37,9 +38,16 @@
   }
   
   .movements {
+    list-style: none;
+    margin: 0;
+    padding-left: 0.5rem;
     margin-top: 0.5rem;
     font-size: 0.875rem; /* text-sm */
     color: #374151; /* text-gray-700 */
+  }
+
+  .movementItem {
+    margin-top: 0.25rem;
   }
   
   .dark .movements {

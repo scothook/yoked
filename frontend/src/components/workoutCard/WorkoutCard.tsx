@@ -21,11 +21,9 @@ export default function WorkoutCard({ date, bodyWeight, workoutType, movements, 
           <div className={styles.workoutType}>{workoutType}</div>
           <ul className={styles.movements}>
             {movements.map(movement => (
-              <li key={movement.id}>
+              <li className={styles.movementItem} key={movement.id}>
                 <div>
-                  <p>
                     {movement.movement_type_name}
-                  </p>
                 </div>
               </li>
             ))}
