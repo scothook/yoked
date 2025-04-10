@@ -17,6 +17,7 @@ export default function WorkoutCard({ date, bodyWeight, workoutType, movements, 
             <span>{new Date(date).toLocaleDateString()}</span>
             {bodyWeight && <span>{bodyWeight} lbs</span>}
           </div>
+          <hr/>
           <div className={styles.workoutType}>{workoutType}</div>
           <ul className={styles.movements}>
             {movements.map(movement => (
