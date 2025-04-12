@@ -40,10 +40,10 @@ const PreviousWorkouts: React.FC = () => {
 
   return (
     <Layout>
-      <div className="header" style={{ marginRight: "auto"}}>
-        <div className="header-title" style={{ display: 'flex', alignItems: 'center' }}>
+      <div className={styles.header}>
+        <div className={styles.headerTitle}>
           <Button onClick={() => navigate(-1)} variant="back"><ArrowBackIcon/></Button>
-          <h2 style={{   position: "absolute", left: "50%", transform: "translateX(-50%)", minWidth: "220px" }}>previous workouts</h2>
+          <h2>previous workouts</h2>
         </div>
         <div className={styles.controls}>
           <label className={styles.toggleLabel}>
@@ -55,23 +55,23 @@ const PreviousWorkouts: React.FC = () => {
       </div>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
-      <div>
-      <ul style={{ textAlign: "center", padding: "0", display: "inline-block", justifyContent: "center" }}>
-        {workouts
-        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-        .map(workout => (
-          <li key={workout.id} style={{listStyleType: "none", display: "inlineBlock", margin: "1rem"}}>
-            <WorkoutCard
-              date={workout.date} // Placeholder date
-              bodyWeight={workout.body_weight} // Placeholder body weight
-              workoutType={workout.workout_type_name} // Placeholder workout type
-              movements={workout.movements} // Placeholder movements
-              notes={workout.notes} // Placeholder notes
-              onClick={() => navigate(`/current-workout/`, { state: { workoutId: workout.id }})}
-              />
-          </li>
-        ))}
-      </ul>
+      <div style={{ width: "100%"}}>
+        <ul style={{width: "95%", textAlign: "center", padding: "0", display: "inline-block", justifyContent: "center" }}>
+          {workouts
+          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+          .map(workout => (
+            <li key={workout.id} style={{listStyleType: "none", display: "inlineBlock", margin: "1rem"}}>
+              <WorkoutCard
+                date={workout.date} // Placeholder date
+                bodyWeight={workout.body_weight} // Placeholder body weight
+                workoutType={workout.workout_type_name} // Placeholder workout type
+                movements={workout.movements} // Placeholder movements
+                notes={workout.notes} // Placeholder notes
+                onClick={() => navigate(`/current-workout/`, { state: { workoutId: workout.id }})}
+                />
+            </li>
+          ))}
+        </ul>
     </div>
     </Layout>
   );
