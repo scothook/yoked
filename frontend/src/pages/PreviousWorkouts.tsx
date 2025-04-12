@@ -40,10 +40,10 @@ const PreviousWorkouts: React.FC = () => {
 
   return (
     <Layout>
-      <div className="header" style={{ marginRight: "auto"}}>
-        <div className="header-title" style={{ display: 'flex', alignItems: 'center' }}>
+      <div className={styles.header}>
+        <div className={styles.headerTitle}>
           <Button onClick={() => navigate(-1)} variant="back"><ArrowBackIcon/></Button>
-          <h2 style={{   position: "absolute", left: "50%", transform: "translateX(-50%)", minWidth: "220px" }}>previous workouts</h2>
+          <h2>previous workouts</h2>
         </div>
         <div className={styles.controls}>
           <label className={styles.toggleLabel}>
