@@ -1,7 +1,7 @@
 // src/pages/Workout.tsx
 import React from "react";
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Button from "../components/button/Button";
 import Layout from "../components/layout/Layout";
 import MovementCard from "../components/movementCard/MovementCard";
@@ -11,8 +11,6 @@ import PageHeader from "../components/pageHeader/PageHeader";
 //import RepButton from "../components/repButton/RepButton";
 
 const CurrentWorkout: React.FC = () => {
-  const navigate = useNavigate();
-
   const location = useLocation();
   const [workoutId, setWorkoutId] = useState(location.state?.workoutId ?? "");
 
@@ -128,7 +126,6 @@ const CurrentWorkout: React.FC = () => {
   return (
     <Layout>
       <PageHeader title={workout ? new Date(workout.date).toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' }) : 'new workout'}/>
-      <Button label="← Back" onClick={() => navigate(-1)}/>
         <div className="space-y-4">
         <div>
           <input
