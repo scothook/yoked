@@ -60,7 +60,7 @@ const PreviousWorkouts: React.FC = () => {
         {workouts
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
         .map(workout => (
-          <li key={workout.id} style={{listStyleType: "none", display: "inlineBlock", margin: "10px"}}>
+          <li key={workout.id} style={{listStyleType: "none", display: "inlineBlock", margin: "1rem"}}>
             <WorkoutCard
               date={workout.date} // Placeholder date
               bodyWeight={workout.body_weight} // Placeholder body weight

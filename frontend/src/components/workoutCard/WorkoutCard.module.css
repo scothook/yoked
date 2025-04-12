@@ -1,11 +1,21 @@
 .card {
-    background-color: white;
-    color: #1f2937; /* gray-800 */
+    margin-left: -1rem;
+    background-color: #ffd165;
+    color: black; /* gray-800 */
     border-radius: 1rem; /* rounded-2xl */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
     padding: 1rem;
+    min-width: 18rem; /* min-w-md */
     max-width: 28rem; /* max-w-md */
     width: 100%;
+    text-align: left;
+  }
+
+  .card:hover {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* shadow-lg */
+    transform: translateY(-2px); /* hover:translate-y-1 */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    cursor: pointer;
   }
   
   .dark .card {
@@ -17,7 +27,7 @@
     display: flex;
     justify-content: space-between;
     font-size: 0.875rem; /* text-sm */
-    color: #6b7280; /* text-gray-500 */
+    color: black; /* text-gray-500 */
   }
   
   .dark .header {
@@ -36,9 +46,16 @@
   }
   
   .movements {
+    list-style: none;
+    margin: 0;
+    padding-left: 0.5rem;
     margin-top: 0.5rem;
     font-size: 0.875rem; /* text-sm */
     color: #374151; /* text-gray-700 */
+  }
+
+  .movementItem {
+    margin-top: 0.25rem;
   }
   
   .dark .movements {
@@ -56,3 +73,9 @@
     color: #9ca3af; /* dark:text-gray-400 */
   }
   
+hr {
+  width: 100%;
+  margin: 15px auto;
+  border: none;
+  border-top: 1px solid black;
+}
