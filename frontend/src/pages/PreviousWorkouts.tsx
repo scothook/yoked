@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Workout } from "../types/workout"; // Import the interface
-import Button from "../components/button/Button";
 import Layout from "../components/layout/Layout";
 import WorkoutCard from "../components/workoutCard/WorkoutCard";
-import ArrowBackIcon from '@mui/icons-material/ArrowBackIos';
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import styles from "./PreviousWorkouts.module.css"; // Import your CSS file
+import PageHeader from "../components/pageHeader/PageHeader";
 
 const PreviousWorkouts: React.FC = () => {
   const navigate = useNavigate();
@@ -40,19 +37,7 @@ const PreviousWorkouts: React.FC = () => {
 
   return (
     <Layout>
-      <div className={styles.header}>
-        <div className={styles.headerTitle}>
-          <Button onClick={() => navigate(-1)} variant="back"><ArrowBackIcon/></Button>
-          <h2>previous workouts</h2>
-        </div>
-        <div className={styles.controls}>
-          <label className={styles.toggleLabel}>
-              <input type="checkbox" className={styles.viewToggle}/>
-              <span className={styles.toggleSlider}></span>
-          </label>
-          <button className={styles.filterIcon}><FilterAltIcon/></button>
-        </div>
-      </div>
+      <PageHeader title="previous workouts" />
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
       <div style={{ width: "100%"}}>
