@@ -7,6 +7,7 @@ import Layout from "../components/layout/Layout";
 import MovementCard from "../components/movementCard/MovementCard";
 import { Movement } from "../types/movement";
 import { Workout } from "../types/workout";
+import PageHeader from "../components/pageHeader/PageHeader";
 //import RepButton from "../components/repButton/RepButton";
 
 const CurrentWorkout: React.FC = () => {
@@ -126,7 +127,7 @@ const CurrentWorkout: React.FC = () => {
 
   return (
     <Layout>
-      <h2>{workout ? workout.id : 'new workout'}</h2>
+      <PageHeader title={workout ? workout.id : 'new workout'}/>
       <Button label="← Back" onClick={() => navigate(-1)}/>
         <div className="space-y-4">
         <div>
