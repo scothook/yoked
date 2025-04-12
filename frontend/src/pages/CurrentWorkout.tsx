@@ -127,7 +127,7 @@ const CurrentWorkout: React.FC = () => {
 
   return (
     <Layout>
-      <PageHeader title={workout ? workout.id : 'new workout'}/>
+      <PageHeader title={workout ? new Date(workout.date).toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' }) : 'new workout'}/>
       <Button label="← Back" onClick={() => navigate(-1)}/>
         <div className="space-y-4">
         <div>
