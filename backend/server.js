@@ -54,6 +54,40 @@ app.post("/api/workouts", async (req, res) => {
   }
 });
 
+app.patch("/api/workouts/:id", async (req, res) => {
+  const { id } = req.params;
+  const fields = ['body_weight', 'workout_type_id', 'notes', 'date'];
+  const values = [];
+  const setClauses = [];
+
+  fields.forEach((field, index) => {
+    if (req.body[field] !== undefined) {
+      setClauses.push(`${field} = $${values.length + 1}`);
+      values.push(req.body[field]);
+    }
+  });
+
+  if (setClauses.length === 0) {
+    return res.status(400).json({ error: "No fields to update" });
+  }
+
+  values.push(id);
+
+  const query = `
+    UPDATE workouts
+    SET ${setClauses.join(", ")}
+    WHERE id = $${values.length}
+    RETURNING *;`;
+
+  try {
+    const result = await pool.query(query, values);
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to update workout." });
+  }
+});
+
 app.put("/api/workouts/:id", async (req, res) => {
   const { id } = req.params;
   const { body_weight, workout_type_id, notes, date } = req.body;

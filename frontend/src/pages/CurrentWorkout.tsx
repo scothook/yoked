@@ -79,16 +79,16 @@ const CurrentWorkout: React.FC = () => {
   const handleSubmit = async () => {
     console.log("Submitting workout data...");
     const WorkoutSubmission = {
-      body_weight: parseFloat(bodyWeight),
-      workout_type_id: parseFloat(workoutType),
-      notes,
-      date
+      body_weight: bodyWeight === "" ? undefined : parseFloat(bodyWeight),
+      workout_type_id: 1,
+      notes: notes === "" ? undefined : notes,
+      date: date === "" ? undefined : date
     };
 
     try {
       const res = workoutId
         ? await fetch(`https://yoked-backend-production.up.railway.app/api/workouts/${workoutId}`, {
-            method: "PUT",
+            method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(WorkoutSubmission),
           })
