@@ -1,0 +1,28 @@
+.header {
+    margin-right: "auto";
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: hsl(37, 100%, 94%);
+    height: 4rem;
+    overflow: hidden;
+}
+
+.headerTitle {
+    display: flex;
+    align-items: center;
+    min-height: 4rem;
+}
+
+h2 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 220px;
+}
+
+.cornerTitle {
+    position: absolute;
+    left: 90%;
+}
