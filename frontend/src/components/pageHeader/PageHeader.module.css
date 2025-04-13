@@ -4,7 +4,9 @@
     position: sticky;
     top: 0;
     z-index: 1000;
-    background: #fff3e0;
+    background: hsl(37, 100%, 94%);
+    height: 4rem;
+    overflow: hidden;
 }
 
 .headerTitle {
@@ -18,4 +20,9 @@ h2 {
     left: 50%;
     transform: translateX(-50%);
     min-width: 220px;
+}
+
+.cornerTitle {
+    position: absolute;
+    left: 90%;
 }

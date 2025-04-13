@@ -141,7 +141,7 @@ const CurrentWorkout: React.FC = () => {
 
   return (
     <Layout>
-      <PageHeader title={workout ? `${+date.split('-')[1]}/${+date.split('-')[2]}` : 'new workout'}/>
+      <PageHeader title={workout ? workoutTypes.find(type => type.id === Number(workoutType))?.workout_type_name || "Generic Workout" : 'new workout'} cornerTitle={date ? `${+date.split('-')[1]}/${+date.split('-')[2]}` : ''}/>
         <div className="space-y-4">
         <div>
           <input
