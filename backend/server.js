@@ -38,6 +38,16 @@ app.get("/api/standings", async (req, res) => {
   }
 });
 
+app.get("/api/workout_types", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM workout_types;");
+    res.json(result.rows); // Return the workout types
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database query failed" });
+  }
+});
+
 app.post("/api/workouts", async (req, res) => {
   try {
     const { body_weight, workout_type_id, notes, date } = req.body;
@@ -126,7 +136,8 @@ app.get("/api/workouts/:id", async (req, res) => {
           w.date, 
           w.body_weight, 
           w.notes,
-          wt.workout_type_name, 
+          wt.workout_type_name,
+          wt.id AS workout_type_id, 
           COALESCE(json_agg(
               CASE 
                   WHEN m.id IS NOT NULL THEN 
@@ -156,7 +167,7 @@ app.get("/api/workouts/:id", async (req, res) => {
           GROUP BY m.workout_id, m.id, m.movement_type_id, mt.movement_type_name
       ) m ON m.workout_id = w.id
        where w.id = $1
-      GROUP BY w.id, w.date, w.body_weight, wt.workout_type_name;`, [id]
+      GROUP BY w.id, w.date, w.body_weight, wt.workout_type_name, wt.id;`, [id]
     );
     res.json(result.rows);
   } catch (err) {
@@ -175,6 +186,7 @@ app.get("/api/workouts", async (req, res) => {
           w.body_weight, 
           w.notes,
           wt.workout_type_name, 
+          wt.id AS workout_type_id,
           COALESCE(json_agg(
               CASE 
                   WHEN m.id IS NOT NULL THEN 
@@ -203,7 +215,7 @@ app.get("/api/workouts", async (req, res) => {
           LEFT JOIN sets s ON s.movement_id = m.id
           GROUP BY m.workout_id, m.id, m.movement_type_id, mt.movement_type_name
       ) m ON m.workout_id = w.id
-      GROUP BY w.id, w.date, w.body_weight, wt.workout_type_name;`
+      GROUP BY w.id, w.date, w.body_weight, wt.workout_type_name, wt.id;`
     );
     res.json(result.rows);
   } catch (err) {

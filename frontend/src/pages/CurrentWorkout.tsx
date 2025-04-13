@@ -7,12 +7,14 @@ import Layout from "../components/layout/Layout";
 import MovementCard from "../components/movementCard/MovementCard";
 import { Movement } from "../types/movement";
 import { Workout } from "../types/workout";
+import { WorkoutType } from "../types/workoutType";
 import PageHeader from "../components/pageHeader/PageHeader";
 //import RepButton from "../components/repButton/RepButton";
 
 const CurrentWorkout: React.FC = () => {
   const location = useLocation();
   const [workoutId, setWorkoutId] = useState(location.state?.workoutId ?? "");
+  const [workoutTypes, setWorkoutTypes] = useState<WorkoutType[]>([]);
 
   const [workout, setWorkout] = useState<Workout | null>(null);
   //const [workoutId, setWorkoutId] = useState<number | null>(null);
@@ -45,7 +47,15 @@ const CurrentWorkout: React.FC = () => {
       }
     };
 
+    async function fetchWorkoutTypes() {
+      const res = await fetch("https://yoked-backend-production.up.railway.app/api/workout_types");
+      const data = await res.json();
+      setWorkoutTypes(data);
+      console.log("Fetched workout types:", data);
+    };
+
     fetchWorkout();
+    fetchWorkoutTypes();
   }, [workoutId])
 
   const addMovement = () => {
@@ -80,7 +90,7 @@ const CurrentWorkout: React.FC = () => {
     console.log("Submitting workout data...");
     const WorkoutSubmission = {
       body_weight: bodyWeight === "" ? undefined : parseFloat(bodyWeight),
-      workout_type_id: 1,
+      workout_type_id: workoutType === "" ? undefined : workoutType,
       notes: notes === "" ? undefined : notes,
       date: date === "" ? undefined : date
     };
@@ -151,12 +161,17 @@ const CurrentWorkout: React.FC = () => {
         </div>
         <div>
           <label>Workout Type:</label>
-          <input
-            type="number"
+          <select
             value={workoutType}
             onChange={(e) => setWorkoutType(e.target.value)}
             className="border p-2"
-          />
+          >
+            {workoutTypes.map((type) => (
+              <option key={type.id} value={type.id}>
+                {type.workout_type_name}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="movementList">
           {movements.map((movement) => (
