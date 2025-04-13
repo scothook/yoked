@@ -32,7 +32,14 @@ const CurrentWorkout: React.FC = () => {
       try {
         const res = await fetch(`https://yoked-backend-production.up.railway.app/api/workouts/${workoutId}`);
         const data = await res.json();
-        setWorkout(data[0]);
+        const workoutJson = data[0];
+        setWorkout(workoutJson);
+        console.log("Fetched workout:", workoutJson);
+        const formattedDate = new Date(workoutJson.date).toISOString().split('T')[0];
+        setDate(formattedDate);
+        setBodyWeight(workoutJson.body_weight);
+        setWorkoutType(workoutJson.workout_type_id);
+        setNotes(workoutJson.notes);
       } catch (err) {
         console.error("Error fetching workout:", err);
       }
