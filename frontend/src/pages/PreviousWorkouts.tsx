@@ -37,7 +37,7 @@ const PreviousWorkouts: React.FC = () => {
 
   return (
     <Layout>
-      <PageHeader title="previous workouts" />
+      <PageHeader title="previous workouts" cornerTitle=""/>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
       <div style={{ width: "100%"}}>
