@@ -23,6 +23,7 @@ const CurrentWorkout: React.FC = () => {
   const [workoutType, setWorkoutType] = useState("");
   const [notes, setNotes] = useState("");
   const [date, setDate] = useState("");
+  const [localDate, setLocalDate] = useState("");
 
   useEffect(() => {
     const fetchWorkout = async () => {
@@ -39,6 +40,9 @@ const CurrentWorkout: React.FC = () => {
         console.log("Fetched workout:", workoutJson);
         const formattedDate = new Date(workoutJson.date).toISOString().split('T')[0];
         setDate(formattedDate);
+        const [year, month, day] = formattedDate.split('-');
+        const localizedDate = new Date(year, month - 1, day); // month is 0-indexed
+        setLocalDate(localizedDate);
         setBodyWeight(workoutJson.body_weight);
         setWorkoutType(workoutJson.workout_type_id);
         setNotes(workoutJson.notes);
@@ -142,7 +146,7 @@ const CurrentWorkout: React.FC = () => {
 
   return (
     <Layout>
-      <PageHeader title={workout ? new Date(workout.date).toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' }) : 'new workout'}/>
+      <PageHeader title={workout ? `${+date.split('-')[1]}/${+date.split('-')[2]}` : 'new workout'}/>
         <div className="space-y-4">
         <div>
           <input
