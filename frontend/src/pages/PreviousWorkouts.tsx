@@ -45,6 +45,17 @@ const PreviousWorkouts: React.FC = () => {
     setShowCalendarView(e.target.checked);
   };
 
+  const workoutsByDate = new Map(
+    workouts.map(w => [new Date(w.date).toDateString(), w])
+  );
+
+  const handleDayClick = (date : Date) => {
+    const workoutByDate = workoutsByDate.get(date.toDateString())
+    if (workoutByDate) {
+      navigate(`/current-workout/`, { state: { workoutId: workoutByDate.id }})
+    }
+  }
+
   return (
     <Layout>
       <PageHeader title="previous workouts" cornerTitle=""/>
@@ -77,6 +88,7 @@ const PreviousWorkouts: React.FC = () => {
         </ul>
         ) : (
         <Calendar
+          onClickDay={handleDayClick}
           tileClassName={({ date, view }) => {
             if (view === 'month' && workoutDates.includes(date.toDateString())) {
               return 'workout-day';
