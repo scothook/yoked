@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Calendar from 'react-calendar';
 import { useNavigate } from "react-router-dom";
 import { Workout } from "../types/workout"; // Import the interface
 import Layout from "../components/layout/Layout";
