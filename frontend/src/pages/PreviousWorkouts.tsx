@@ -14,6 +14,7 @@ const PreviousWorkouts: React.FC = () => {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showCalendarView, setShowCalendarView] = useState(false);
 
   const workoutDates = workouts.map(w => new Date(w.date).toDateString());
 
@@ -40,12 +41,24 @@ const PreviousWorkouts: React.FC = () => {
     fetchWorkouts();
   }, []);
 
+  const handleToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setShowCalendarView(e.target.checked);
+  };
+
   return (
     <Layout>
       <PageHeader title="previous workouts" cornerTitle=""/>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
+      <label className="flex items-center space-x-2 mb-4">
+        <input
+          type="checkbox"
+          checked={showCalendarView}
+          onChange={handleToggle}
+        />
+      </label>
       <div style={{ width: "100%"}}>
+      { showCalendarView ? (
         <ul style={{width: "95%", textAlign: "center", padding: "0", display: "inline-block", justifyContent: "center" }}>
           {workouts
           .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
@@ -62,6 +75,7 @@ const PreviousWorkouts: React.FC = () => {
             </li>
           ))}
         </ul>
+        ) : (
         <Calendar
           tileClassName={({ date, view }) => {
             if (view === 'month' && workoutDates.includes(date.toDateString())) {
@@ -70,6 +84,7 @@ const PreviousWorkouts: React.FC = () => {
             return null;
           }}
           />
+        )}
     </div>
     </Layout>
   );
