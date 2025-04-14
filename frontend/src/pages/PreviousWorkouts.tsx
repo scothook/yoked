@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 import { useNavigate } from "react-router-dom";
 import { Workout } from "../types/workout"; // Import the interface
 import Layout from "../components/layout/Layout";
 import WorkoutCard from "../components/workoutCard/WorkoutCard";
 import PageHeader from "../components/pageHeader/PageHeader";
+import '../styles/WorkoutCalendar.css'
 
 const PreviousWorkouts: React.FC = () => {
   const navigate = useNavigate();
@@ -12,6 +14,8 @@ const PreviousWorkouts: React.FC = () => {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const workoutDates = workouts.map(w => new Date(w.date).toDateString());
 
   useEffect(() => {
     const fetchWorkouts = async () => {
@@ -58,6 +62,14 @@ const PreviousWorkouts: React.FC = () => {
             </li>
           ))}
         </ul>
+        <Calendar
+          tileClassName={({ date, view }) => {
+            if (view === 'month' && workoutDates.includes(date.toDateString())) {
+              return 'workout-day';
+            }
+            return null;
+          }}
+          />
     </div>
     </Layout>
   );
