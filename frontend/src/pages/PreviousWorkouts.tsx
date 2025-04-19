@@ -72,17 +72,19 @@ const PreviousWorkouts: React.FC = () => {
       </label>
       <div style={{ width: "100%"}}>
       { showCalendarView ? (
-        <Calendar
-          onClickDay={handleDayClick}
-          tileClassName={({ date, view }) => {
-            if (view === 'month' && workoutDates.includes(date.toDateString())) {
-              return 'workout-day';
-            }
-            return null;
-          }}
-        />
+        <div className='calendarCard'>
+          <Calendar
+            onClickDay={handleDayClick}
+            tileClassName={({ date, view }) => {
+              if (view === 'month' && workoutDates.includes(date.toDateString())) {
+                return 'workout-day';
+              }
+              return null;
+            }}
+          />
+        </div>
       ) : (
-        <ul style={{width: "95%", textAlign: "center", padding: "0", display: "inline-block", justifyContent: "center" }}>
+        <ul style={{width: "95%", textAlign: "center", padding: "0", display: "inline-block", justifyContent: "center", margin: "0 auto"}}>
           {workouts
           .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
           .map(workout => (

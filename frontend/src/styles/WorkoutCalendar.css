@@ -4,3 +4,54 @@
     color: white;
   }
   
+  .react-calendar {
+    background: none;
+    border: none;
+    width: 100%;
+    font-family: inherit;
+    color: inherit;
+  }
+  
+  .react-calendar__navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  
+  .react-calendar__tile {
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    transition: background-color 0.2s ease;
+  }
+  
+  .react-calendar__tile:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  .react-calendar__tile--active {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: black;
+  }
+  
+  .calendarCard {
+    background-color: #ffd165;
+    color: black;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 0rem;
+    min-width: 18rem;
+    max-width: 28rem;
+    width: 95%;
+    text-align: center;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    display: inline-block;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  
+  .calendarCard:hover {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+    cursor: pointer;
+  }
+  
