@@ -16,11 +16,16 @@
     color: black;
     border-radius: 1rem;
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-    padding: 2rem;
-    min-width: 20rem;
-    max-width: 30rem;
+    padding: 0.8rem;
+    min-width: 8rem;
+    max-width: 8rem;
     width: 100%;
     z-index: 1001;
     text-align: left;
   }
   
+  .workoutOption:hover {
+    background-color: #f0c36d;
+    cursor: pointer;
+
+  }

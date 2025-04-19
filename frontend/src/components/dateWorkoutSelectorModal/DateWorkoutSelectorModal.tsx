@@ -11,12 +11,10 @@ interface DateWorkoutSelectorModalProps {
 const DateWorkoutSelectorModal: React.FC<DateWorkoutSelectorModalProps> = ({ workouts, onClose, onSelect, date }) => {
     return (
       <div className={styles.modalBackdrop} onClick={onClose}>
-        <div className="modal card" onClick={(e) => e.stopPropagation()}>
-          <h2 className="text-lg font-semibold mb-4">Workouts for {date}</h2>
+        <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
           {workouts.map((workout) => (
-            <div
+            <div className={styles.workoutOption}
               key={workout.id}
-              className="hover:bg-black/10 rounded-lg p-2 cursor-pointer"
               onClick={() => {
                 onSelect(workout);
                 onClose();
