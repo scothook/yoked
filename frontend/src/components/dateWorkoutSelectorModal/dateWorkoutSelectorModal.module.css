@@ -1,0 +1,26 @@
+.modalBackdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4); /* dark overlay */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal {
+    background-color: #ffd165;
+    color: black;
+    border-radius: 1rem;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+    min-width: 20rem;
+    max-width: 30rem;
+    width: 100%;
+    z-index: 1001;
+    text-align: left;
+  }
+  

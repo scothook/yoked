@@ -7,6 +7,7 @@ import { Workout } from "../types/workout"; // Import the interface
 import Layout from "../components/layout/Layout";
 import WorkoutCard from "../components/workoutCard/WorkoutCard";
 import PageHeader from "../components/pageHeader/PageHeader";
+import WorkoutModal from "../components/dateWorkoutSelectorModal/DateWorkoutSelectorModal";
 import '../styles/WorkoutCalendar.css'
 
 const PreviousWorkouts: React.FC = () => {
@@ -16,6 +17,8 @@ const PreviousWorkouts: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showCalendarView, setShowCalendarView] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
 
   const workoutDates = workouts.map(w => new Date(parseISO(w.date)).toDateString());
 
@@ -46,14 +49,33 @@ const PreviousWorkouts: React.FC = () => {
     setShowCalendarView(e.target.checked);
   };
 
-  const workoutsByDate = new Map(
-    workouts.map(w => [new Date(parseISO(w.date)).toDateString(), w])
-  );
+  const workoutsByDate = workouts.reduce((map, workout) => {
+    const dateKey = new Date(parseISO(workout.date)).toDateString();
+  
+    if (!map.has(dateKey)) {
+      map.set(dateKey, []);
+    }
+  
+    map.get(dateKey).push(workout);
+    return map;
+  }, new Map());  
 
   const handleDayClick = (date : Date) => {
-    const workoutByDate = workoutsByDate.get(date.toDateString());
-    if (workoutByDate) {
-      navigate(`/current-workout/`, { state: { workoutId: workoutByDate.id }})
+    const workoutsByClickedDate = workoutsByDate.get(date.toDateString()) || [];
+
+    console.log(workoutsByClickedDate);
+    if (workoutsByClickedDate.length === 1) {
+      navigate(`/current-workout/`, { state: { workoutId: workoutsByClickedDate.id }})
+    } else if (workoutsByClickedDate.length > 1) {
+      setSelectedDate(date);
+      setDropdownVisible(true);
+    } else {
+      setSelectedDate(null);
+      setDropdownVisible(false);
+    }
+
+    if (workoutsByClickedDate) {
+      //navigate(`/current-workout/`, { state: { workoutId: workoutByDate.id }})
     }
   }
 
@@ -81,7 +103,19 @@ const PreviousWorkouts: React.FC = () => {
               return null;
             }}
           />
+          {dropdownVisible && selectedDate && (
+            <WorkoutModal
+              workouts={workoutsByDate.get(selectedDate.toDateString())}
+              onClose={() => setDropdownVisible(false)}
+              onSelect={(workout) => {
+                console.log(workout);
+                navigate(`/current-workout/`, { state: { workoutId: workout.id }})
+              }}
+              date={selectedDate.toDateString()}
+            />
+          )}
         </div>
+        
       ) : (
         <ul style={{width: "95%", textAlign: "center", padding: "0", display: "inline-block", justifyContent: "center", margin: "0 auto"}}>
           {workouts
