@@ -111,7 +111,6 @@ const PreviousWorkouts: React.FC = () => {
                 console.log(workout);
                 navigate(`/current-workout/`, { state: { workoutId: workout.id }})
               }}
-              date={selectedDate.toDateString()}
             />
           )}
         </div>
