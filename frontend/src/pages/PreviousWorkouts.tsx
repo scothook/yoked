@@ -65,7 +65,7 @@ const PreviousWorkouts: React.FC = () => {
 
     console.log(workoutsByClickedDate);
     if (workoutsByClickedDate.length === 1) {
-      navigate(`/current-workout/`, { state: { workoutId: workoutsByClickedDate.id }})
+      navigate(`/current-workout/`, { state: { workoutId: workoutsByClickedDate[0].id }})
     } else if (workoutsByClickedDate.length > 1) {
       setSelectedDate(date);
       setDropdownVisible(true);
