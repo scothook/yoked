@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { parseISO, format } from 'date-fns';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useNavigate } from "react-router-dom";
@@ -16,7 +17,7 @@ const PreviousWorkouts: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [showCalendarView, setShowCalendarView] = useState(false);
 
-  const workoutDates = workouts.map(w => new Date(w.date).toDateString());
+  const workoutDates = workouts.map(w => new Date(parseISO(w.date)).toDateString());
 
   useEffect(() => {
     const fetchWorkouts = async () => {
@@ -29,6 +30,7 @@ const PreviousWorkouts: React.FC = () => {
         const sortedWorkouts = data.sort(
           (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
         );
+        console.log(data[0].date);
 
         setWorkouts(sortedWorkouts);
       } catch (err) {
@@ -86,11 +88,11 @@ const PreviousWorkouts: React.FC = () => {
           .map(workout => (
             <li key={workout.id} style={{listStyleType: "none", display: "inlineBlock", margin: "1rem"}}>
               <WorkoutCard
-                date={workout.date} // Placeholder date
-                bodyWeight={workout.body_weight} // Placeholder body weight
-                workoutType={workout.workout_type_name} // Placeholder workout type
-                movements={workout.movements} // Placeholder movements
-                notes={workout.notes} // Placeholder notes
+                date={format(parseISO(workout.date), "M/d")}
+                bodyWeight={workout.body_weight}
+                workoutType={workout.workout_type_name}
+                movements={workout.movements}
+                notes={workout.notes}
                 onClick={() => navigate(`/current-workout/`, { state: { workoutId: workout.id }})}
                 />
             </li>
