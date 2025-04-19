@@ -30,7 +30,6 @@ const PreviousWorkouts: React.FC = () => {
         const sortedWorkouts = data.sort(
           (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
         );
-        console.log(data[0].date);
 
         setWorkouts(sortedWorkouts);
       } catch (err) {
@@ -48,11 +47,11 @@ const PreviousWorkouts: React.FC = () => {
   };
 
   const workoutsByDate = new Map(
-    workouts.map(w => [new Date(w.date).toDateString(), w])
+    workouts.map(w => [new Date(parseISO(w.date)).toDateString(), w])
   );
 
   const handleDayClick = (date : Date) => {
-    const workoutByDate = workoutsByDate.get(date.toDateString())
+    const workoutByDate = workoutsByDate.get(date.toDateString());
     if (workoutByDate) {
       navigate(`/current-workout/`, { state: { workoutId: workoutByDate.id }})
     }
