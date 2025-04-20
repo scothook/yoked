@@ -114,13 +114,7 @@ const PreviousWorkouts: React.FC = () => {
       <PageHeader title="previous workouts" cornerTitle="" variant="hamburger" cornerTitleOnClick={toggleDrawer(true)}/>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
-      <label className="flex items-center space-x-2 mb-4">
-        <input
-          type="checkbox"
-          checked={showCalendarView}
-          onChange={handleToggle}
-        />
-      </label>
+      
       <div style={{ width: "100%"}}>
       <select
           value={selectedWorkoutType}
@@ -131,7 +125,6 @@ const PreviousWorkouts: React.FC = () => {
             <option key={type} value={type}>{type}</option>
           ))}
       </select>
-      <button onClick={toggleDrawer(true)} className="hamburger-button"></button>
       { showCalendarView ? (
         <div className='calendarCard'>
           <Calendar
@@ -176,7 +169,15 @@ const PreviousWorkouts: React.FC = () => {
     </div>
     <Drawer anchor={'right'} open={drawerOpen} onClose={toggleDrawer(false)}>
         hey
-      </Drawer>
+      <label className="flex items-center space-x-2 mb-4">
+        <input
+          type="checkbox"
+          checked={showCalendarView}
+          onChange={handleToggle}
+          onClick={toggleDrawer(false)}
+        />
+      </label>
+    </Drawer>
     </Layout>
   );
 };
