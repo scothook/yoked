@@ -9,6 +9,8 @@ import WorkoutCard from "../components/workoutCard/WorkoutCard";
 import PageHeader from "../components/pageHeader/PageHeader";
 import WorkoutModal from "../components/dateWorkoutSelectorModal/DateWorkoutSelectorModal";
 import Drawer from '@mui/material/Drawer';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import TableRows from '@mui/icons-material/TableRows';
 import '../styles/WorkoutCalendar.css'
 
 const PreviousWorkouts: React.FC = () => {
@@ -84,9 +86,9 @@ const PreviousWorkouts: React.FC = () => {
     fetchWorkouts();
   }, []);
 
-  const handleToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setShowCalendarView(e.target.checked);
-  };
+  // const handleToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setShowCalendarView(e.target.checked);
+  // };
 
 
 
@@ -169,14 +171,14 @@ const PreviousWorkouts: React.FC = () => {
     </div>
     <Drawer anchor={'right'} open={drawerOpen} onClose={toggleDrawer(false)}>
         hey
-      <label className="flex items-center space-x-2 mb-4">
-        <input
-          type="checkbox"
-          checked={showCalendarView}
-          onChange={handleToggle}
-          onClick={toggleDrawer(false)}
-        />
-      </label>
+      <div>
+        <CalendarMonthIcon className="calendarIcon" onClick={() => {setShowCalendarView(true); toggleDrawer(false)();}}/>
+        <p>Calendar</p>
+      </div>
+      <div>
+        <TableRows className="tableIcon" onClick={() => {setShowCalendarView(false); toggleDrawer(false)();}}/>
+        <p>Table</p>
+      </div>
     </Drawer>
     </Layout>
   );
