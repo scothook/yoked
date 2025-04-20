@@ -16,6 +16,7 @@ const CurrentWorkout: React.FC = () => {
   const [workoutId, setWorkoutId] = useState(location.state?.workoutId ?? "");
   const [workoutTypes, setWorkoutTypes] = useState<WorkoutType[]>([]);
 
+  const [loading, setLoading] = useState(true);
   const [workout, setWorkout] = useState<Workout | null>(null);
   //const [workoutId, setWorkoutId] = useState<number | null>(null);
   const [movements, setMovements] = useState<Movement[]>([]);
@@ -44,6 +45,8 @@ const CurrentWorkout: React.FC = () => {
         setNotes(workoutJson.notes);
       } catch (err) {
         console.error("Error fetching workout:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -141,7 +144,11 @@ const CurrentWorkout: React.FC = () => {
 
   return (
     <Layout>
-      <PageHeader title={workout ? workoutTypes.find(type => type.id === Number(workoutType))?.workout_type_name || "Generic Workout" : 'new workout'} cornerTitle={date ? `${+date.split('-')[1]}/${+date.split('-')[2]}` : ''}/>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <div>
+        <PageHeader title={workout ? workoutTypes.find(type => type.id === Number(workoutType))?.workout_type_name || "Generic Workout" : 'new workout'} cornerTitle={date ? `${+date.split('-')[1]}/${+date.split('-')[2]}` : ''}/>
         <div className="space-y-4">
         <div>
           <input
@@ -196,6 +203,8 @@ const CurrentWorkout: React.FC = () => {
         </div>
         <Button label="Save" onClick={handleSubmit}/>
       </div>
+      </div>
+      )}
     </Layout>
   );
 };

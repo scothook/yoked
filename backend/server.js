@@ -133,7 +133,7 @@ app.get("/api/workouts/:id", async (req, res) => {
     const result = await pool.query(`   
       SELECT 
           w.id, 
-          w.date, 
+          w.date::text, 
           w.body_weight, 
           w.notes,
           wt.workout_type_name,
@@ -182,7 +182,7 @@ app.get("/api/workouts", async (req, res) => {
     const result = await pool.query(`   
       SELECT 
           w.id, 
-          w.date, 
+          w.date::text, 
           w.body_weight, 
           w.notes,
           wt.workout_type_name, 
