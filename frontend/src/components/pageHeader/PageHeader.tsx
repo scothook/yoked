@@ -1,6 +1,7 @@
 //import React from "react";
 import { useNavigate } from "react-router-dom";
-import ArrowBackIcon from '@mui/icons-material/ArrowBackIos';  
+import ArrowBackIcon from '@mui/icons-material/ArrowBackIos';
+import MenuIcon from '@mui/icons-material/Menu';  
 import Button from "../button/Button.tsx";
 import styles from "./PageHeader.module.css";
 
@@ -17,6 +18,7 @@ export default function PageHeader({ title, cornerTitle }: PageHeaderProps) {
                 <Button onClick={() => navigate(-1)} variant="back"><ArrowBackIcon/></Button>
                 <h2>{title}</h2>
                 <h2 className={styles.cornerTitle}>{cornerTitle}</h2>
+                <Button onClick={() => navigate(-1)} variant="hamburger"><MenuIcon/></Button>
             </div>
         </div>
     );
