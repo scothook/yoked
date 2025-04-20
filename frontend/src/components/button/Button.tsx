@@ -5,7 +5,7 @@ import styles from "./Button.module.css";
 interface ButtonProps {
   label?: string;
   onClick: () => void;
-  variant?: 'default' | 'back';
+  variant?: 'default' | 'back' | 'hamburger';
   children?: React.ReactNode;
 }
 
@@ -15,7 +15,11 @@ const Button: React.FC<ButtonProps> = ({ label, onClick, variant, children }) =>
     variantStyles = styles.button;
   } else if (variant === 'back') {
     variantStyles = styles.back;
+  } else if (variant === 'hamburger') {
+    variantStyles = styles.hamburger;
   }
+  console.log('Button received onClick:', onClick);
+
   return (
     <button 
       onClick={onClick} 

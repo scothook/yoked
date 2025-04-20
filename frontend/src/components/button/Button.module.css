@@ -35,3 +35,18 @@
     text-shadow: #6d4c41 0px 0px 5px;
     transform: translateY(-2px); /* Subtle hover effect */
   }
+
+  .hamburger {
+    margin-left: auto;
+    margin-bottom: -5px;
+    font-family: 'Inter', sans-serif;
+    background: #fff3e0; /* Soft yellow */
+    color: #6d4c41; /* Warm earth tone */
+    border: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    min-width: 20px;
+  }
