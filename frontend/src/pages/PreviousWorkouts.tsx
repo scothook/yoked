@@ -170,14 +170,13 @@ const PreviousWorkouts: React.FC = () => {
       )}
     </div>
     <Drawer anchor={'right'} open={drawerOpen} onClose={toggleDrawer(false)}>
-        hey
       <div>
         <CalendarMonthIcon className="calendarIcon" onClick={() => {setShowCalendarView(true); toggleDrawer(false)();}}/>
-        <p>Calendar</p>
+        Calendar
       </div>
       <div>
         <TableRows className="tableIcon" onClick={() => {setShowCalendarView(false); toggleDrawer(false)();}}/>
-        <p>Table</p>
+        Table
       </div>
     </Drawer>
     </Layout>
