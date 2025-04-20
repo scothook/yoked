@@ -8,6 +8,7 @@ import Layout from "../components/layout/Layout";
 import WorkoutCard from "../components/workoutCard/WorkoutCard";
 import PageHeader from "../components/pageHeader/PageHeader";
 import WorkoutModal from "../components/dateWorkoutSelectorModal/DateWorkoutSelectorModal";
+import Drawer from '@mui/material/Drawer';
 import '../styles/WorkoutCalendar.css'
 
 const PreviousWorkouts: React.FC = () => {
@@ -20,6 +21,13 @@ const PreviousWorkouts: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [selectedWorkoutType, setSelectedWorkoutType] = useState("All");
+
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
+
+  const toggleDrawer = (newDrawerOpen: boolean) => () => {
+    console.log('inside toggleDrawer');
+    setDrawerOpen(newDrawerOpen);
+  };
 
   const uniqueWorkoutTypes = ["All", ...new Set(workouts.map(workout => workout.workout_type_name))];
 
@@ -103,7 +111,7 @@ const PreviousWorkouts: React.FC = () => {
 
   return (
     <Layout>
-      <PageHeader title="previous workouts" cornerTitle="" variant="hamburger" />
+      <PageHeader title="previous workouts" cornerTitle="" variant="hamburger" cornerTitleOnClick={toggleDrawer(true)}/>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
       <label className="flex items-center space-x-2 mb-4">
@@ -123,6 +131,7 @@ const PreviousWorkouts: React.FC = () => {
             <option key={type} value={type}>{type}</option>
           ))}
       </select>
+      <button onClick={toggleDrawer(true)} className="hamburger-button"></button>
       { showCalendarView ? (
         <div className='calendarCard'>
           <Calendar
@@ -165,6 +174,9 @@ const PreviousWorkouts: React.FC = () => {
         </ul>
       )}
     </div>
+    <Drawer anchor={'right'} open={drawerOpen} onClose={toggleDrawer(false)}>
+        hey
+      </Drawer>
     </Layout>
   );
 };

@@ -18,6 +18,8 @@ const Button: React.FC<ButtonProps> = ({ label, onClick, variant, children }) =>
   } else if (variant === 'hamburger') {
     variantStyles = styles.hamburger;
   }
+  console.log('Button received onClick:', onClick);
+
   return (
     <button 
       onClick={onClick} 
