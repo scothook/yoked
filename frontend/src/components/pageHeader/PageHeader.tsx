@@ -7,18 +7,22 @@ import styles from "./PageHeader.module.css";
 
 interface PageHeaderProps {
     title: string | number;
-    cornerTitle: string | number;
+    cornerTitle?: string | number;
+    variant?: "cornerTitle" | "hamburger";
 }
 
-export default function PageHeader({ title, cornerTitle }: PageHeaderProps) {
+export default function PageHeader({ title, cornerTitle, variant }: PageHeaderProps) {
     const navigate = useNavigate();
     return (
         <div className={styles.header}>
             <div className={styles.headerTitle}>
                 <Button onClick={() => navigate(-1)} variant="back"><ArrowBackIcon/></Button>
                 <h2>{title}</h2>
-                <h2 className={styles.cornerTitle}>{cornerTitle}</h2>
-                <Button onClick={() => navigate(-1)} variant="hamburger"><MenuIcon/></Button>
+                { variant === "hamburger" ? (
+                    <Button onClick={() => navigate(-1)} variant="hamburger"><MenuIcon/></Button>
+                ) : (
+                    <h2 className={styles.cornerTitle}>{cornerTitle}</h2>
+                )}
             </div>
         </div>
     );

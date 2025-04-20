@@ -81,7 +81,7 @@ const PreviousWorkouts: React.FC = () => {
 
   return (
     <Layout>
-      <PageHeader title="previous workouts" cornerTitle=""/>
+      <PageHeader title="previous workouts" cornerTitle="" variant="hamburger" />
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
       <label className="flex items-center space-x-2 mb-4">
