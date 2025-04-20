@@ -1,0 +1,18 @@
+.controlsDrawer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.controlsDrawerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.controlsDrawerContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
