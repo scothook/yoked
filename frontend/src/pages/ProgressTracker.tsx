@@ -70,6 +70,16 @@ const ProgressTracker: React.FC = () => {
                   <option key={type} value={type}>{type}</option>
                 ))}
             </select>
+
+            { selectedMovementType === "Body Weight" ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {workouts.map((workout) => (
+                  <div key={workout.id} className="border p-4 rounded shadow">
+                      <h3 className="text-lg font-semibold">{workout.date}</h3>
+                      <p>{workout.body_weight}</p>                  </div>
+              ))}
+          </div>
+            ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredMovements.map((movement) => (
                     <div key={movement.id} className="border p-4 rounded shadow">
@@ -77,6 +87,9 @@ const ProgressTracker: React.FC = () => {
                         <p>{movement.id}</p>                  </div>
                 ))}
             </div>
+            )
+            }
+            
             </div>
       <Drawer anchor={'right'} open={drawerOpen} onClose={toggleDrawer(false)}>
       hey
