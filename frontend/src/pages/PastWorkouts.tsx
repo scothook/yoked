@@ -13,7 +13,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import TableRows from '@mui/icons-material/TableRows';
 import '../styles/WorkoutCalendar.css'
 
-const PreviousWorkouts: React.FC = () => {
+const PastWorkouts: React.FC = () => {
   const navigate = useNavigate();
 
   const [workouts, setWorkouts] = useState<Workout[]>([]);
@@ -113,7 +113,7 @@ const PreviousWorkouts: React.FC = () => {
 
   return (
     <Layout>
-      <PageHeader title="previous workouts" cornerTitle="" variant="hamburger" cornerTitleOnClick={toggleDrawer(true)}/>
+      <PageHeader title="past workouts" cornerTitle="" variant="hamburger" cornerTitleOnClick={toggleDrawer(true)}/>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
       
@@ -183,4 +183,4 @@ const PreviousWorkouts: React.FC = () => {
   );
 };
 
-export default PreviousWorkouts;
+export default PastWorkouts;

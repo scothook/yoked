@@ -11,8 +11,8 @@ const Home: React.FC = () => {
     <Layout>
         <h1 className="header">yoked</h1>
         <Button label="new workout" onClick={() => navigate("/current-workout")}/>
-        <Button label="previous workouts" onClick={() => navigate("/previous-workouts")}/>
-        <Button label="data" onClick={() => navigate("/progress")}/>
+        <Button label="past workouts" onClick={() => navigate("/past-workouts")}/>
+        <Button label="progress tracker" onClick={() => navigate("/progress-tracker")}/>
     </Layout>
   );
 };
