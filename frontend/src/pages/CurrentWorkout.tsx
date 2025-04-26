@@ -29,6 +29,7 @@ const CurrentWorkout: React.FC = () => {
     const fetchWorkout = async () => {
       if (!workoutId) {
         console.log("No workout ID provided");
+        setLoading(false);
         return;
       }
 
