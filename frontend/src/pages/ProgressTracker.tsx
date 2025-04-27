@@ -7,6 +7,7 @@ import Drawer from '@mui/material/Drawer';
 import { Workout } from "../types/workout"; // Import the interface
 import { Movement } from "../types/movement"; // Import the interface
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import Chart from "../components/chart/Chart";
 
 
 const ProgressTracker: React.FC = () => {
@@ -77,14 +78,7 @@ const ProgressTracker: React.FC = () => {
           
         
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <LineChart width={400} height={300} data={workouts}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="body_weight" stroke="#8884d8" />
-        </LineChart>
+          <Chart data={workouts} xAxisKey="date" yAxisKey="body_weight"></Chart>
           {workouts.map((workout) => (
               <div key={workout.id} className="border p-4 rounded shadow">
                   <h3 className="text-lg font-semibold">{workout.date}</h3>
