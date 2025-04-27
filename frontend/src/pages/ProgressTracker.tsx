@@ -6,6 +6,8 @@ import PageHeader from "../components/pageHeader/PageHeader";
 import Drawer from '@mui/material/Drawer';
 import { Workout } from "../types/workout"; // Import the interface
 import { Movement } from "../types/movement"; // Import the interface
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+
 
 const ProgressTracker: React.FC = () => {
     //const navigate = useNavigate();
@@ -57,44 +59,52 @@ const ProgressTracker: React.FC = () => {
   return (
     <Layout>
       <PageHeader title="progress tracker" cornerTitle="" variant="hamburger" cornerTitleOnClick={toggleDrawer(true)}/>
-            {loading && <p>Loading...</p>}
-            {error && <p>Error: {error}</p>}
+      {loading && <p>Loading...</p>}
+      {error && <p>Error: {error}</p>}
 
-            <div style={{ width: "100%"}}>
-            <select
-                value={selectedMovementType}
-                onChange={(e) => setSelectedMovementType(e.target.value)}
-                className="border px-2 py-1 mb-4"
-              >
-                {uniqueMovementTypes.map(type => (
-                  <option key={type} value={type}>{type}</option>
-                ))}
-            </select>
+      <div style={{ width: "100%"}}>
+        <select
+            value={selectedMovementType}
+            onChange={(e) => setSelectedMovementType(e.target.value)}
+            className="border px-2 py-1 mb-4"
+          >
+            {uniqueMovementTypes.map(type => (
+              <option key={type} value={type}>{type}</option>
+            ))}
+        </select>
 
-            { selectedMovementType === "Body Weight" ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {workouts.map((workout) => (
-                  <div key={workout.id} className="border p-4 rounded shadow">
-                      <h3 className="text-lg font-semibold">{workout.date}</h3>
-                      <p>{workout.body_weight}</p>                  </div>
+        { selectedMovementType === "Body Weight" ? (
+          
+        
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <LineChart width={400} height={300} data={workouts}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="date" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="body_weight" stroke="#8884d8" />
+        </LineChart>
+          {workouts.map((workout) => (
+              <div key={workout.id} className="border p-4 rounded shadow">
+                  <h3 className="text-lg font-semibold">{workout.date}</h3>
+                  <p>{workout.body_weight}</p>                  </div>
+          ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredMovements.map((movement) => (
+                  <div key={movement.id} className="border p-4 rounded shadow">
+                      <h3 className="text-lg font-semibold">{movement.movement_type_name}</h3>
+                      <p>{movement.id}</p>                  </div>
               ))}
           </div>
-            ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredMovements.map((movement) => (
-                    <div key={movement.id} className="border p-4 rounded shadow">
-                        <h3 className="text-lg font-semibold">{movement.movement_type_name}</h3>
-                        <p>{movement.id}</p>                  </div>
-                ))}
-            </div>
-            )
-            }
-            
-            </div>
+        )}
+      </div>
       <Drawer anchor={'right'} open={drawerOpen} onClose={toggleDrawer(false)}>
       hey
-    </Drawer>
-  </Layout>
+      </Drawer>
+    </Layout>
   )
 };
 
