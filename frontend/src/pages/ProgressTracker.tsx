@@ -26,6 +26,8 @@ const ProgressTracker: React.FC = () => {
       setDrawerOpen(newDrawerOpen);
     };
 
+    const workoutsWithBodyWeight = workouts.filter(workout => workout.body_weight !== null);
+
     const workoutsForMovement = workouts.flatMap(workout => 
       workout.movements
         .filter(movement => movement.movement_type_name === selectedMovementType)
@@ -89,7 +91,7 @@ const ProgressTracker: React.FC = () => {
           
         
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <Chart data={workouts} xAxisKey="date" yAxisKey="body_weight"></Chart>
+          <Chart data={workoutsWithBodyWeight} xAxisKey="date" yAxisKey="body_weight"></Chart>
           {workouts.map((workout) => (
               <div key={workout.id} className="border p-4 rounded shadow">
                   <h3 className="text-lg font-semibold">{workout.date}</h3>
