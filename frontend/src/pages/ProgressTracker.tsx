@@ -6,7 +6,6 @@ import PageHeader from "../components/pageHeader/PageHeader";
 import Drawer from '@mui/material/Drawer';
 import { Workout } from "../types/workout"; // Import the interface
 import { Movement } from "../types/movement"; // Import the interface
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import Chart from "../components/chart/Chart";
 
 
@@ -18,6 +17,7 @@ const ProgressTracker: React.FC = () => {
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState<string | null>(null);
     const [selectedMovementType, setSelectedMovementType] = React.useState("Body Weight");
+    //const [selectedView, setSelectedView] = React.useState<'chart' | 'list' | 'calendar'>('chart');
 
     const [drawerOpen, setDrawerOpen] = React.useState(false);
     
@@ -25,6 +25,17 @@ const ProgressTracker: React.FC = () => {
       console.log('inside toggleDrawer');
       setDrawerOpen(newDrawerOpen);
     };
+
+    const workoutsForMovement = workouts.flatMap(workout => 
+      workout.movements
+        .filter(movement => movement.movement_type_name === selectedMovementType)
+        .map(movement => {
+          const maxWeight = Math.max(...movement.sets.map(set => set.weight));
+          return {
+            date: workout.date,
+            weight: maxWeight
+          };
+        }));
 
     const uniqueMovementTypes = ["Body Weight", ...new Set(workouts.map(workout => workout.movements.map(movement => movement.movement_type_name)).flat())];
 
@@ -41,7 +52,7 @@ const ProgressTracker: React.FC = () => {
               const data: Workout[] = await response.json();
       
               const sortedWorkouts = data.sort(
-                (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+                (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
               );
       
               setWorkouts(sortedWorkouts);
@@ -87,6 +98,7 @@ const ProgressTracker: React.FC = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <Chart data={workoutsForMovement} xAxisKey="date" yAxisKey="weight"></Chart>
               {filteredMovements.map((movement) => (
                   <div key={movement.id} className="border p-4 rounded shadow">
                       <h3 className="text-lg font-semibold">{movement.movement_type_name}</h3>

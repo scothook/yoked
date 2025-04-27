@@ -3,7 +3,7 @@ import { Workout } from "../../types/workout"; // Import the interface
 //import styles from "./Chart.module.css";
 
 interface ChartProps {
-    data : Workout[];
+    data : Workout[] | { date: string; weight: number }[]; // Define a valid type for the data array
     xAxisKey: string;
     yAxisKey: string;
 }
