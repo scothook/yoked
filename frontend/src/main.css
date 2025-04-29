@@ -3,6 +3,10 @@ body {
     font-family: 'Inter', sans-serif;
     background: #fff3e0; /* Soft yellow */
     color: #6d4c41; /* Warm earth tone */
+    max-width: 420px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
    /* Header styles */
