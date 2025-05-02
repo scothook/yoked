@@ -1,0 +1,9 @@
+    .weightSet {
+        display: flex;
+        flex-direction: row;
+        background: orange;
+    }
+
+    .addRepSetBtn {
+        background: orangered;
+    }
