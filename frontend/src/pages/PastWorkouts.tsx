@@ -151,7 +151,7 @@ const PastWorkouts: React.FC = () => {
         </div>
         
       ) : (
-        <ul style={{width: "95%", textAlign: "center", padding: "0", display: "inline-block", justifyContent: "center", margin: "0 auto"}}>
+        <ul style={{width: "100%", textAlign: "center", padding: "0", display: "inline-block", justifyContent: "center", margin: "0 auto"}}>
           {filteredWorkouts
           .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
           .map(workout => (

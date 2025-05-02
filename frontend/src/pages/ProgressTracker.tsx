@@ -6,6 +6,8 @@ import PageHeader from "../components/pageHeader/PageHeader";
 import Drawer from '@mui/material/Drawer';
 import { Workout } from "../types/workout"; // Import the interface
 import { Movement } from "../types/movement"; // Import the interface
+import Chart from "../components/chart/Chart";
+
 
 const ProgressTracker: React.FC = () => {
     //const navigate = useNavigate();
@@ -15,6 +17,7 @@ const ProgressTracker: React.FC = () => {
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState<string | null>(null);
     const [selectedMovementType, setSelectedMovementType] = React.useState("Body Weight");
+    //const [selectedView, setSelectedView] = React.useState<'chart' | 'list' | 'calendar'>('chart');
 
     const [drawerOpen, setDrawerOpen] = React.useState(false);
     
@@ -22,6 +25,19 @@ const ProgressTracker: React.FC = () => {
       console.log('inside toggleDrawer');
       setDrawerOpen(newDrawerOpen);
     };
+
+    const workoutsWithBodyWeight = workouts.filter(workout => workout.body_weight !== null);
+
+    const workoutsForMovement = workouts.flatMap(workout => 
+      workout.movements
+        .filter(movement => movement.movement_type_name === selectedMovementType)
+        .map(movement => {
+          const maxWeight = Math.max(...movement.sets.map(set => set.weight));
+          return {
+            date: workout.date,
+            weight: maxWeight
+          };
+        }));
 
     const uniqueMovementTypes = ["Body Weight", ...new Set(workouts.map(workout => workout.movements.map(movement => movement.movement_type_name)).flat())];
 
@@ -38,7 +54,7 @@ const ProgressTracker: React.FC = () => {
               const data: Workout[] = await response.json();
       
               const sortedWorkouts = data.sort(
-                (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+                (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
               );
       
               setWorkouts(sortedWorkouts);
@@ -57,44 +73,46 @@ const ProgressTracker: React.FC = () => {
   return (
     <Layout>
       <PageHeader title="progress tracker" cornerTitle="" variant="hamburger" cornerTitleOnClick={toggleDrawer(true)}/>
-            {loading && <p>Loading...</p>}
-            {error && <p>Error: {error}</p>}
+      {loading && <p>Loading...</p>}
+      {error && <p>Error: {error}</p>}
 
-            <div style={{ width: "100%"}}>
-            <select
-                value={selectedMovementType}
-                onChange={(e) => setSelectedMovementType(e.target.value)}
-                className="border px-2 py-1 mb-4"
-              >
-                {uniqueMovementTypes.map(type => (
-                  <option key={type} value={type}>{type}</option>
-                ))}
-            </select>
+      <div style={{ width: "100%"}}>
+        <select
+            value={selectedMovementType}
+            onChange={(e) => setSelectedMovementType(e.target.value)}
+            className="border px-2 py-1 mb-4"
+          >
+            {uniqueMovementTypes.map(type => (
+              <option key={type} value={type}>{type}</option>
+            ))}
+        </select>
 
-            { selectedMovementType === "Body Weight" ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {workouts.map((workout) => (
-                  <div key={workout.id} className="border p-4 rounded shadow">
-                      <h3 className="text-lg font-semibold">{workout.date}</h3>
-                      <p>{workout.body_weight}</p>                  </div>
+        { selectedMovementType === "Body Weight" ? (
+          
+        
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <Chart data={workoutsWithBodyWeight} xAxisKey="date" yAxisKey="body_weight"></Chart>
+          {workouts.map((workout) => (
+              <div key={workout.id} className="border p-4 rounded shadow">
+                  <h3 className="text-lg font-semibold">{workout.date}</h3>
+                  <p>{workout.body_weight}</p>                  </div>
+          ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <Chart data={workoutsForMovement} xAxisKey="date" yAxisKey="weight"></Chart>
+              {filteredMovements.map((movement) => (
+                  <div key={movement.id} className="border p-4 rounded shadow">
+                      <h3 className="text-lg font-semibold">{movement.movement_type_name}</h3>
+                      <p>{movement.id}</p>                  </div>
               ))}
           </div>
-            ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredMovements.map((movement) => (
-                    <div key={movement.id} className="border p-4 rounded shadow">
-                        <h3 className="text-lg font-semibold">{movement.movement_type_name}</h3>
-                        <p>{movement.id}</p>                  </div>
-                ))}
-            </div>
-            )
-            }
-            
-            </div>
+        )}
+      </div>
       <Drawer anchor={'right'} open={drawerOpen} onClose={toggleDrawer(false)}>
       hey
-    </Drawer>
-  </Layout>
+      </Drawer>
+    </Layout>
   )
 };
 
