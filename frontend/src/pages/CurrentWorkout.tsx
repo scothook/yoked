@@ -14,16 +14,20 @@ import PageHeader from "../components/pageHeader/PageHeader";
 const CurrentWorkout: React.FC = () => {
   const location = useLocation();
   const [workoutId, setWorkoutId] = useState(location.state?.workoutId ?? "");
+  const [date, setDate] = useState("");
+  const [bodyWeight, setBodyWeight] = useState("");
+  const [workoutType, setWorkoutType] = useState("");
+  const [notes, setNotes] = useState("");
+
+  const [movements, setMovements] = useState<Movement[]>([]);
+
+
   const [workoutTypes, setWorkoutTypes] = useState<WorkoutType[]>([]);
 
   const [loading, setLoading] = useState(true);
   const [workout, setWorkout] = useState<Workout | null>(null);
-  //const [workoutId, setWorkoutId] = useState<number | null>(null);
-  const [movements, setMovements] = useState<Movement[]>([]);
-  const [bodyWeight, setBodyWeight] = useState("");
-  const [workoutType, setWorkoutType] = useState("");
-  const [notes, setNotes] = useState("");
-  const [date, setDate] = useState("");
+  
+  
 
   useEffect(() => {
     const fetchWorkout = async () => {

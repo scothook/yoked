@@ -8,6 +8,11 @@ import React from "react";
 import SetTile from "../setTile/SetTile.tsx";
 
 interface MovementCardProps {
+  // id: number;
+  // workoutId: number;
+  // movementType
+  // notes
+  // sets: Set[];
   name: string;
   onRemove: () => void;
 }
