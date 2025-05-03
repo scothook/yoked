@@ -2,7 +2,7 @@
 import styles from "./MovementCard.module.css";
 import MovementHeader from "../movementHeader/MovementHeader.tsx";
 //import WeightSet from "../weightSet/WeightSet";
-import { Set } from "../types/set.ts";
+import { Set } from "../../types/set.ts";
 import Button from "../button/Button";
 import React from "react";
 import SetTile from "../setTile/SetTile.tsx";
@@ -24,7 +24,8 @@ export default function MovementCard({ name, onRemove }: MovementCardProps) {
     const newSet: Set = {
       id: Date.now(),
       weight: 105,
-      reps: 8
+      reps: 8,
+      order: 1
     };
     setSets([...sets, newSet]);
   }
@@ -43,7 +44,7 @@ export default function MovementCard({ name, onRemove }: MovementCardProps) {
         {sets.map((set) => (
           <div>
           <p>{set.id}</p>
-          <SetTile onRemove={() => removeSet(set.id)}>tile</SetTile>
+          <SetTile onRemove={() => removeSet(set.id)} initialWeight={105} initialReps={8}></SetTile>
           </div>
         ))}
       </div>
