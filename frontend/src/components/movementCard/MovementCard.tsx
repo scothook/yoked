@@ -5,6 +5,7 @@ import MovementHeader from "../movementHeader/MovementHeader.tsx";
 import { Set } from "../types/set.ts";
 import Button from "../button/Button";
 import React from "react";
+import SetTile from "../setTile/SetTile.tsx";
 
 interface MovementCardProps {
   name: string;
@@ -23,6 +24,10 @@ export default function MovementCard({ name, onRemove }: MovementCardProps) {
     setSets([...sets, newSet]);
   }
 
+  const removeSet = (id: number) => {
+    setSets(sets.filter(set => set.id !== id));
+  };
+
   return (
     <div className={styles.movementCard}>
       <MovementHeader
@@ -31,14 +36,15 @@ export default function MovementCard({ name, onRemove }: MovementCardProps) {
         />
       <div className={styles.setList}>
         {sets.map((set) => (
+          <div>
           <p>{set.id}</p>
+          <SetTile onRemove={() => removeSet(set.id)}>tile</SetTile>
+          </div>
         ))}
       </div>
       <div>
         <Button label="+" onClick={addSet} />
       </div>
-
-      <button className={styles.addMovementBtn}>+</button>
     </div>
   );
 }

@@ -1,21 +1,15 @@
-import styles from "./WeightSet.module.css";
-import RepSet from "../repSet/RepSet";
+import styles from "./SetTile.module.css";
+//import RepSet from "../repSet/RepSet";
 
 interface WeightSetProps {
-    weight: number;
+    onRemove: () => void;
 }
 
-export default function WeightSet({ weight }: WeightSetProps) {
+export default function WeightSet({ onRemove }: WeightSetProps) {
     return (
         <div className={styles.weightSet}>
-            <h4>{weight}</h4>
-            <RepSet
-                initialReps={5}
-            />
-            <RepSet
-                initialReps={5}
-            />
-            <button className={styles.addRepSetBtn}>+</button>
+            <h4>setTile</h4>
+            <button className={styles.addRepSetBtn} onClick={onRemove}>-</button>
         </div>
     )
 }
