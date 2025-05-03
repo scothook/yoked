@@ -42,10 +42,7 @@ export default function MovementCard({ name, onRemove }: MovementCardProps) {
         />
       <div className={styles.setList}>
         {sets.map((set) => (
-          <div>
-          <p>{set.id}</p>
-          <SetTile onRemove={() => removeSet(set.id)} initialWeight={105} initialReps={8}></SetTile>
-          </div>
+          <SetTile key={set.id} onRemove={() => removeSet(set.id)} initialWeight={105} initialReps={8}></SetTile>
         ))}
       </div>
       <div>

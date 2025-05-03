@@ -27,9 +27,11 @@ export default function SetTile({ initialWeight, initialReps, onRemove }: SetTil
                 onChange={(e) => setWeight(e.target.value)}
                 className="border p-2"
             />
-            <button onClick={() => setReps(reps + 1)}>plus reps</button>
-            <button onClick={() => setReps(reps - 1)}>minus reps</button>
-            <h5>{reps}</h5>
+            <div style={{ display: "flex", flexDirection: "row"}}>
+                <button onClick={() => setReps(reps - 1)}>-</button>
+                <h5>{reps}</h5>
+                <button onClick={() => setReps(reps + 1)}>+</button>
+            </div>
             <button className={styles.addRepSetBtn} onClick={onRemove}>-</button>
         </div>
     )
