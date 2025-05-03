@@ -185,7 +185,6 @@ const CurrentWorkout: React.FC = () => {
             <MovementCard
               key={movement.id}
               name={movement.movement_type_name}
-              weight={105}
               onRemove={() => removeMovement(movement.id)}
             />
           ))}
