@@ -6,6 +6,7 @@ import { Set } from "../../types/set.ts";
 import Button from "../button/Button";
 import React from "react";
 import SetTile from "../setTile/SetTile.tsx";
+import { Movement } from "../../types/movement.ts";
 
 interface MovementCardProps {
   // id: number;
@@ -13,12 +14,19 @@ interface MovementCardProps {
   // movementType
   // notes
   // sets: Set[];
-  name: string;
+  movement: Movement;
+  index: number;
+  onUpdate: (fields: Partial<Movement>) => void;
   onRemove: () => void;
+  onUpdateSet: (setIndex: number, fields: Partial<Set>) => void;
+  onRemoveSet: (setIndex: number) => void;
+  onAddSet: () => void;
 }
 
-export default function MovementCard({ name, onRemove }: MovementCardProps) {
+export default function MovementCard({ movement, index, onUpdate, onRemove, onUpdateSet, onRemoveSet, onAddSet }: MovementCardProps) {
   const [sets, setSets] = React.useState<Set[]>([]);
+  //const [movementType, setMovementType] = React.useState(initialMovementType);
+  //const MovementTypes = ["Chest Press", "Low Row", "Squat"];
 
   const addSet = () => {
     const newSet: Set = {
@@ -37,14 +45,24 @@ export default function MovementCard({ name, onRemove }: MovementCardProps) {
   return (
     <div className={styles.movementCard}>
       <MovementHeader
-        name={name}
+        name={movement.movement_type_name}
         onRemove={onRemove}
         />
       <div className={styles.setList}>
         {sets.map((set) => (
           <SetTile key={set.id} onRemove={() => removeSet(set.id)} initialWeight={105} initialReps={8}></SetTile>
         ))}
+        {movement.sets.map((set, setIndex) => (
+          <SetTile
+            key={set.id}
+            set={set}
+            index={setIndex}
+            onUpdate={(fields) => onUpdateSet(setIndex, fields)}
+            onRemove={() => onRemoveSet(setIndex)}
+          />
+        ))}
       </div>
+      {index}
       <div>
         <Button label="+" onClick={addSet} />
       </div>

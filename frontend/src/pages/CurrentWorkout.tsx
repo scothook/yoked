@@ -5,8 +5,9 @@ import { useLocation } from "react-router-dom";
 import Button from "../components/button/Button";
 import Layout from "../components/layout/Layout";
 import MovementCard from "../components/movementCard/MovementCard";
-import { Movement } from "../types/movement";
 import { Workout } from "../types/workout";
+import { Movement } from "../types/movement";
+//import { Set } from "../types/set";
 import { WorkoutType } from "../types/workoutType";
 import PageHeader from "../components/pageHeader/PageHeader";
 //import RepButton from "../components/repButton/RepButton";
@@ -25,7 +26,15 @@ const CurrentWorkout: React.FC = () => {
   const [workoutTypes, setWorkoutTypes] = useState<WorkoutType[]>([]);
 
   const [loading, setLoading] = useState(true);
-  const [workout, setWorkout] = useState<Workout | null>(null);
+  
+  const [workout, setWorkout] = useState<Workout>({
+    id: undefined,
+    date: "",
+    body_weight: 0,
+    workout_type_name: "",
+    movements: [],
+    notes: ""
+  });
   
   
 
@@ -77,9 +86,25 @@ const CurrentWorkout: React.FC = () => {
     setMovements([...movements, newMovement]);
   };
 
-  const removeMovement = (id: number) => {
-    setMovements(movements.filter((movement) => movement.id !== id));
-  };
+  // const removeMovement = (id: number) => {
+  //   setMovements(movements.filter((movement) => movement.id !== id));
+  // };
+
+  function updateMovement(index: number, fields: Partial<Movement>) {
+    setWorkout(prevWorkout => {
+      const updatedMovements = [...prevWorkout.movements];
+      updatedMovements[index] = { ...updatedMovements[index], ...fields };
+      return { ...prevWorkout, movements: updatedMovements };
+    });
+  }
+
+  function removeMovement(index: number) {
+    setWorkout(prevWorkout => {
+      const updatedMovements = [...prevWorkout.movements];
+      updatedMovements.splice(index, 1);
+      return { ...prevWorkout, movements: updatedMovements };
+    });
+  }
 /*
   const getWorkoutData = async () => {
     try {
@@ -185,11 +210,16 @@ const CurrentWorkout: React.FC = () => {
           </select>
         </div>
         <div className="movementList">
-          {movements.map((movement) => (
+          {workout.movements.map((movement, i) => (
             <MovementCard
               key={movement.id}
-              name={movement.movement_type_name}
-              onRemove={() => removeMovement(movement.id)}
+              movement={movement}
+              index={i}
+              onUpdate={(fields) => updateMovement(i, fields)}
+              onRemove={() => removeMovement(i)}
+              onUpdateSet={(setIndex, fields) => updateSet(i, setIndex, fields)}
+              onAddSet={() => addSet(i)}
+              onRemoveSet={(setIndex) => removeSet(i, setIndex)}
             />
           ))}
 
@@ -200,8 +230,8 @@ const CurrentWorkout: React.FC = () => {
         <div>
           <label>Notes:</label>
           <textarea
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
+            value={workout.notes}
+            onChange={e => setWorkout({ ...workout, notes: e.target.value })}
             className="border p-2"
           />
         </div>
