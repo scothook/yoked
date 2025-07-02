@@ -67,6 +67,7 @@
     font-size: 0.875rem;
     font-style: italic;
     color: #4b5563; /* text-gray-600 */
+    white-space: pre-wrap; /* to preserve line breaks */
   }
   
   .dark .notes {
