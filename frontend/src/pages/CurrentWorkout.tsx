@@ -16,7 +16,7 @@ const CurrentWorkout: React.FC = () => {
   const [workoutId, setWorkoutId] = useState(location.state?.workoutId ?? "");
   const [workoutTypes, setWorkoutTypes] = useState<WorkoutType[]>([]);
 
-  const [loading, setLoading] = useState(true);
+  //const [loading, setLoading] = useState(true);
   const [workout, setWorkout] = useState<Workout | null>(null);
   //const [workoutId, setWorkoutId] = useState<number | null>(null);
   const [movements, setMovements] = useState<Movement[]>([]);
@@ -29,7 +29,7 @@ const CurrentWorkout: React.FC = () => {
     const fetchWorkout = async () => {
       if (!workoutId) {
         console.log("No workout ID provided");
-        setLoading(false);
+        //setLoading(false);
         return;
       }
 
@@ -47,7 +47,7 @@ const CurrentWorkout: React.FC = () => {
       } catch (err) {
         console.error("Error fetching workout:", err);
       } finally {
-        setLoading(false);
+        //setLoading(false);
       }
     };
 
@@ -113,6 +113,7 @@ const CurrentWorkout: React.FC = () => {
   
       const data = await res.json();
       console.log("Workout saved:", data);
+      alert("Workout saved!");
   
       // ✅ If just created a new workout, store the new ID
       if (!workoutId && data.id) {
@@ -120,6 +121,7 @@ const CurrentWorkout: React.FC = () => {
       }
     } catch (err) {
       console.error("Error saving workout", err);
+      alert("Something went wrong while saving the workout.");
     }
 /*
     try {
@@ -145,67 +147,61 @@ const CurrentWorkout: React.FC = () => {
 
   return (
     <Layout>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <div>
-        <PageHeader title={workout ? workoutTypes.find(type => type.id === Number(workoutType))?.workout_type_name || "Generic Workout" : 'new workout'} cornerTitle={date ? `${+date.split('-')[1]}/${+date.split('-')[2]}` : ''} cornerTitleOnClick={() => {}}/>
-        <div className="space-y-4">
-        <div>
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="border p-2"
-          />
-          <label>Body Weight (lbs):</label>
-          <input
-            type="number"
-            value={bodyWeight}
-            onChange={(e) => setBodyWeight(e.target.value)}
-            className="border p-2"
-          />
-        </div>
-        <div>
-          <label>Workout Type:</label>
-          <select
-            value={workoutType}
-            onChange={(e) => setWorkoutType(e.target.value)}
-            className="border p-2"
-          >
-            {workoutTypes.map((type) => (
-              <option key={type.id} value={type.id}>
-                {type.workout_type_name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="movementList">
-          {movements.map((movement) => (
-            <MovementCard
-              key={movement.id}
-              name={movement.movement_type_name}
-              weight={105}
-              onRemove={() => removeMovement(movement.id)}
+          <PageHeader title={workout ? workoutTypes.find(type => type.id === Number(workoutType))?.workout_type_name || "Generic Workout" : 'new workout'} cornerTitle={date ? `${+date.split('-')[1]}/${+date.split('-')[2]}` : ''} cornerTitleOnClick={() => {}}/>
+          <div className="space-y-4">
+            <div>
+              <input
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                className="border p-2"
+              />
+            </div>
+          <div>
+            <input
+              type="number"
+              value={bodyWeight}
+              onChange={(e) => setBodyWeight(e.target.value)}
+              className="border p-2"
             />
-          ))}
-
+            <label>lbs</label>
+          </div>
+          <div>
+            <select
+              value={workoutType}
+              onChange={(e) => setWorkoutType(e.target.value)}
+              className="border p-2"
+            >
+              {workoutTypes.map((type) => (
+                <option key={type.id} value={type.id}>
+                  {type.workout_type_name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="movementList">
+            {movements.map((movement) => (
+              <MovementCard
+                key={movement.id}
+                name={movement.movement_type_name}
+                weight={105}
+                onRemove={() => removeMovement(movement.id)}
+              />
+            ))}
+          </div>
+          <div>
+            <Button label="+" onClick={addMovement}/>
+          </div>
+          <div>
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              className="border p-2"
+              style={{width: '100%', height: '150px', padding: '8px', backgroundColor: '#fff3e0', color: '#6d4c41', borderRadius: '8px'}}
+            />
+          </div>
+          <Button label="Save" onClick={handleSubmit}/>
         </div>
-        <div>
-          <Button label="+" onClick={addMovement}/>
-        </div>
-        <div>
-          <label>Notes:</label>
-          <textarea
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            className="border p-2"
-          />
-        </div>
-        <Button label="Save" onClick={handleSubmit}/>
-      </div>
-      </div>
-      )}
     </Layout>
   );
 };
