@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import Button from "../components/button/Button";
 import Layout from "../components/layout/Layout";
 import MovementCard from "../components/movementCard/MovementCard";
+import WorkoutCard from "../components/workoutCard/WorkoutCard";
 import { Movement } from "../types/movement";
 import { Workout } from "../types/workout";
 import { WorkoutType } from "../types/workoutType";
@@ -148,24 +149,24 @@ const CurrentWorkout: React.FC = () => {
   return (
     <Layout>
           <PageHeader title={workout ? workoutTypes.find(type => type.id === Number(workoutType))?.workout_type_name || "Generic Workout" : 'new workout'} cornerTitle={date ? `${+date.split('-')[1]}/${+date.split('-')[2]}` : ''} cornerTitleOnClick={() => {}}/>
+            
+      <WorkoutCard
+        date={date}
+        bodyWeight={parseInt(bodyWeight)}
+        workoutType={workoutType}
+        movements={movements}
+        notes={notes}
+        editable={true}
+        onChange={(updated) => {
+          if (updated.date) setDate(updated.date);
+          if (updated.bodyWeight) setBodyWeight(updated.bodyWeight.toString());
+          if (updated.workoutType) setWorkoutType(updated.workoutType);
+          if (updated.notes) setNotes(updated.notes);
+        }}
+        onClick={() => {}}
+      />
+
           <div className="space-y-4">
-            <div>
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="border p-2"
-              />
-            </div>
-          <div>
-            <input
-              type="number"
-              value={bodyWeight}
-              onChange={(e) => setBodyWeight(e.target.value)}
-              className="border p-2"
-            />
-            <label>lbs</label>
-          </div>
           <div>
             <select
               value={workoutType}
@@ -191,14 +192,6 @@ const CurrentWorkout: React.FC = () => {
           </div>
           <div>
             <Button label="+" onClick={addMovement}/>
-          </div>
-          <div>
-            <textarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              className="border p-2"
-              style={{width: '100%', height: '150px', padding: '8px', backgroundColor: '#fff3e0', color: '#6d4c41', borderRadius: '8px'}}
-            />
           </div>
           <Button label="Save" onClick={handleSubmit}/>
         </div>

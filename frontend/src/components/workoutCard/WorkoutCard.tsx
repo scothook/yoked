@@ -8,28 +8,74 @@ interface WorkoutSummaryCardProps {
     workoutType: string; // e.g. 'Push Day', 'Legs', 'Cardio'
     movements: Movement[]; // e.g. ['Bench Press 3x10', 'Overhead Press 3x8']
     notes?: string; // optional notes
+    editable?: boolean; // optional prop to indicate if the card is editable
     onClick?: () => void; // optional click handler
+    onChange?: (updated: Partial<WorkoutCardData>) => void; // optional change handler
   }
 
-export default function WorkoutCard({ date, bodyWeight, workoutType, movements, notes, onClick }: WorkoutSummaryCardProps) {
+  type WorkoutCardData = {
+    date: string;
+    bodyWeight?: number;
+    workoutType: string;
+    notes?: string;
+  };
+
+export default function WorkoutCard({ date, bodyWeight, workoutType, movements, notes, editable, onClick, onChange }: WorkoutSummaryCardProps) {
   return (
     <Card onClick={onClick}>
       <div className={styles.header}>
-      <span>{date}</span>
-        {bodyWeight && <span>{bodyWeight} lbs</span>}
+        {editable ? (
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => onChange?.({ date: e.target.value })}
+          />
+        ) : (
+          <span>{date}</span>
+        )}
+
+        {editable ? (
+          <input
+            type="number"
+            value={bodyWeight || ''}
+            placeholder="Body weight"
+            onChange={(e) => onChange?.({ bodyWeight: Number(e.target.value) })}
+          />
+        ) : (
+          bodyWeight && <span>{bodyWeight} lbs</span>
+        )}
       </div>
-      <hr/>
-      <div className={styles.workoutType}>{workoutType}</div>
+      <hr />
+      <div className={styles.workoutType}>
+        {editable ? (
+          <input
+            type="text"
+            value={workoutType}
+            onChange={(e) => onChange?.({ workoutType: e.target.value })}
+          />
+        ) : (
+          workoutType
+        )}
+      </div>
+
       <ul className={styles.movements}>
-        {movements.map(movement => (
+        {movements.map((movement) => (
           <li className={styles.movementItem} key={movement.id}>
-            <div>
-                {movement.movement_type_name}
-            </div>
+            <div>{movement.movement_type_name}</div>
           </li>
         ))}
       </ul>
-      {notes && <div className={styles.notes}>{notes}</div>}
-  </Card>
+
+      {notes &&
+        (editable ? (
+          <textarea
+            value={notes}
+            style={{ width: '100%', height: '150px', padding: '8px' }}
+            onChange={(e) => onChange?.({ notes: e.target.value })}
+          />
+        ) : (
+          <div className={styles.notes}>{notes}</div>
+        ))}
+    </Card>
   );
 }
