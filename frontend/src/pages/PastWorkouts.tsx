@@ -24,14 +24,19 @@ import WorkoutModal from "../components/dateWorkoutSelectorModal/DateWorkoutSele
 import '../styles/WorkoutCalendar.css';
 
 const PastWorkouts: React.FC = () => {
-  const navigate = useNavigate();
-  const { workouts, loading, error } = useWorkouts();
+  const navigate = useNavigate(); // Navigation hook for routing
+  const { workouts, loading, error } = useWorkouts(); // Custom hook to fetch workouts
 
-  const [showCalendarView, setShowCalendarView] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [selectedWorkoutType, setSelectedWorkoutType] = useState("All");
+  const [selectedWorkoutType, setSelectedWorkoutType] = useState("All"); // State for selected workout type
 
+  const uniqueWorkoutTypes = ["All", ...new Set(workouts.map(workout => workout.workout_type_name))]; // Get unique workout types including "All"
+
+  // Filter workouts based on selected workout type
+  const filteredWorkouts = getFilteredWorkouts(workouts, selectedWorkoutType);
+  const filteredWorkoutDates = getWorkoutDates(filteredWorkouts); //calendar only
+  const filteredWorkoutsByDate = groupWorkoutsByDate(filteredWorkouts); //calendar only
+
+  // Drawer stuff
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const toggleDrawer = (newDrawerOpen: boolean) => () => {
@@ -39,11 +44,10 @@ const PastWorkouts: React.FC = () => {
     setDrawerOpen(newDrawerOpen);
   };
 
-  const uniqueWorkoutTypes = ["All", ...new Set(workouts.map(workout => workout.workout_type_name))];
-
-  const filteredWorkouts = getFilteredWorkouts(workouts, selectedWorkoutType);
-  const filteredWorkoutDates = getWorkoutDates(filteredWorkouts);
-  const filteredWorkoutsByDate = groupWorkoutsByDate(filteredWorkouts);
+  // Calendar stuff
+  const [showCalendarView, setShowCalendarView] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
 
   const handleDayClick = (date : Date) => {
     const workoutsByClickedDate = filteredWorkoutsByDate.get(date.toDateString()) || [];
@@ -58,10 +62,6 @@ const PastWorkouts: React.FC = () => {
       setSelectedDate(null);
       setDropdownVisible(false);
     }
-
-    if (workoutsByClickedDate) {
-      //navigate(`/current-workout/`, { state: { workoutId: workoutByDate.id }})
-    }
   }
 
   return (
@@ -71,16 +71,16 @@ const PastWorkouts: React.FC = () => {
       {error && <p>Error: {error}</p>}
       
       <div style={{ width: "100%"}}>
-      <select
-          value={selectedWorkoutType}
-          onChange={(e) => setSelectedWorkoutType(e.target.value)}
-          className="border px-2 py-1 mb-4"
-        >
-          {uniqueWorkoutTypes.map(type => (
-            <option key={type} value={type}>{type}</option>
-          ))}
-      </select>
-      { showCalendarView ? (
+        <select
+            value={selectedWorkoutType}
+            onChange={(e) => setSelectedWorkoutType(e.target.value)}
+            className="border px-2 py-1 mb-4"
+          >
+            {uniqueWorkoutTypes.map(type => (
+              <option key={type} value={type}>{type}</option>
+            ))}
+        </select>
+        { showCalendarView ? (
         <div className='calendarCard'>
           <Calendar
             onClickDay={handleDayClick}
@@ -103,35 +103,52 @@ const PastWorkouts: React.FC = () => {
           )}
         </div>
         
-      ) : (
+        ) : (
         <ul style={{width: "100%", textAlign: "center", padding: "0", display: "inline-block", justifyContent: "center", margin: "0 auto"}}>
           {filteredWorkouts
-          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-          .map(workout => (
-            <li key={workout.id} style={{listStyleType: "none", display: "inlineBlock", margin: "1rem"}}>
-              <WorkoutCard
-                date={format(parseISO(workout.date), "M/d")}
-                bodyWeight={workout.body_weight}
-                workoutType={workout.workout_type_name}
-                movements={workout.movements}
-                notes={workout.notes}
-                onClick={() => navigate(`/current-workout/`, { state: { workoutId: workout.id }})}
+            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+            .map(workout => (
+              <li key={workout.id} style={{listStyleType: "none", display: "inlineBlock", margin: "1rem"}}>
+                <WorkoutCard
+                  date={format(parseISO(workout.date), "M/d")}
+                  bodyWeight={workout.body_weight}
+                  workoutType={workout.workout_type_name}
+                  movements={workout.movements}
+                  notes={workout.notes}
+                  onClick={() => navigate(`/current-workout/`, { state: { workoutId: workout.id }})}
                 />
-            </li>
+              </li>
           ))}
         </ul>
-      )}
-    </div>
-    <Drawer anchor={'right'} open={drawerOpen} onClose={toggleDrawer(false)}>
-      <div>
-        <CalendarMonthIcon className="calendarIcon" onClick={() => {setShowCalendarView(true); toggleDrawer(false)();}}/>
-        Calendar
+        )}
       </div>
-      <div>
-        <TableRows className="tableIcon" onClick={() => {setShowCalendarView(false); toggleDrawer(false)();}}/>
-        Table
-      </div>
-    </Drawer>
+      <Drawer 
+        anchor={'right'} 
+        open={drawerOpen} 
+        onClose={toggleDrawer(false)}
+      >
+        <div>
+          <CalendarMonthIcon 
+            className="calendarIcon" 
+            onClick={() => {
+              setShowCalendarView(true);
+              toggleDrawer(false)();
+            }}
+          />
+          Calendar
+        </div>
+
+        <div>
+          <TableRows 
+            className="tableIcon" 
+            onClick={() => {
+              setShowCalendarView(false); 
+              toggleDrawer(false)();
+            }}
+          />
+          Table
+        </div>
+      </Drawer>
     </Layout>
   );
 };
