@@ -22,7 +22,10 @@ interface WorkoutSummaryCardProps {
 
 export default function WorkoutCard({ date, bodyWeight, workoutType, movements, notes, editable, onClick, onChange }: WorkoutSummaryCardProps) {
   return (
-    <Card onClick={onClick}>
+    <Card 
+      onClick={onClick}
+      className={`${styles.workoutCard} ${editable ? styles.editable : ''}`}
+    >
       <div className={styles.header}>
         {editable ? (
           <input

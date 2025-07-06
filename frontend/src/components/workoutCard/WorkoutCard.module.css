@@ -10,13 +10,6 @@
     width: 100%;
     text-align: left;
   }
-
-  .card:hover {
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* shadow-lg */
-    transform: translateY(-2px); /* hover:translate-y-1 */
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    cursor: pointer;
-  }
   
   .dark .card {
     background-color: #1f2937; /* dark:bg-zinc-800 */
