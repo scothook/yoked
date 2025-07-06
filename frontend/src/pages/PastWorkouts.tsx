@@ -11,8 +11,8 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import TableRows from '@mui/icons-material/TableRows';
 
 // Types & Utilities
-// import { Workout } from "../types/workout";
 import { useWorkouts } from "../hooks/useWorkouts.ts";
+import { getFilteredWorkouts, getWorkoutDates, groupWorkoutsByDate } from "../utils/workoutFilters.ts";
 
 // Components (ordered by relative importance or hierarchy)
 import Layout from "../components/layout/Layout";
@@ -22,7 +22,6 @@ import WorkoutModal from "../components/dateWorkoutSelectorModal/DateWorkoutSele
 
 // Styles
 import '../styles/WorkoutCalendar.css';
-
 
 const PastWorkouts: React.FC = () => {
   const navigate = useNavigate();
@@ -42,22 +41,9 @@ const PastWorkouts: React.FC = () => {
 
   const uniqueWorkoutTypes = ["All", ...new Set(workouts.map(workout => workout.workout_type_name))];
 
-  const filteredWorkouts = selectedWorkoutType === "All"
-    ? workouts
-    : workouts.filter(workout => workout.workout_type_name === selectedWorkoutType);
-
-  const filteredWorkoutDates = filteredWorkouts.map(w => new Date(parseISO(w.date)).toDateString());
-
-  const filteredWorkoutsByDate = filteredWorkouts.reduce((map, workout) => {
-    const dateKey = new Date(parseISO(workout.date)).toDateString();
-  
-    if (!map.has(dateKey)) {
-      map.set(dateKey, []);
-    }
-  
-    map.get(dateKey).push(workout);
-    return map;
-  }, new Map());  
+  const filteredWorkouts = getFilteredWorkouts(workouts, selectedWorkoutType);
+  const filteredWorkoutDates = getWorkoutDates(filteredWorkouts);
+  const filteredWorkoutsByDate = groupWorkoutsByDate(filteredWorkouts);
 
   const handleDayClick = (date : Date) => {
     const workoutsByClickedDate = filteredWorkoutsByDate.get(date.toDateString()) || [];
