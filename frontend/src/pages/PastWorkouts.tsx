@@ -1,24 +1,33 @@
-import React, { useEffect, useState } from "react";
+// React and core libraries
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+// Third-party libraries
 import { parseISO, format } from 'date-fns';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import { useNavigate } from "react-router-dom";
-import { Workout } from "../types/workout"; // Import the interface
-import Layout from "../components/layout/Layout";
-import WorkoutCard from "../components/workoutCard/WorkoutCard";
-import PageHeader from "../components/pageHeader/PageHeader";
-import WorkoutModal from "../components/dateWorkoutSelectorModal/DateWorkoutSelectorModal";
 import Drawer from '@mui/material/Drawer';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import TableRows from '@mui/icons-material/TableRows';
-import '../styles/WorkoutCalendar.css'
+
+// Types & Utilities
+// import { Workout } from "../types/workout";
+import { useWorkouts } from "../hooks/useWorkouts.ts";
+
+// Components (ordered by relative importance or hierarchy)
+import Layout from "../components/layout/Layout";
+import PageHeader from "../components/pageHeader/PageHeader";
+import WorkoutCard from "../components/workoutCard/WorkoutCard";
+import WorkoutModal from "../components/dateWorkoutSelectorModal/DateWorkoutSelectorModal";
+
+// Styles
+import '../styles/WorkoutCalendar.css';
+
 
 const PastWorkouts: React.FC = () => {
   const navigate = useNavigate();
+  const { workouts, loading, error } = useWorkouts();
 
-  const [workouts, setWorkouts] = useState<Workout[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [showCalendarView, setShowCalendarView] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -32,19 +41,6 @@ const PastWorkouts: React.FC = () => {
   };
 
   const uniqueWorkoutTypes = ["All", ...new Set(workouts.map(workout => workout.workout_type_name))];
-
-  //const workoutDates = workouts.map(w => new Date(parseISO(w.date)).toDateString());
-
-  // const workoutsByDate = workouts.reduce((map, workout) => {
-  //   const dateKey = new Date(parseISO(workout.date)).toDateString();
-  
-  //   if (!map.has(dateKey)) {
-  //     map.set(dateKey, []);
-  //   }
-  
-  //   map.get(dateKey).push(workout);
-  //   return map;
-  // }, new Map());  
 
   const filteredWorkouts = selectedWorkoutType === "All"
     ? workouts
@@ -62,35 +58,6 @@ const PastWorkouts: React.FC = () => {
     map.get(dateKey).push(workout);
     return map;
   }, new Map());  
-
-  useEffect(() => {
-    const fetchWorkouts = async () => {
-      try {
-        const response = await fetch("https://yoked-backend-production.up.railway.app/api/workouts");
-        if (!response.ok) throw new Error("Failed to fetch workouts");
-
-        const data: Workout[] = await response.json();
-
-        const sortedWorkouts = data.sort(
-          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-        );
-
-        setWorkouts(sortedWorkouts);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Unknown error");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchWorkouts();
-  }, []);
-
-  // const handleToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setShowCalendarView(e.target.checked);
-  // };
-
-
 
   const handleDayClick = (date : Date) => {
     const workoutsByClickedDate = filteredWorkoutsByDate.get(date.toDateString()) || [];
