@@ -164,7 +164,23 @@ const CurrentWorkout: React.FC = () => {
           if (updated.notes) setNotes(updated.notes);
         }}
         onClick={() => {}}
-      />
+      >
+        {movements.length > 0 ? (
+          movements.map((movement) => (
+            <MovementCard
+              key={movement.id}
+              name={movement.movement_type_name}
+              weight={105} // Placeholder weight, replace with actual logic
+              onRemove={() => removeMovement(movement.id)}
+            />
+          ))
+        ) : (
+          <div className="text-gray-500">No movements added yet</div>
+        )}
+        <div>
+          <Button label="+" onClick={addMovement}/>
+        </div>
+      </WorkoutCard>
 
           <div className="space-y-4">
           <div>
@@ -179,19 +195,6 @@ const CurrentWorkout: React.FC = () => {
                 </option>
               ))}
             </select>
-          </div>
-          <div className="movementList">
-            {movements.map((movement) => (
-              <MovementCard
-                key={movement.id}
-                name={movement.movement_type_name}
-                weight={105}
-                onRemove={() => removeMovement(movement.id)}
-              />
-            ))}
-          </div>
-          <div>
-            <Button label="+" onClick={addMovement}/>
           </div>
           <Button label="Save" onClick={handleSubmit}/>
         </div>
