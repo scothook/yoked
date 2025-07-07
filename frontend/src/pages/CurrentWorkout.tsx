@@ -69,6 +69,7 @@ const CurrentWorkout: React.FC = () => {
       id: Date.now(),
       movement_type_id: 1,
       movement_type_name: "Chest Press",
+      notes: "",
       sets: []
     };
     console.log(newMovement);
@@ -90,7 +91,7 @@ const CurrentWorkout: React.FC = () => {
       movements: movements.map((movement) => ({
         id: movement.id,
         workout_id: workoutId || undefined, // If creating a new workout, this will be undefined
-        //notes: movement.notes || "",
+        notes: movement.notes || "page notes",
         movement_type_id: movement.movement_type_id
       }))
     };
@@ -147,6 +148,10 @@ const CurrentWorkout: React.FC = () => {
               key={movement.id}
               name={movement.movement_type_name}
               weight={105} // Placeholder weight, replace with actual logic
+              notes={movement.notes}
+              onChange={(updatedMovement) => {
+                setMovements(movements.map(m => m.id === movement.id ? { ...m, ...updatedMovement } : m));
+              }}
               onRemove={() => removeMovement(movement.id)}
             />
           ))

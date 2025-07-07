@@ -122,8 +122,8 @@ app.patch("/api/workouts/:id", async (req, res) => {
       // Insert new movements
       for (let movement of req.body.movements) {
         await client.query(
-          "INSERT INTO movements (workout_id, movement_type_id) VALUES ($1, $2)",
-          [id, movement.movement_type_id]
+          "INSERT INTO movements (workout_id, notes, movement_type_id) VALUES ($1, $2, $3)",
+          [id, movement.notes, movement.movement_type_id]
         );
       }
     }
@@ -185,6 +185,7 @@ app.get("/api/workouts/:id", async (req, res) => {
                   WHEN m.id IS NOT NULL THEN 
                       json_build_object(
                           'id', m.id,
+                          'notes', m.notes,
                           'movement_type_id', m.movement_type_id,
                           'movement_type_name', m.movement_type_name,
                           'sets', m.sets
@@ -197,6 +198,7 @@ app.get("/api/workouts/:id", async (req, res) => {
       LEFT JOIN (
           SELECT 
               m.workout_id,
+              m.notes,
               m.id,
               m.movement_type_id,
               mt.movement_type_name,
@@ -206,7 +208,7 @@ app.get("/api/workouts/:id", async (req, res) => {
           FROM movements m
           LEFT JOIN movement_types mt ON m.movement_type_id = mt.id
           LEFT JOIN sets s ON s.movement_id = m.id
-          GROUP BY m.workout_id, m.id, m.movement_type_id, mt.movement_type_name
+          GROUP BY m.workout_id, m.notes, m.id, m.movement_type_id, mt.movement_type_name
       ) m ON m.workout_id = w.id
        where w.id = $1
       GROUP BY w.id, w.date, w.body_weight, wt.workout_type_name, wt.id;`, [id]
@@ -234,6 +236,7 @@ app.get("/api/workouts", async (req, res) => {
                   WHEN m.id IS NOT NULL THEN 
                       json_build_object(
                           'id', m.id,
+                          'notes', m.notes,
                           'movement_type_id', m.movement_type_id,
                           'movement_type_name', m.movement_type_name,
                           'sets', m.sets
@@ -246,6 +249,7 @@ app.get("/api/workouts", async (req, res) => {
       LEFT JOIN (
           SELECT 
               m.workout_id,
+              m.notes,
               m.id,
               m.movement_type_id,
               mt.movement_type_name,
@@ -255,7 +259,7 @@ app.get("/api/workouts", async (req, res) => {
           FROM movements m
           LEFT JOIN movement_types mt ON m.movement_type_id = mt.id
           LEFT JOIN sets s ON s.movement_id = m.id
-          GROUP BY m.workout_id, m.id, m.movement_type_id, mt.movement_type_name
+          GROUP BY m.workout_id, m.notes, m.id, m.movement_type_id, mt.movement_type_name
       ) m ON m.workout_id = w.id
       GROUP BY w.id, w.date, w.body_weight, wt.workout_type_name, wt.id;`
     );
