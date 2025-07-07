@@ -84,36 +84,59 @@ app.post("/api/workouts", async (req, res) => {
 });
 
 app.patch("/api/workouts/:id", async (req, res) => {
+  const client = await pool.connect();
   const { id } = req.params;
   const fields = ['body_weight', 'workout_type_id', 'notes', 'date'];
   const values = [];
   const setClauses = [];
 
-  fields.forEach((field, index) => {
-    if (req.body[field] !== undefined) {
-      setClauses.push(`${field} = $${values.length + 1}`);
-      values.push(req.body[field]);
-    }
-  });
-
-  if (setClauses.length === 0) {
-    return res.status(400).json({ error: "No fields to update" });
-  }
-
-  values.push(id);
-
-  const query = `
-    UPDATE workouts
-    SET ${setClauses.join(", ")}
-    WHERE id = $${values.length}
-    RETURNING *;`;
-
   try {
-    const result = await pool.query(query, values);
-    res.json(result.rows[0]);
+    await client.query("BEGIN");
+
+    // 1. Build the SET clause for workout update
+    fields.forEach((field) => {
+      if (req.body[field] !== undefined) {
+        setClauses.push(`${field} = $${values.length + 1}`);
+        values.push(req.body[field]);
+      }
+    });
+
+    // 2. Update workouts table if needed
+    let updatedWorkout;
+    if (setClauses.length > 0) {
+      values.push(id);
+      const updateWorkoutQuery = `
+        UPDATE workouts
+        SET ${setClauses.join(", ")}
+        WHERE id = $${values.length}
+        RETURNING *;`;
+      const workoutResult = await client.query(updateWorkoutQuery, values);
+      updatedWorkout = workoutResult.rows[0];
+    }
+
+    // 3. Replace movements if provided
+    if (req.body.movements && Array.isArray(req.body.movements)) {
+      // Delete existing movements for this workout
+      await client.query("DELETE FROM movements WHERE workout_id = $1", [id]);
+
+      // Insert new movements
+      for (let movement of req.body.movements) {
+        await client.query(
+          "INSERT INTO movements (workout_id, movement_type_id) VALUES ($1, $2)",
+          [id, movement.movement_type_id]
+        );
+      }
+    }
+
+    await client.query("COMMIT");
+
+    res.json(updatedWorkout || { message: "Workout updated, no fields changed." });
   } catch (err) {
+    await client.query("ROLLBACK");
     console.error(err);
     res.status(500).json({ error: "Failed to update workout." });
+  } finally {
+    client.release();
   }
 });
 
