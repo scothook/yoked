@@ -30,7 +30,10 @@ const CurrentWorkout: React.FC = () => {
     const fetchWorkout = async () => {
       if (!workoutId) {
         console.log("No workout ID provided");
-        //setLoading(false);
+        setBodyWeight("100");
+        setWorkoutType("1");
+        setNotes("notes");
+        setDate("2025-06-06");
         return;
       }
 
