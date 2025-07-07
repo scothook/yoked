@@ -45,6 +45,7 @@ const CurrentWorkout: React.FC = () => {
         setBodyWeight(workoutJson.body_weight);
         setWorkoutType(workoutJson.workout_type_id);
         setNotes(workoutJson.notes);
+        setMovements(workoutJson.movements || []);
       } catch (err) {
         console.error("Error fetching workout:", err);
       } finally {
