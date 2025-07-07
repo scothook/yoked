@@ -3,6 +3,7 @@ import { Movement } from "../../types/movement.tsx";
 import Card from "../card/Card.tsx";
 
 interface WorkoutSummaryCardProps {
+    children?: React.ReactNode;
     date: string; // e.g. '2025-04-06'
     bodyWeight?: number; // optional, in lbs or kg
     workoutType: string; // e.g. 'Push Day', 'Legs', 'Cardio'
@@ -20,7 +21,7 @@ interface WorkoutSummaryCardProps {
     notes?: string;
   };
 
-export default function WorkoutCard({ date, bodyWeight, workoutType, movements, notes, editable, onClick, onChange }: WorkoutSummaryCardProps) {
+export default function WorkoutCard({ children, date, bodyWeight, workoutType, movements, notes, editable, onClick, onChange }: WorkoutSummaryCardProps) {
   return (
     <Card 
       onClick={onClick}
@@ -79,6 +80,7 @@ export default function WorkoutCard({ date, bodyWeight, workoutType, movements, 
         ) : (
           <div className={styles.notes}>{notes}</div>
         ))}
+      {children && <div className={styles.children}>{children}</div>}
     </Card>
   );
 }
