@@ -77,18 +77,6 @@ const CurrentWorkout: React.FC = () => {
   const removeMovement = (id: number) => {
     setMovements(movements.filter((movement) => movement.id !== id));
   };
-/*
-  const getWorkoutData = async () => {
-    try {
-      const response = await fetch("https://yoked-backend-production.up.railway.app/api/workouts");
-      const data = await response.json();
-      //setWorkout(data[0]);
-      console.log(workout);
-      //setWorkoutId(data[0].workout_id);
-    } catch (error) {
-      console.error("Error fetching workout data:", error);
-    }
-  }; */
 
   const handleSubmit = async () => {
     console.log("Submitting workout data...");
@@ -124,26 +112,6 @@ const CurrentWorkout: React.FC = () => {
       console.error("Error saving workout", err);
       alert("Something went wrong while saving the workout.");
     }
-/*
-    try {
-      const response = await fetch("https://yoked-backend-production.up.railway.app/api/workouts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(WorkoutSubmission),
-      });
-
-      if (response.ok) {
-        alert("Workout saved!");
-        setBodyWeight("");
-        setWorkoutType("");
-        setNotes("");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Something went wrong.");
-    } */
   };
 
   return (
@@ -183,6 +151,8 @@ const CurrentWorkout: React.FC = () => {
       </WorkoutCard>
 
           <div className="space-y-4">
+            <Button label="Save" onClick={handleSubmit}/>
+
           <div>
             <select
               value={workoutType}
@@ -196,7 +166,6 @@ const CurrentWorkout: React.FC = () => {
               ))}
             </select>
           </div>
-          <Button label="Save" onClick={handleSubmit}/>
         </div>
     </Layout>
   );
