@@ -48,19 +48,38 @@ app.get("/api/workout_types", async (req, res) => {
   }
 });
 
+//aka new workout
 app.post("/api/workouts", async (req, res) => {
-  try {
-    const { body_weight, workout_type_id, notes, date } = req.body;
+  const client = await pool.connect();
 
-    const result = await pool.query(
+  try {
+    const { body_weight, workout_type_id, notes, date, movements } = req.body;
+
+    await client.query("BEGIN"); // Start transaction
+
+    const result = await client.query(
       "INSERT INTO workouts (body_weight, workout_type_id, notes, date) VALUES ($1, $2, $3, $4) RETURNING *;",
       [body_weight, workout_type_id, notes, date]
     );
+    const workoutId = result.rows[0].id;
+
+    // Insert movements
+    for (let movement of movements) {
+      await client.query(
+        "INSERT INTO movements (workout_id, movement_type_id) VALUES ($1, $2) RETURNING *;",
+        [workoutId, movement.movement_type_id]
+      );
+    }
+
+    await client.query("COMMIT"); // Commit transaction
 
     res.status(201).json(result.rows[0]); // Return the new workout
   } catch (err) {
+    await client.query("ROLLBACK"); // Rollback transaction on error
     console.error(err);
     res.status(500).json({ error: "Database error" });
+  } finally {
+    client.release(); // Release the client back to the pool
   }
 });
 

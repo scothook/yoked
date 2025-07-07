@@ -80,11 +80,18 @@ const CurrentWorkout: React.FC = () => {
 
   const handleSubmit = async () => {
     console.log("Submitting workout data...");
+    console.log(movements);
     const WorkoutSubmission = {
       body_weight: bodyWeight === "" ? undefined : parseFloat(bodyWeight),
       workout_type_id: workoutType === "" ? undefined : workoutType,
       notes: notes === "" ? undefined : notes,
-      date: date === "" ? undefined : date
+      date: date === "" ? undefined : date,
+      movements: movements.map((movement) => ({
+        id: movement.id,
+        workout_id: workoutId || undefined, // If creating a new workout, this will be undefined
+        //notes: movement.notes || "",
+        movement_type_id: movement.movement_type_id
+      }))
     };
 
     try {
