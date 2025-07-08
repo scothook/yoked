@@ -171,24 +171,21 @@ const CurrentWorkout: React.FC = () => {
           <Button label="+" onClick={addMovement}/>
         </div>
       </WorkoutCard>
-
-          <div className="space-y-4">
-            <Button label="Save" onClick={handleSubmit}/>
-
-          <div>
-            <select
-              value={workoutType}
-              onChange={(e) => setWorkoutType(e.target.value)}
-              className="border p-2"
-            >
-              {workoutTypes.map((type) => (
-                <option key={type.id} value={type.id}>
-                  {type.workout_type_name}
-                </option>
-              ))}
-            </select>
-          </div>
+      <div className="space-y-4">
+        <div>
+          <select
+            value={workoutType}
+            onChange={(e) => setWorkoutType(e.target.value)}
+            className="border p-2"
+          >
+            {workoutTypes.map((type) => (
+              <option key={type.id} value={type.id}>
+                {type.workout_type_name}
+              </option>
+            ))}
+          </select>
         </div>
+      </div>
     </Layout>
   );
 };
