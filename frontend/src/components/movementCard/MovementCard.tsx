@@ -5,6 +5,7 @@ import WeightSet from "../weightSet/WeightSet";
 //import { Set } from "../types/set";
 
 interface MovementCardProps {
+  children?: React.ReactNode;
   name: string;
   weight: number;
   notes: string;
@@ -12,7 +13,7 @@ interface MovementCardProps {
   onRemove: () => void;
 }
 
-export default function MovementCard({ name, weight, notes, onChange, onRemove }: MovementCardProps) {
+export default function MovementCard({ children, name, weight, notes, onChange, onRemove }: MovementCardProps) {
   return (
     <div className={styles.movementCard}>
       <MovementHeader
@@ -28,6 +29,7 @@ export default function MovementCard({ name, weight, notes, onChange, onRemove }
             onChange={(e) => onChange?.({ notes: e.target.value })}
         />
       </div>
+      {children && <div className={styles.children}>{children}</div>}
     </div>
   );
 }
