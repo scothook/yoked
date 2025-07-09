@@ -128,49 +128,52 @@ const CurrentWorkout: React.FC = () => {
 
   return (
     <Layout>
-          <PageHeader 
-            title={workout ? workoutTypes.find(type => type.id === Number(workoutType))?.workout_type_name || "Generic Workout" : 'new workout'} 
-            //cornerTitle={date ? `${+date.split('-')[1]}/${+date.split('-')[2]}` : ''} 
-            //cornerTitleOnClick={() => {}}
-            variant={"save"}
-            cornerTitleOnClick={handleSubmit}
-          />
-            
-      <WorkoutCard
-        date={date}
-        bodyWeight={parseInt(bodyWeight)}
-        workoutType={workoutType}
-        movements={movements}
-        notes={notes}
-        editable={true}
-        onChange={(updated) => {
-          if (updated.date) setDate(updated.date);
-          if (updated.bodyWeight) setBodyWeight(updated.bodyWeight.toString());
-          if (updated.workoutType) setWorkoutType(updated.workoutType);
-          if (updated.notes) setNotes(updated.notes);
-        }}
-        onClick={() => {}}
-      >
-        {movements.length > 0 ? (
-          movements.map((movement) => (
-            <MovementCard
-              key={movement.id}
-              name={movement.movement_type_name}
-              weight={105} // Placeholder weight, replace with actual logic
-              notes={movement.notes}
-              onChange={(updatedMovement) => {
-                setMovements(movements.map(m => m.id === movement.id ? { ...m, ...updatedMovement } : m));
-              }}
-              onRemove={() => removeMovement(movement.id)}
-            />
-          ))
-        ) : (
-          <div className="text-gray-500">No movements added yet</div>
-        )}
-        <div>
-          <Button label="+" onClick={addMovement}/>
-        </div>
-      </WorkoutCard>
+      <PageHeader 
+        title={workout ? workoutTypes.find(type => type.id === Number(workoutType))?.workout_type_name || "Generic Workout" : 'new workout'} 
+        //cornerTitle={date ? `${+date.split('-')[1]}/${+date.split('-')[2]}` : ''} 
+        //cornerTitleOnClick={() => {}}
+        variant={"save"}
+        cornerTitleOnClick={handleSubmit}
+      />
+      <ul style={{width: "100%", textAlign: "center", padding: "0", display: "inline-block", justifyContent: "center", margin: "0 auto"}}>
+        <li style={{listStyleType: "none", display: "inlineBlock", margin: "1rem"}}>
+          <WorkoutCard
+            date={date}
+            bodyWeight={parseInt(bodyWeight)}
+            workoutType={workoutType}
+            movements={movements}
+            notes={notes}
+            editable={true}
+            onChange={(updated) => {
+              if (updated.date) setDate(updated.date);
+              if (updated.bodyWeight) setBodyWeight(updated.bodyWeight.toString());
+              if (updated.workoutType) setWorkoutType(updated.workoutType);
+              if (updated.notes) setNotes(updated.notes);
+            }}
+            onClick={() => {}}
+          >
+            {movements.length > 0 ? (
+              movements.map((movement) => (
+                <MovementCard
+                  key={movement.id}
+                  name={movement.movement_type_name}
+                  weight={105} // Placeholder weight, replace with actual logic
+                  notes={movement.notes}
+                  onChange={(updatedMovement) => {
+                    setMovements(movements.map(m => m.id === movement.id ? { ...m, ...updatedMovement } : m));
+                  }}
+                  onRemove={() => removeMovement(movement.id)}
+                />
+              ))
+            ) : (
+              <div className="text-gray-500">No movements added yet</div>
+            )}
+            <div>
+              <Button label="+" onClick={addMovement}/>
+            </div>
+          </WorkoutCard>
+        </li>
+      </ul>
       <div className="space-y-4">
         <div>
           <select
