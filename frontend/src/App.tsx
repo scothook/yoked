@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import CurrentWorkout from "./pages/CurrentWorkout";
 import PastWorkouts from "./pages/PastWorkouts";
 import ProgressTracker from "./pages/ProgressTracker";
+import About from "./pages/About";
 
 const App: React.FC = () => {
   return (
@@ -14,6 +15,7 @@ const App: React.FC = () => {
         <Route path="/current-workout" element={<CurrentWorkout />} />
         <Route path="/past-workouts" element={<PastWorkouts />} />
         <Route path="/progress-tracker" element={<ProgressTracker />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </Router>
   );
