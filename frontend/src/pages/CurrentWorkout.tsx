@@ -138,6 +138,7 @@ const CurrentWorkout: React.FC = () => {
       <ul style={{width: "100%", textAlign: "center", padding: "0", display: "inline-block", justifyContent: "center", margin: "0 auto"}}>
         <li style={{listStyleType: "none", display: "inlineBlock", margin: "1rem"}}>
           <WorkoutCard
+            workoutTypes={workoutTypes}
             date={date}
             bodyWeight={parseInt(bodyWeight)}
             workoutType={workoutType}
@@ -174,21 +175,6 @@ const CurrentWorkout: React.FC = () => {
           </WorkoutCard>
         </li>
       </ul>
-      <div className="space-y-4">
-        <div>
-          <select
-            value={workoutType}
-            onChange={(e) => setWorkoutType(e.target.value)}
-            className="border p-2"
-          >
-            {workoutTypes.map((type) => (
-              <option key={type.id} value={type.id}>
-                {type.workout_type_name}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
     </Layout>
   );
 };
