@@ -5,12 +5,15 @@ import WeightSet from "../weightSet/WeightSet";
 //import { Set } from "../types/set";
 
 interface MovementCardProps {
+  children?: React.ReactNode;
   name: string;
   weight: number;
+  notes: string;
+  onChange?: (updatedMovement: Partial<MovementCardProps>) => void;
   onRemove: () => void;
 }
 
-export default function MovementCard({ name, weight, onRemove }: MovementCardProps) {
+export default function MovementCard({ children, name, weight, notes, onChange, onRemove }: MovementCardProps) {
   return (
     <div className={styles.movementCard}>
       <MovementHeader
@@ -20,9 +23,13 @@ export default function MovementCard({ name, weight, onRemove }: MovementCardPro
       <div className={styles.weightSetList}>
       <WeightSet
         weight={weight}/>
+      <textarea
+            value={notes}
+            style={{ width: '100%', height: '150px', padding: '8px' }}
+            onChange={(e) => onChange?.({ notes: e.target.value })}
+        />
       </div>
-
-      <button className={styles.addMovementBtn}>+</button>
+      {children && <div className={styles.children}>{children}</div>}
     </div>
   );
 }

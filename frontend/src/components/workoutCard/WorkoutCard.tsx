@@ -1,8 +1,11 @@
 import styles from "./WorkoutCard.module.css";
 import { Movement } from "../../types/movement.tsx";
+import { WorkoutType } from "../../types/workoutType.tsx";
 import Card from "../card/Card.tsx";
 
 interface WorkoutSummaryCardProps {
+    children?: React.ReactNode;
+    workoutTypes?: WorkoutType[];
     date: string; // e.g. '2025-04-06'
     bodyWeight?: number; // optional, in lbs or kg
     workoutType: string; // e.g. 'Push Day', 'Legs', 'Cardio'
@@ -20,7 +23,7 @@ interface WorkoutSummaryCardProps {
     notes?: string;
   };
 
-export default function WorkoutCard({ date, bodyWeight, workoutType, movements, notes, editable, onClick, onChange }: WorkoutSummaryCardProps) {
+export default function WorkoutCard({ children, workoutTypes, date, bodyWeight, workoutType, movements, notes, editable, onClick, onChange }: WorkoutSummaryCardProps) {
   return (
     <Card 
       onClick={onClick}
@@ -51,11 +54,17 @@ export default function WorkoutCard({ date, bodyWeight, workoutType, movements, 
       <hr />
       <div className={styles.workoutType}>
         {editable ? (
-          <input
-            type="text"
+          <select
             value={workoutType}
             onChange={(e) => onChange?.({ workoutType: e.target.value })}
-          />
+            className="border p-2"
+          >
+            {workoutTypes && workoutTypes.map((type) => (
+              <option key={type.id} value={type.id}>
+                {type.workout_type_name}
+              </option>
+            ))}
+          </select>
         ) : (
           workoutType
         )}
@@ -79,6 +88,7 @@ export default function WorkoutCard({ date, bodyWeight, workoutType, movements, 
         ) : (
           <div className={styles.notes}>{notes}</div>
         ))}
+      {children && <div className={styles.children}>{children}</div>}
     </Card>
   );
 }

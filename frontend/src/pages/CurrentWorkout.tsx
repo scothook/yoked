@@ -30,7 +30,10 @@ const CurrentWorkout: React.FC = () => {
     const fetchWorkout = async () => {
       if (!workoutId) {
         console.log("No workout ID provided");
-        //setLoading(false);
+        setBodyWeight("100");
+        setWorkoutType("1");
+        setNotes("notes");
+        setDate("2025-06-06");
         return;
       }
 
@@ -45,6 +48,7 @@ const CurrentWorkout: React.FC = () => {
         setBodyWeight(workoutJson.body_weight);
         setWorkoutType(workoutJson.workout_type_id);
         setNotes(workoutJson.notes);
+        setMovements(workoutJson.movements || []);
       } catch (err) {
         console.error("Error fetching workout:", err);
       } finally {
@@ -68,6 +72,7 @@ const CurrentWorkout: React.FC = () => {
       id: Date.now(),
       movement_type_id: 1,
       movement_type_name: "Chest Press",
+      notes: "",
       sets: []
     };
     console.log(newMovement);
@@ -77,26 +82,21 @@ const CurrentWorkout: React.FC = () => {
   const removeMovement = (id: number) => {
     setMovements(movements.filter((movement) => movement.id !== id));
   };
-/*
-  const getWorkoutData = async () => {
-    try {
-      const response = await fetch("https://yoked-backend-production.up.railway.app/api/workouts");
-      const data = await response.json();
-      //setWorkout(data[0]);
-      console.log(workout);
-      //setWorkoutId(data[0].workout_id);
-    } catch (error) {
-      console.error("Error fetching workout data:", error);
-    }
-  }; */
 
   const handleSubmit = async () => {
     console.log("Submitting workout data...");
+    console.log(movements);
     const WorkoutSubmission = {
       body_weight: bodyWeight === "" ? undefined : parseFloat(bodyWeight),
       workout_type_id: workoutType === "" ? undefined : workoutType,
       notes: notes === "" ? undefined : notes,
-      date: date === "" ? undefined : date
+      date: date === "" ? undefined : date,
+      movements: movements.map((movement) => ({
+        id: movement.id,
+        workout_id: workoutId || undefined, // If creating a new workout, this will be undefined
+        notes: movement.notes || "page notes",
+        movement_type_id: movement.movement_type_id
+      }))
     };
 
     try {
@@ -124,77 +124,57 @@ const CurrentWorkout: React.FC = () => {
       console.error("Error saving workout", err);
       alert("Something went wrong while saving the workout.");
     }
-/*
-    try {
-      const response = await fetch("https://yoked-backend-production.up.railway.app/api/workouts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(WorkoutSubmission),
-      });
-
-      if (response.ok) {
-        alert("Workout saved!");
-        setBodyWeight("");
-        setWorkoutType("");
-        setNotes("");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Something went wrong.");
-    } */
   };
 
   return (
     <Layout>
-          <PageHeader title={workout ? workoutTypes.find(type => type.id === Number(workoutType))?.workout_type_name || "Generic Workout" : 'new workout'} cornerTitle={date ? `${+date.split('-')[1]}/${+date.split('-')[2]}` : ''} cornerTitleOnClick={() => {}}/>
-            
-      <WorkoutCard
-        date={date}
-        bodyWeight={parseInt(bodyWeight)}
-        workoutType={workoutType}
-        movements={movements}
-        notes={notes}
-        editable={true}
-        onChange={(updated) => {
-          if (updated.date) setDate(updated.date);
-          if (updated.bodyWeight) setBodyWeight(updated.bodyWeight.toString());
-          if (updated.workoutType) setWorkoutType(updated.workoutType);
-          if (updated.notes) setNotes(updated.notes);
-        }}
-        onClick={() => {}}
+      <PageHeader 
+        title={workout ? workoutTypes.find(type => type.id === Number(workoutType))?.workout_type_name || "Generic Workout" : 'new workout'} 
+        //cornerTitle={date ? `${+date.split('-')[1]}/${+date.split('-')[2]}` : ''} 
+        //cornerTitleOnClick={() => {}}
+        variant={"save"}
+        cornerTitleOnClick={handleSubmit}
       />
-
-          <div className="space-y-4">
-          <div>
-            <select
-              value={workoutType}
-              onChange={(e) => setWorkoutType(e.target.value)}
-              className="border p-2"
-            >
-              {workoutTypes.map((type) => (
-                <option key={type.id} value={type.id}>
-                  {type.workout_type_name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="movementList">
-            {movements.map((movement) => (
-              <MovementCard
-                key={movement.id}
-                name={movement.movement_type_name}
-                weight={105}
-                onRemove={() => removeMovement(movement.id)}
-              />
-            ))}
-          </div>
-          <div>
-            <Button label="+" onClick={addMovement}/>
-          </div>
-          <Button label="Save" onClick={handleSubmit}/>
-        </div>
+      <ul style={{width: "100%", textAlign: "center", padding: "0", display: "inline-block", justifyContent: "center", margin: "0 auto"}}>
+        <li style={{listStyleType: "none", display: "inlineBlock", margin: "1rem"}}>
+          <WorkoutCard
+            workoutTypes={workoutTypes}
+            date={date}
+            bodyWeight={parseInt(bodyWeight)}
+            workoutType={workoutType}
+            movements={movements}
+            notes={notes}
+            editable={true}
+            onChange={(updated) => {
+              if (updated.date) setDate(updated.date);
+              if (updated.bodyWeight) setBodyWeight(updated.bodyWeight.toString());
+              if (updated.workoutType) setWorkoutType(updated.workoutType);
+              if (updated.notes) setNotes(updated.notes);
+            }}
+            onClick={() => {}}
+          >
+            {movements.length > 0 ? (
+              movements.map((movement) => (
+                <MovementCard
+                  key={movement.id}
+                  name={movement.movement_type_name}
+                  weight={105} // Placeholder weight, replace with actual logic
+                  notes={movement.notes}
+                  onChange={(updatedMovement) => {
+                    setMovements(movements.map(m => m.id === movement.id ? { ...m, ...updatedMovement } : m));
+                  }}
+                  onRemove={() => removeMovement(movement.id)}
+                />
+              ))
+            ) : (
+              <div className="text-gray-500">No movements added yet</div>
+            )}
+            <div>
+              <Button label="+" onClick={addMovement}/>
+            </div>
+          </WorkoutCard>
+        </li>
+      </ul>
     </Layout>
   );
 };
