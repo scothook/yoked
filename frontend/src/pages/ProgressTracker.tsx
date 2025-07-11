@@ -22,7 +22,6 @@ const ProgressTracker: React.FC = () => {
     const [drawerOpen, setDrawerOpen] = React.useState(false);
     
     const toggleDrawer = (newDrawerOpen: boolean) => () => {
-      console.log('inside toggleDrawer');
       setDrawerOpen(newDrawerOpen);
     };
 
@@ -59,7 +58,6 @@ const ProgressTracker: React.FC = () => {
       
               setWorkouts(sortedWorkouts);
               setMovements(sortedWorkouts.flatMap(workout => workout.movements)); // Flatten the movements array
-              console.log('inside fetchData');
             } catch (err) {
                 setError(err as string);
             } finally {

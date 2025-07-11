@@ -20,7 +20,6 @@ const Button: React.FC<ButtonProps> = ({ label, onClick, variant, children }) =>
   } else if (variant === 'save') {
     variantStyles = styles.save;
   }
-  console.log('Button received onClick:', onClick);
 
   return (
     <button 

@@ -31,7 +31,6 @@ const CurrentWorkout: React.FC = () => {
   useEffect(() => {
     const fetchWorkout = async () => {
       if (!workoutId) {
-        console.log("No workout ID provided");
         setBodyWeight("100");
         setWorkoutType("1");
         setNotes("notes");
@@ -44,7 +43,6 @@ const CurrentWorkout: React.FC = () => {
         const data = await res.json();
         const workoutJson = data[0];
         setWorkout(workoutJson);
-        console.log("Fetched workout:", workoutJson);
         const formattedDate = new Date(workoutJson.date).toISOString().split('T')[0];
         setDate(formattedDate);
         setBodyWeight(workoutJson.body_weight);
@@ -62,15 +60,12 @@ const CurrentWorkout: React.FC = () => {
       const res = await fetch("https://yoked-backend-production.up.railway.app/api/workout_types");
       const data = await res.json();
       setWorkoutTypes(data);
-      console.log("Fetched workout types:", data);
     };
 
     async function fetchMovementTypes() {
       const res = await fetch("https://yoked-backend-production.up.railway.app/api/movement_types");
       const data = await res.json();
       setMovementTypes(data);
-      console.log("Fetched workout types:", data);
-      console.log("movementTypes", movementTypes);
     };
 
     fetchWorkout();
@@ -86,7 +81,6 @@ const CurrentWorkout: React.FC = () => {
       notes: "",
       sets: []
     };
-    console.log(newMovement);
     setMovements([...movements, newMovement]);
   };
 
@@ -96,7 +90,6 @@ const CurrentWorkout: React.FC = () => {
 
   const handleSubmit = async () => {
     console.log("Submitting workout data...");
-    console.log(movements);
     const WorkoutSubmission = {
       body_weight: bodyWeight === "" ? undefined : parseFloat(bodyWeight),
       workout_type_id: workoutType === "" ? undefined : workoutType,
@@ -125,7 +118,6 @@ const CurrentWorkout: React.FC = () => {
           });
   
       const data = await res.json();
-      console.log("Workout saved:", data);
       alert("Workout saved!");
   
       // ✅ If just created a new workout, store the new ID

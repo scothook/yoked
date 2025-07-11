@@ -40,7 +40,6 @@ const PastWorkouts: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const toggleDrawer = (newDrawerOpen: boolean) => () => {
-    console.log('inside toggleDrawer');
     setDrawerOpen(newDrawerOpen);
   };
 
@@ -52,7 +51,6 @@ const PastWorkouts: React.FC = () => {
   const handleDayClick = (date : Date) => {
     const workoutsByClickedDate = filteredWorkoutsByDate.get(date.toDateString()) || [];
 
-    console.log(workoutsByClickedDate);
     if (workoutsByClickedDate.length === 1) {
       navigate(`/current-workout/`, { state: { workoutId: workoutsByClickedDate[0].id }})
     } else if (workoutsByClickedDate.length > 1) {
@@ -96,7 +94,6 @@ const PastWorkouts: React.FC = () => {
               workouts={filteredWorkoutsByDate.get(selectedDate.toDateString())}
               onClose={() => setDropdownVisible(false)}
               onSelect={(workout) => {
-                console.log(workout);
                 navigate(`/current-workout/`, { state: { workoutId: workout.id }})
               }}
             />
