@@ -15,7 +15,6 @@ interface PageHeaderProps {
 
 export default function PageHeader({ title, cornerTitle, variant, cornerTitleOnClick }: PageHeaderProps) {
     const navigate = useNavigate();
-    console.log('PageHeader received cornerTitleOnClick:', cornerTitleOnClick);
     return (
         <div className={styles.header}>
             <div className={styles.headerTitle}>
