@@ -48,6 +48,16 @@ app.get("/api/workout_types", async (req, res) => {
   }
 });
 
+app.get("/api/movement_types", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM movement_types;");
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database query failed" });
+  }
+});
+
 //aka new workout
 app.post("/api/workouts", async (req, res) => {
   const client = await pool.connect();

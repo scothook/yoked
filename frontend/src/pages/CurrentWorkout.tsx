@@ -9,6 +9,7 @@ import WorkoutCard from "../components/workoutCard/WorkoutCard";
 import { Movement } from "../types/movement";
 import { Workout } from "../types/workout";
 import { WorkoutType } from "../types/workoutType";
+import { MovementType } from "../types/movementType.ts";
 import PageHeader from "../components/pageHeader/PageHeader";
 //import RepButton from "../components/repButton/RepButton";
 
@@ -16,6 +17,7 @@ const CurrentWorkout: React.FC = () => {
   const location = useLocation();
   const [workoutId, setWorkoutId] = useState(location.state?.workoutId ?? "");
   const [workoutTypes, setWorkoutTypes] = useState<WorkoutType[]>([]);
+  const [movementTypes, setMovementTypes] = useState<MovementType[]>([]);
 
   //const [loading, setLoading] = useState(true);
   const [workout, setWorkout] = useState<Workout | null>(null);
@@ -63,8 +65,17 @@ const CurrentWorkout: React.FC = () => {
       console.log("Fetched workout types:", data);
     };
 
+    async function fetchMovementTypes() {
+      const res = await fetch("https://yoked-backend-production.up.railway.app/api/movement_types");
+      const data = await res.json();
+      setMovementTypes(data);
+      console.log("Fetched workout types:", data);
+      console.log("movementTypes", movementTypes);
+    };
+
     fetchWorkout();
     fetchWorkoutTypes();
+    fetchMovementTypes();
   }, [workoutId])
 
   const addMovement = () => {
@@ -94,8 +105,9 @@ const CurrentWorkout: React.FC = () => {
       movements: movements.map((movement) => ({
         id: movement.id,
         workout_id: workoutId || undefined, // If creating a new workout, this will be undefined
-        notes: movement.notes || "page notes",
-        movement_type_id: movement.movement_type_id
+        notes: movement.notes || "movement notes",
+        movement_type_id: movement.movement_type_id,
+        movement_type_name: movement.movement_type_name
       }))
     };
 
@@ -156,10 +168,12 @@ const CurrentWorkout: React.FC = () => {
             {movements.length > 0 ? (
               movements.map((movement) => (
                 <MovementCard
-                  key={movement.id}
-                  name={movement.movement_type_name}
+                  id={movement.id}
+                  movement_type_name={movement.movement_type_name}
+                  movement_type_id={movement.movement_type_id}
                   weight={105} // Placeholder weight, replace with actual logic
                   notes={movement.notes}
+                  movementTypes={movementTypes}
                   onChange={(updatedMovement) => {
                     setMovements(movements.map(m => m.id === movement.id ? { ...m, ...updatedMovement } : m));
                   }}
