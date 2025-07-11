@@ -17,7 +17,7 @@ interface MovementCardProps {
   onRemove: () => void;
 }
 
-export default function MovementCard({ children, movement_type_name, movement_type_id, weight, notes, movementTypes, onChange, onRemove }: MovementCardProps) {
+export default function MovementCard({ children, movement_type_name, weight, notes, movementTypes, onChange, onRemove }: MovementCardProps) {
   return (
     <div className={styles.movementCard}>
       {movement_type_name}
