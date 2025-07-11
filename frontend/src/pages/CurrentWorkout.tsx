@@ -105,8 +105,9 @@ const CurrentWorkout: React.FC = () => {
       movements: movements.map((movement) => ({
         id: movement.id,
         workout_id: workoutId || undefined, // If creating a new workout, this will be undefined
-        notes: movement.notes || "page notes",
-        movement_type_id: movement.movement_type_id
+        notes: movement.notes || "movement notes",
+        movement_type_id: movement.movement_type_id,
+        movement_type_name: movement.movement_type_name
       }))
     };
 
@@ -167,8 +168,9 @@ const CurrentWorkout: React.FC = () => {
             {movements.length > 0 ? (
               movements.map((movement) => (
                 <MovementCard
-                  key={movement.id}
-                  name={movement.movement_type_name}
+                  id={movement.id}
+                  movement_type_name={movement.movement_type_name}
+                  movement_type_id={movement.movement_type_id}
                   weight={105} // Placeholder weight, replace with actual logic
                   notes={movement.notes}
                   movementTypes={movementTypes}

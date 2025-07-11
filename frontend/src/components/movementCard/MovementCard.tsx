@@ -7,7 +7,9 @@ import { MovementType } from "../../types/movementType.ts";
 
 interface MovementCardProps {
   children?: React.ReactNode;
-  name: string;
+  id: number;
+  movement_type_name: string;
+  movement_type_id: number;
   weight: number;
   notes: string;
   movementTypes?: MovementType[];
@@ -15,20 +17,26 @@ interface MovementCardProps {
   onRemove: () => void;
 }
 
-export default function MovementCard({ children, name, weight, notes, movementTypes, onChange, onRemove }: MovementCardProps) {
+export default function MovementCard({ children, movement_type_name, movement_type_id, weight, notes, movementTypes, onChange, onRemove }: MovementCardProps) {
   return (
     <div className={styles.movementCard}>
-      {name}
+      {movement_type_name}
       <MovementHeader
-        name={name}
+        name={movement_type_name}
         onRemove={onRemove}
         />
       <select
-        value={name}
-        onChange={(e) => onChange?.({ name: e.target.value })}
-        className="border p-2"
+        value={movement_type_name}
+        onChange={(e) => {
+          const selectedName = e.target.value;
+          const selectedType = movementTypes?.find(type => type.movement_type_name === selectedName);
+          onChange?.({
+            movement_type_name: selectedName,
+            movement_type_id: selectedType?.id, // include this
+          });
+        }}
       >
-        {movementTypes && movementTypes.map((type) => (
+        {movementTypes?.map((type) => (
           <option key={type.id} value={type.movement_type_name}>
             {type.movement_type_name}
           </option>
