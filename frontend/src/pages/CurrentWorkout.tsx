@@ -89,7 +89,6 @@ const CurrentWorkout: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    console.log("Submitting workout data...");
     const WorkoutSubmission = {
       body_weight: bodyWeight === "" ? undefined : parseFloat(bodyWeight),
       workout_type_id: workoutType === "" ? undefined : workoutType,
@@ -103,6 +102,7 @@ const CurrentWorkout: React.FC = () => {
         movement_type_name: movement.movement_type_name
       }))
     };
+    console.log("Submitting workout data...", WorkoutSubmission);
 
     try {
       const res = workoutId
@@ -118,6 +118,7 @@ const CurrentWorkout: React.FC = () => {
           });
   
       const data = await res.json();
+      console.log("Workout saved.", data);
       alert("Workout saved!");
   
       // ✅ If just created a new workout, store the new ID
