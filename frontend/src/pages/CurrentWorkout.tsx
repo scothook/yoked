@@ -171,6 +171,7 @@ const CurrentWorkout: React.FC = () => {
                   name={movement.movement_type_name}
                   weight={105} // Placeholder weight, replace with actual logic
                   notes={movement.notes}
+                  movementTypes={movementTypes}
                   onChange={(updatedMovement) => {
                     setMovements(movements.map(m => m.id === movement.id ? { ...m, ...updatedMovement } : m));
                   }}

@@ -2,6 +2,7 @@
 import styles from "./MovementCard.module.css";
 import MovementHeader from "../movementHeader/MovementHeader.tsx";
 import WeightSet from "../weightSet/WeightSet";
+import { MovementType } from "../../types/movementType.ts";
 //import { Set } from "../types/set";
 
 interface MovementCardProps {
@@ -9,17 +10,30 @@ interface MovementCardProps {
   name: string;
   weight: number;
   notes: string;
+  movementTypes?: MovementType[];
   onChange?: (updatedMovement: Partial<MovementCardProps>) => void;
   onRemove: () => void;
 }
 
-export default function MovementCard({ children, name, weight, notes, onChange, onRemove }: MovementCardProps) {
+export default function MovementCard({ children, name, weight, notes, movementTypes, onChange, onRemove }: MovementCardProps) {
   return (
     <div className={styles.movementCard}>
+      {name}
       <MovementHeader
         name={name}
         onRemove={onRemove}
         />
+      <select
+        value={name}
+        onChange={(e) => onChange?.({ name: e.target.value })}
+        className="border p-2"
+      >
+        {movementTypes && movementTypes.map((type) => (
+          <option key={type.id} value={type.movement_type_name}>
+            {type.movement_type_name}
+          </option>
+        ))}
+      </select>
       <div className={styles.weightSetList}>
       <WeightSet
         weight={weight}/>
