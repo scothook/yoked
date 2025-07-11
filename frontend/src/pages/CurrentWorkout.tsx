@@ -9,6 +9,7 @@ import WorkoutCard from "../components/workoutCard/WorkoutCard";
 import { Movement } from "../types/movement";
 import { Workout } from "../types/workout";
 import { WorkoutType } from "../types/workoutType";
+import { MovementType } from "../types/movementType.ts";
 import PageHeader from "../components/pageHeader/PageHeader";
 //import RepButton from "../components/repButton/RepButton";
 
@@ -16,6 +17,7 @@ const CurrentWorkout: React.FC = () => {
   const location = useLocation();
   const [workoutId, setWorkoutId] = useState(location.state?.workoutId ?? "");
   const [workoutTypes, setWorkoutTypes] = useState<WorkoutType[]>([]);
+  const [movementTypes, setMovementTypes] = useState<MovementType[]>([]);
 
   //const [loading, setLoading] = useState(true);
   const [workout, setWorkout] = useState<Workout | null>(null);
@@ -63,8 +65,17 @@ const CurrentWorkout: React.FC = () => {
       console.log("Fetched workout types:", data);
     };
 
+    async function fetchMovementTypes() {
+      const res = await fetch("https://yoked-backend-production.up.railway.app/api/movement_types");
+      const data = await res.json();
+      setMovementTypes(data);
+      console.log("Fetched workout types:", data);
+      console.log("movementTypes", movementTypes);
+    };
+
     fetchWorkout();
     fetchWorkoutTypes();
+    fetchMovementTypes();
   }, [workoutId])
 
   const addMovement = () => {
