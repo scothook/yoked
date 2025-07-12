@@ -136,14 +136,14 @@ const CurrentWorkout: React.FC = () => {
         workout_id: workoutId || undefined, // If creating a new workout, this will be undefined
         notes: movement.notes || "movement notes",
         movement_type_id: movement.movement_type_id,
-        movement_type_name: movement.movement_type_name
-        /*sets: movement.sets.map((set) => ({
+        movement_type_name: movement.movement_type_name,
+        sets: movement.sets.map((set) => ({
           id: set.id,
           movement_id: movement.id,
           weight: set.weight,
           order: set.order,
           reps:set.reps
-        }))*/
+        }))
       }))
     };
     console.log("Submitting workout data...", WorkoutSubmission);
