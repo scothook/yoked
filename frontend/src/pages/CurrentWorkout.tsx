@@ -25,7 +25,6 @@ const CurrentWorkout: React.FC = () => {
   const [workout, setWorkout] = useState<Workout | null>(null);
   //const [workoutId, setWorkoutId] = useState<number | null>(null);
   const [movements, setMovements] = useState<Movement[]>([]);
-  const [sets, setSets] = useState<Set[]>([]);
   const [bodyWeight, setBodyWeight] = useState("");
   const [workoutType, setWorkoutType] = useState("");
   const [notes, setNotes] = useState("");
@@ -87,22 +86,43 @@ const CurrentWorkout: React.FC = () => {
     setMovements([...movements, newMovement]);
   };
 
-  const addSet = () => {
+  const addSet = (movement: Movement) => {
     const newSet: Set = {
       id: Date.now(),
       reps: 5,
-      order: sets.length + 1,
+      order: (movement.sets?.length ?? 0) + 1,
       weight: 35
     };
-    setSets([...sets, newSet]);
+
+    const updatedMovements = movements.map(m => {
+      if (m.id === movement.id) {
+        return {
+          ...m,
+          sets: [...(m.sets || []), newSet]
+        };
+      }
+      return m;
+    });
+
+    setMovements(updatedMovements);
   };
 
   const removeMovement = (id: number) => {
     setMovements(movements.filter((movement) => movement.id !== id));
   };
 
-  const removeSet = (id: number) => {
-    setSets(sets.filter((set) => set.id !== id));
+  const removeSet = (movementId: number, setId: number) => {
+    const updatedMovements = movements.map(m => {
+      if (m.id === movementId) {
+        return {
+          ...m,
+          sets: m.sets?.filter(set => set.id !== setId) ?? []
+        };
+      }
+      return m;
+    });
+
+    setMovements(updatedMovements);
   };
 
   const handleSubmit = async () => {
@@ -189,18 +209,18 @@ const CurrentWorkout: React.FC = () => {
                   }}
                   onRemove={() => removeMovement(movement.id)}
                 >
-                  {sets.length > 0 ? (
-                    sets.map((set) => (
+                  {movement.sets.length > 0 ? (
+                    movement.sets.map((set) => (
                     <WeightSet
                       key={set.id}
                       weight={set.weight}
-                      onRemove={() => removeSet(set.id)}
+                      onRemove={() => removeSet(movement.id, set.id)}
                     />
                     ))
                   ) : (
                     "no sets yet"
                   )}
-                  <Button label="+" onClick={addSet}/>
+                  <Button label="+" onClick={() => addSet(movement)}/>
                 </MovementCard>
               ))
             ) : (
