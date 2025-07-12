@@ -126,15 +126,41 @@ app.patch("/api/workouts/:id", async (req, res) => {
 
     // 3. Replace movements if provided
     if (req.body.movements && Array.isArray(req.body.movements)) {
-      // Delete existing movements for this workout
+      // Get existing movement IDs for this workout
+      const movementResult = await client.query(
+        "SELECT id FROM movements WHERE workout_id = $1",
+        [id]
+      );
+      const movementIds = movementResult.rows.map((row) => row.id);
+
+      if (movementIds.length > 0) {
+        // Delete sets that reference those movement IDs
+        await client.query(
+          "DELETE FROM sets WHERE movement_id = ANY($1::int[])",
+          [movementIds]
+        );
+      }
+
+      // Now delete the movements themselves
       await client.query("DELETE FROM movements WHERE workout_id = $1", [id]);
 
-      // Insert new movements
+      // Insert new movements (and optionally sets, if you're doing that here too)
       for (let movement of req.body.movements) {
-        await client.query(
-          "INSERT INTO movements (workout_id, notes, movement_type_id) VALUES ($1, $2, $3)",
+        const movementInsert = await client.query(
+          "INSERT INTO movements (workout_id, notes, movement_type_id) VALUES ($1, $2, $3) RETURNING id",
           [id, movement.notes, movement.movement_type_id]
         );
+        const newMovementId = movementInsert.rows[0].id;
+
+        // Insert associated sets for this movement (if any)
+        if (movement.sets && Array.isArray(movement.sets)) {
+          for (let set of movement.sets) {
+            await client.query(
+              "INSERT INTO sets (movement_id, reps, weight) VALUES ($1, $2, $3)",
+              [newMovementId, set.reps, set.weight]
+            );
+          }
+        }
       }
     }
 
