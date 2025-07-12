@@ -213,6 +213,7 @@ const CurrentWorkout: React.FC = () => {
                     movement.sets.map((set) => (
                     <WeightSet
                       key={set.id}
+                      reps={set.reps}
                       weight={set.weight}
                       onRemove={() => removeSet(movement.id, set.id)}
                     />

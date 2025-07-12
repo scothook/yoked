@@ -1,7 +1,6 @@
 //import React from "react";
 import styles from "./MovementCard.module.css";
 import MovementHeader from "../movementHeader/MovementHeader.tsx";
-import WeightSet from "../weightSet/WeightSet";
 import { MovementType } from "../../types/movementType.ts";
 //import { Set } from "../types/set";
 
@@ -17,10 +16,9 @@ interface MovementCardProps {
   onRemove: () => void;
 }
 
-export default function MovementCard({ children, movement_type_name, weight, notes, movementTypes, onChange, onRemove }: MovementCardProps) {
+export default function MovementCard({ children, movement_type_name, notes, movementTypes, onChange, onRemove }: MovementCardProps) {
   return (
     <div className={styles.movementCard}>
-      {movement_type_name}
       <MovementHeader
         name={movement_type_name}
         onRemove={onRemove}
@@ -43,8 +41,6 @@ export default function MovementCard({ children, movement_type_name, weight, not
         ))}
       </select>
       <div className={styles.weightSetList}>
-      <WeightSet
-        weight={weight}/>
       <textarea
             value={notes}
             style={{ width: '100%', height: '150px', padding: '8px' }}
