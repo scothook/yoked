@@ -67,31 +67,46 @@ app.post("/api/workouts", async (req, res) => {
 
     await client.query("BEGIN"); // Start transaction
 
-    const result = await client.query(
+    // 1. Insert workout
+    const workoutResult = await client.query(
       "INSERT INTO workouts (body_weight, workout_type_id, notes, date) VALUES ($1, $2, $3, $4) RETURNING *;",
       [body_weight, workout_type_id, notes, date]
     );
-    const workoutId = result.rows[0].id;
+    const workout = workoutResult.rows[0];
+    const workoutId = workout.id;
 
-    // Insert movements
-    for (let movement of movements) {
-      await client.query(
-        "INSERT INTO movements (workout_id, movement_type_id) VALUES ($1, $2) RETURNING *;",
-        [workoutId, movement.movement_type_id]
-      );
+    // 2. Insert movements and their sets (if any)
+    if (movements && Array.isArray(movements)) {
+      for (let movement of movements) {
+        const movementResult = await client.query(
+          "INSERT INTO movements (workout_id, notes, movement_type_id) VALUES ($1, $2, $3) RETURNING id;",
+          [workoutId, movement.notes || null, movement.movement_type_id]
+        );
+        const movementId = movementResult.rows[0].id;
+
+        // Insert sets for the movement if provided
+        if (movement.sets && Array.isArray(movement.sets)) {
+          for (let set of movement.sets) {
+            await client.query(
+              "INSERT INTO sets (movement_id, reps, weight) VALUES ($1, $2, $3);",
+              [movementId, set.reps, set.weight]
+            );
+          }
+        }
+      }
     }
 
-    await client.query("COMMIT"); // Commit transaction
-
-    res.status(201).json(result.rows[0]); // Return the new workout
+    await client.query("COMMIT");
+    res.status(201).json(workout);
   } catch (err) {
-    await client.query("ROLLBACK"); // Rollback transaction on error
+    await client.query("ROLLBACK");
     console.error(err);
-    res.status(500).json({ error: "Database error" });
+    res.status(500).json({ error: "Failed to create workout." });
   } finally {
-    client.release(); // Release the client back to the pool
+    client.release();
   }
 });
+
 
 app.patch("/api/workouts/:id", async (req, res) => {
   const client = await pool.connect();
