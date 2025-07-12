@@ -6,7 +6,9 @@ import Button from "../components/button/Button";
 import Layout from "../components/layout/Layout";
 import MovementCard from "../components/movementCard/MovementCard";
 import WorkoutCard from "../components/workoutCard/WorkoutCard";
+import WeightSet from "../components/weightSet/WeightSet";
 import { Movement } from "../types/movement";
+import { Set } from "../types/set";
 import { Workout } from "../types/workout";
 import { WorkoutType } from "../types/workoutType";
 import { MovementType } from "../types/movementType.ts";
@@ -84,8 +86,43 @@ const CurrentWorkout: React.FC = () => {
     setMovements([...movements, newMovement]);
   };
 
+  const addSet = (movement: Movement) => {
+    const newSet: Set = {
+      id: Date.now(),
+      reps: 5,
+      order: (movement.sets?.length ?? 0) + 1,
+      weight: 35
+    };
+
+    const updatedMovements = movements.map(m => {
+      if (m.id === movement.id) {
+        return {
+          ...m,
+          sets: [...(m.sets || []), newSet]
+        };
+      }
+      return m;
+    });
+
+    setMovements(updatedMovements);
+  };
+
   const removeMovement = (id: number) => {
     setMovements(movements.filter((movement) => movement.id !== id));
+  };
+
+  const removeSet = (movementId: number, setId: number) => {
+    const updatedMovements = movements.map(m => {
+      if (m.id === movementId) {
+        return {
+          ...m,
+          sets: m.sets?.filter(set => set.id !== setId) ?? []
+        };
+      }
+      return m;
+    });
+
+    setMovements(updatedMovements);
   };
 
   const handleSubmit = async () => {
@@ -99,7 +136,14 @@ const CurrentWorkout: React.FC = () => {
         workout_id: workoutId || undefined, // If creating a new workout, this will be undefined
         notes: movement.notes || "movement notes",
         movement_type_id: movement.movement_type_id,
-        movement_type_name: movement.movement_type_name
+        movement_type_name: movement.movement_type_name,
+        sets: movement.sets.map((set) => ({
+          id: set.id,
+          movement_id: movement.id,
+          weight: set.weight,
+          order: set.order,
+          reps:set.reps
+        }))
       }))
     };
     console.log("Submitting workout data...", WorkoutSubmission);
@@ -171,7 +215,25 @@ const CurrentWorkout: React.FC = () => {
                     setMovements(movements.map(m => m.id === movement.id ? { ...m, ...updatedMovement } : m));
                   }}
                   onRemove={() => removeMovement(movement.id)}
-                />
+                >
+                  {movement.sets.length > 0 ? (
+                    movement.sets.map((set) => (
+                    <WeightSet
+                      key={set.id}
+                      reps={set.reps}
+                      weight={set.weight}
+                      onRemove={() => removeSet(movement.id, set.id)}
+                      onChange={(updatedSet) => {
+                        const updatedSets = movement.sets.map(s => s.id === set.id ? { ...s, ...updatedSet } : s);
+                        setMovements(movements.map(m => m.id === movement.id ? { ...m, sets: updatedSets } : m));
+                      }}
+                    />
+                    ))
+                  ) : (
+                    "no sets yet"
+                  )}
+                  <Button label="+" onClick={() => addSet(movement)}/>
+                </MovementCard>
               ))
             ) : (
               <div className="text-gray-500">No movements added yet</div>
