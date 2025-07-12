@@ -3,9 +3,10 @@ import RepSet from "../repSet/RepSet";
 
 interface WeightSetProps {
     weight: number;
+    onRemove?: () => void;
 }
 
-export default function WeightSet({ weight }: WeightSetProps) {
+export default function WeightSet({ weight, onRemove }: WeightSetProps) {
     return (
         <div className={styles.weightSet}>
             <h4>{weight}</h4>
@@ -16,6 +17,7 @@ export default function WeightSet({ weight }: WeightSetProps) {
                 initialReps={5}
             />
             <button className={styles.addRepSetBtn}>+</button>
+            <button className={styles.removeWeightSetBtn} onClick={onRemove}>-</button>
         </div>
     )
 }
