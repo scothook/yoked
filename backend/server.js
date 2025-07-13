@@ -16,28 +16,6 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false }, // Required for Railway SSL
 });
 
-// 🔍 Test Route
-app.get("/api/test", async (req, res) => {
-  try {
-    const result = await pool.query("SELECT NOW()");
-    res.json({ success: true, time: result.rows[0] });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// 📌 Example: Baseball Test
-app.get("/api/standings", async (req, res) => {
-  try {
-    const result = await pool.query("SELECT * FROM teams");
-    res.json(result.rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Database query failed" });
-  }
-});
-
 app.get("/api/workout_types", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM workout_types;");
@@ -106,7 +84,6 @@ app.post("/api/workouts", async (req, res) => {
     client.release();
   }
 });
-
 
 app.patch("/api/workouts/:id", async (req, res) => {
   const client = await pool.connect();
@@ -191,35 +168,6 @@ app.patch("/api/workouts/:id", async (req, res) => {
   }
 });
 
-app.put("/api/workouts/:id", async (req, res) => {
-  const { id } = req.params;
-  const { body_weight, workout_type_id, notes, date } = req.body;
-
-  try {
-    const result = await pool.query(
-      `
-      UPDATE workouts
-      SET body_weight = $1,
-          workout_type_id = $2,
-          notes = $3,
-          date = $4
-      WHERE id = $5
-      RETURNING *;
-      `,
-      [body_weight, workout_type_id, notes, date, id]
-    );
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: "Workout not found" });
-    }
-
-    res.status(200).json(result.rows[0]); // Return the updated workout
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Database error" });
-  }
-});
-
 app.get("/api/workouts/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -271,7 +219,6 @@ app.get("/api/workouts/:id", async (req, res) => {
   }
 });
 
-
 app.get("/api/workouts", async (req, res) => {
   try {
     const result = await pool.query(`   
@@ -318,51 +265,6 @@ app.get("/api/workouts", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Database query failed" });
-  }
-});
-
-// Sample Baseball Standings Data
-const standings = [
-  {
-    Season: 2024,
-    TeamID: 10,
-    Key: "CLE",
-    City: "Cleveland",
-    Name: "Guardians",
-    League: "AL",
-    Division: "Central",
-    Wins: 92,
-    Losses: 69,
-    LeagueRank: 1,
-  },
-  {
-    Season: 2024,
-    TeamID: 5,
-    Key: "KC",
-    City: "Kansas City",
-    Name: "Royals",
-    League: "AL",
-    Division: "Central",
-    Wins: 86,
-    Losses: 76,
-    LeagueRank: 2,
-  },
-];
-
-// API endpoint to get all standings
-app.get("/api/standings-old", (req, res) => {
-  res.json(standings);
-});
-
-// API endpoint to get a specific team by key (e.g., "CLE")
-app.get("/api/standings/:teamKey", (req, res) => {
-  const teamKey = req.params.teamKey.toUpperCase();
-  const team = standings.find((t) => t.Key === teamKey);
-
-  if (team) {
-    res.json(team);
-  } else {
-    res.status(404).json({ message: "Team not found" });
   }
 });
 
