@@ -1,19 +1,24 @@
+import routes from "./routes/index.js";
 const express = require("express");
 const cors = require("cors");
 const { Pool } = require("pg");
 require('dotenv').config({ path: './.env' });
-
 
 const app = express();
 const PORT = 5000;
 
 app.use(cors()); // Allow cross-origin requests
 app.use(express.json()); // Middleware to parse JSON
+app.use("/api", routes);
 
 // Database Connection Pool
 const pool = new Pool({
   connectionString: process.env.YOKED_DATABASE_URL,
   ssl: { rejectUnauthorized: false }, // Required for Railway SSL
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
 
 app.get("/api/workout_types", async (req, res) => {
@@ -268,6 +273,4 @@ app.get("/api/workouts", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+
