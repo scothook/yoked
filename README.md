@@ -2,8 +2,6 @@
 
 This app is a personalized workout tracker designed to help users plan, log, and review their strength training routines. It supports organizing workouts by day, tracking specific movements and sets, and analyzing past performance to support long-term fitness goals.
 
-Watch my progress at: [yoked.netlify.app](https://yoked.netlify.app/)
-
 ## Technologies Used
 
 - **Frontend**: [React](https://reactjs.org/) (with [Vite](https://vitejs.dev/)) for a fast, responsive UI  
